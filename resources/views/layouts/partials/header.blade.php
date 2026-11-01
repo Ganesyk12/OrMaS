@@ -59,7 +59,10 @@
               <p class="text-muted">Project Admin</p>
               <hr />
               <a href="#" class="dropdown-item"><i class="ti ti-settings"></i> <span>Pengaturan Akun</span></a>
-              <a href="#" class="dropdown-item text-danger"><i class="ti ti-logout"></i> <span>Keluar</span></a>
+              <form method="POST" action="{{ route('logout') }}" class="m-0">
+                @csrf
+                <button type="submit" class="dropdown-item text-danger"><i class="ti ti-logout"></i> <span>Keluar</span></button>
+              </form>
             </div>
           </div>
         </li>

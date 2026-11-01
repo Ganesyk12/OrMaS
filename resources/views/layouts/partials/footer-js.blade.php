@@ -94,6 +94,50 @@
     window.preset_change = function(){ console.log('preset_change stub'); };
 </script>
 
+<!-- Sidebar & header dropdown toggle (pengganti Bootstrap JS yang tidak tersedia) -->
+<script>
+  (function () {
+    var dropdownToggles = document.querySelectorAll('[data-bs-toggle="dropdown"]');
+
+    function closeAllDropdowns() {
+      document.querySelectorAll('.dropdown-menu.show').forEach(function (menu) {
+        menu.classList.remove('show');
+      });
+      document.querySelectorAll('[data-bs-toggle="dropdown"][aria-expanded="true"]').forEach(function (toggle) {
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    }
+
+    dropdownToggles.forEach(function (toggle) {
+      toggle.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        var parent = toggle.closest('.dropdown');
+        var menu = parent ? parent.querySelector('.dropdown-menu') : null;
+        if (!menu) return;
+
+        var willOpen = !menu.classList.contains('show');
+        closeAllDropdowns();
+
+        if (willOpen) {
+          menu.classList.add('show');
+          toggle.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    document.addEventListener('click', function (event) {
+      if (event.target.closest('.dropdown-menu')) return;
+      closeAllDropdowns();
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') closeAllDropdowns();
+    });
+  })();
+</script>
+
 <!-- Sidebar collapse toggle -->
 <script>
   (function () {
