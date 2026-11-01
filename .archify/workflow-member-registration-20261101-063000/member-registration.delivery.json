@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "29b663bf-8289-42bd-81ac-0ac7701f342d",
+  "status": "current",
+  "command": "deliver",
+  "type": "workflow",
+  "input": "/home/ganz/Project/php-laravel-systems/cameleon/.archify/workflow-member-registration-20261101-063000/candidate.json",
+  "output": "/home/ganz/Project/php-laravel-systems/cameleon/.archify/workflow-member-registration-20261101-063000/member-registration.html",
+  "specification": {
+    "sha256": "5fd187befb21d7b2dfbc7d1f91003d339237624ac8a256d1625c429412283b23",
+    "bytes": 4777
+  },
+  "artifact": {
+    "sha256": "458a7c115099c113784bcbd2f2df15683737713caa2ebb89ded8be98f129264d",
+    "bytes": 823048
+  }
+}

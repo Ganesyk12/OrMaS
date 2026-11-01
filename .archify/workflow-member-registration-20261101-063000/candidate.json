@@ -1,0 +1,86 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Pendaftaran Anggota Karang Taruna",
+    "subtitle": "Alur kerja melalui Modular Monolith Laravel",
+    "animation": "trace",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "output": ".archify/workflow-member-registration-20261101-063000/member-registration.html",
+    "viewBox": [1200, 700],
+    "legend": {
+      "mode": "all",
+      "entries": {
+        "frontend": { "label": "Frontend / UI" },
+        "backend": { "label": "Backend (Laravel)" },
+        "database": { "label": "Database (SQLite)" },
+        "security": { "label": "Keamanan / Validasi" },
+        "messagebus": { "label": "Notifikasi" },
+        "external": { "label": "Pengguna Eksternal" }
+      }
+    }
+  },
+  "lanes": [
+    { "id": "ui", "label": "Calon Anggota" },
+    { "id": "admin", "label": "Admin / Panitia" },
+    { "id": "system", "label": "Modular Monolith" },
+    { "id": "exception", "label": "Exception / Ditolak", "variant": "exception" }
+  ],
+  "phases": [
+    { "id": "intake", "label": "Intake", "fromCol": 0, "toCol": 1 },
+    { "id": "review", "label": "Review & Verifikasi", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "commit", "label": "Commit & Konfirmasi", "fromCol": 4, "toCol": 5 }
+  ],
+  "mainPath": ["calon_anggota", "formulir", "validasi", "verifikasi", "simpan", "konfirmasi"],
+  "semanticChecks": {
+    "allowedRoots": ["calon_anggota"],
+    "allowedTerminals": ["konfirmasi"]
+  },
+  "nodes": [
+    { "id": "calon_anggota", "lane": "ui", "col": 0, "type": "external", "label": "Calon Anggota", "sublabel": "mengajukan pendaftaran", "icon": "person", "width": 132 },
+    { "id": "formulir", "lane": "ui", "col": 1, "type": "frontend", "label": "Formulir Pendaftaran", "sublabel": "isi data diri & dokumen", "width": 132 },
+    { "id": "validasi", "lane": "system", "col": 2, "type": "backend", "label": "Validasi Input", "sublabel": "cek kelengkapan data", "width": 132 },
+    { "id": "verifikasi", "lane": "admin", "col": 3, "type": "backend", "label": "Verifikasi Data", "sublabel": "cek dokumen & keterangan", "width": 132 },
+    { "id": "simpan", "lane": "system", "col": 4, "type": "backend", "label": "Simpan Entitas Member", "sublabel": "tulis ke organization_members", "width": 160 },
+    { "id": "konfirmasi", "lane": "ui", "col": 5, "type": "frontend", "label": "Konfirmasi Terima", "sublabel": "member aktif", "width": 132 },
+    { "id": "duplikat", "lane": "exception", "col": 4, "type": "security", "label": "Data Duplikat / Tidak Valid", "sublabel": "ditolak sistem", "tag": "unresolved", "width": 200 },
+    { "id": "notifikasi", "lane": "exception", "col": 5, "type": "messagebus", "label": "Notifikasi Penolakan", "sublabel": "dikirim ke calon anggota", "width": 132 }
+  ],
+  "edges": [
+    { "id": "intake-form", "from": "calon_anggota", "to": "formulir", "label": "isi formulir", "variant": "default", "role": "main" },
+    { "id": "submit-validasi", "from": "formulir", "to": "validasi", "label": "kirim data", "variant": "default", "role": "main" },
+    { "id": "validasi-verifikasi", "from": "validasi", "to": "verifikasi", "label": "data valid", "variant": "default", "role": "main" },
+    { "id": "verifikasi-simpan", "from": "verifikasi", "to": "simpan", "label": "disetujui admin", "variant": "default", "role": "main" },
+    { "id": "simpan-konfirmasi", "from": "simpan", "to": "konfirmasi", "label": "member aktif", "variant": "emphasis", "role": "main" },
+    { "id": "validasi-duplikat", "from": "validasi", "to": "duplikat", "label": "data duplikat / gagal validasi", "variant": "security", "role": "error" },
+    { "id": "duplikat-notifikasi", "from": "duplikat", "to": "notifikasi", "label": "kirim penolakan", "variant": "default", "role": "branch" },
+    { "id": "notifikasi-konfirmasi", "from": "notifikasi", "to": "konfirmasi", "label": "diterima calon anggota", "variant": "dashed", "role": "return", "route": "auto" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Modular Monolith",
+      "items": [
+        "Setiap modul (Organization, Member, Role, Activity, Meeting, Finance) memiliki route, controller, dan resource sendiri",
+        "Semua route digabung di bootstrap/providers.php melalui ModuleServiceProvider"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Hak Akses",
+      "items": [
+        "UserAccess mengatur izin per modul & permission (view/create/edit/delete)",
+        "Tidak ada owner yang ditetapkan untuk notifikasi penolakan"
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "Database",
+      "items": [
+        "Semua tabel domain pakai softDeletes",
+        "Foreign key: organization_members → organizations, users, roles"
+      ]
+    }
+  ]
+}
