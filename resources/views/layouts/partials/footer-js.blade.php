@@ -154,10 +154,62 @@
       if (isCollapsed) {
         sidebar.classList.remove('collapsed');
         if (maincontent) maincontent.classList.remove('sidebar-collapsed');
+        document.body.classList.remove('sidebar-is-collapsed');
       } else {
         sidebar.classList.add('collapsed');
         if (maincontent) maincontent.classList.add('sidebar-collapsed');
+        document.body.classList.add('sidebar-is-collapsed');
       }
+    });
+  })();
+</script>
+
+<!-- Sidebar submenu expand/collapse -->
+<script>
+  (function () {
+    var sidebar = document.getElementById('main-sidebar');
+    if (!sidebar) return;
+
+    var parentItems = sidebar.querySelectorAll('.pc-navbar .pc-hasmenu');
+
+    function setExpanded(item, expanded) {
+      item.classList.toggle('pc-trigger', expanded);
+      var link = item.querySelector(':scope > .pc-link');
+      if (link) link.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    }
+
+    parentItems.forEach(function (item) {
+      var link = item.querySelector(':scope > .pc-link');
+      if (!link) return;
+
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        // Saat sidebar collapse, buka sidebar terlebih dahulu agar submenu terlihat
+        var wasCollapsed = sidebar.classList.contains('collapsed');
+        if (wasCollapsed) {
+          sidebar.classList.remove('collapsed');
+          var maincontent = document.querySelector('.pc-maincontent');
+          if (maincontent) maincontent.classList.remove('sidebar-collapsed');
+          document.body.classList.remove('sidebar-is-collapsed');
+        }
+
+        // Jika baru dibuka dari kondisi collapse, pastikan submenu ikut terbuka
+        var willOpen = wasCollapsed ? true : !item.classList.contains('pc-trigger');
+
+        // Accordion: tutup submenu lain pada level yang sama
+        var list = item.parentElement;
+        if (list) {
+          Array.prototype.forEach.call(list.children, function (sibling) {
+            if (sibling !== item && sibling.classList && sibling.classList.contains('pc-hasmenu')) {
+              setExpanded(sibling, false);
+            }
+          });
+        }
+
+        setExpanded(item, willOpen);
+      });
     });
   })();
 </script>

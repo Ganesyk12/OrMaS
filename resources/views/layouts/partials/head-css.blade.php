@@ -38,12 +38,22 @@
         min-width: 0;
         overflow-y: auto;
         overflow-x: hidden;
+        /* Beri ruang untuk header yang fixed agar breadcrumb tidak tertutup navbar */
+        padding: 100px 20px 20px;
         /* Default: sidebar expanded (260px), konten mulai setelah sidebar */
         margin-left: 260px;
         transition: margin-left 0.25s ease, width 0.25s ease;
     }
     .pc-maincontent.sidebar-collapsed {
         margin-left: 88px;
+    }
+
+    /* Header ikut bergeser saat sidebar di-collapse */
+    .pc-header {
+        transition: left 0.25s ease;
+    }
+    body.sidebar-is-collapsed .pc-header {
+        left: 88px;
     }
 
     /* Footer tetap di bottom viewport ketika konten pendek */
@@ -70,6 +80,23 @@
     .sidebar-dark .pc-navbar > li > a.pc-link:hover .pc-micon i {
         color: #ffffff !important;
     }
+    /* Submenu Sidebar Dark Mode */
+    .sidebar-dark .pc-navbar .pc-submenu:after {
+        background-color: #4b5563 !important;
+    }
+    .sidebar-dark .pc-navbar .pc-submenu .pc-item > .pc-link {
+        color: #cbd5e1 !important;
+    }
+    .sidebar-dark .pc-navbar .pc-submenu .pc-item > .pc-link:after {
+        background-color: #6b7280 !important;
+    }
+    .sidebar-dark .pc-navbar .pc-submenu .pc-item > .pc-link:hover,
+    .sidebar-dark .pc-navbar .pc-submenu .pc-item.pc-active > .pc-link {
+        color: #ffffff !important;
+    }
+    .sidebar-dark .pc-navbar .pc-submenu .pc-item.pc-active > .pc-link {
+        font-weight: 600;
+    }
     .sidebar-dark .pc-navbar-card {
         background-color: #374151 !important;
     }
@@ -90,5 +117,10 @@
     }
     .pc-sidebar.collapsed .pc-link .pc-micon {
         justify-content: center;
+    }
+
+    /* Saat sidebar collapse, submenu disembunyikan (klik menu induk akan membuka sidebar) */
+    .pc-sidebar.collapsed .pc-submenu {
+        display: none !important;
     }
 </style>
