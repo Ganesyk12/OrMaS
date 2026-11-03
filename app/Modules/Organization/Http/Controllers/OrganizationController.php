@@ -38,8 +38,8 @@ class OrganizationController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'code' => 'required|string|max:50|unique:organizations',
-            'type' => 'required|in:rt,rw,kelurahan,kecamatan',
+            
+            'type' => 'required|string',
             'level' => 'nullable|string|max:100',
             'address' => 'nullable|string',
             'description' => 'nullable|string',
@@ -77,7 +77,7 @@ class OrganizationController extends Controller
 
         $data = $request->validate([
             'name' => 'sometimes|string|max:255',
-            'code' => 'sometimes|string|max:50|unique:organizations,code,'.$organization->id,
+            
             'type' => 'sometimes|in:rt,rw,kelurahan,kecamatan',
             'level' => 'nullable|string|max:100',
             'address' => 'nullable|string',

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('presenter')->nullable();
             $table->unsignedSmallInteger('duration_minutes')->nullable();
             $table->unsignedSmallInteger('order')->default(0);
-            $table->enum('status', ['pending', 'discussed', 'completed', 'skipped'])->default('pending');
+            $table->string('status');
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();

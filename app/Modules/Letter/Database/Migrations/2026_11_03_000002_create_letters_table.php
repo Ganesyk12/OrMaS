@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('category_id')
                 ->constrained('letter_categories')
                 ->restrictOnDelete();
-            $table->enum('direction', ['incoming', 'outgoing']);
+            $table->string('direction', 20);
             $table->string('letter_number', 100);
             $table->string('subject');
             $table->string('sender')->nullable();

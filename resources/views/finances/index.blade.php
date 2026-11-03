@@ -2,11 +2,11 @@
 
 @section('title', 'Keuangan')
 @php
-    $pageTitle = 'Keuangan';
-    $breadcrumbs = [
-        'Dashboard' => route('dashboard.index'),
-        'Keuangan' => route('finances.index'),
-    ];
+$pageTitle = 'Keuangan';
+$breadcrumbs = [
+'Dashboard' => route('dashboard.index'),
+'Keuangan' => route('finances.index'),
+];
 @endphp
 
 @section('content')
@@ -39,52 +39,52 @@
             </form>
           </div>
           @if($finances->count())
-            <div class="table-responsive">
-              <table class="table table-hover align-middle mb-0">
-                <thead class="table-light">
-                  <tr>
-                    <th>Deskripsi</th>
-                    <th>Organisasi</th>
-                    <th>Tipe</th>
-                    <th>Jumlah</th>
-                    <th>Status</th>
-                    <th class="text-end">Aksi</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach($finances as $fin)
-                    <tr>
-                      <td class="fw-semibold text-dark">{{ $fin->description ?: $fin->category }}</td>
-                      <td class="text-muted small">{{ $fin->organization->name ?? '-' }}</td>
-                      <td>
-                        <span class="badge bg-{{ $fin->type === 'income' ? 'success' : 'danger' }}">{{ ucfirst($fin->type) }}</span>
-                      </td>
-                      <td class="text-muted small">Rp {{ number_format($fin->amount, 0, ',', '.') }}</td>
-                      <td>
-                        <span class="status-badge {{ $fin->status }}">{{ ucfirst($fin->status) }}</span>
-                      </td>
-                      <td class="text-end">
-                        <div class="d-flex gap-1 justify-content-end">
-                          <a href="{{ route('finances.show', $fin->id) }}" class="btn btn-outline-info btn-sm"><i class="ti ti-eye"></i></a>
-                          <a href="{{ route('finances.edit', $fin->id) }}" class="btn btn-outline-primary btn-sm"><i class="ti ti-pencil"></i></a>
-                          <form action="{{ route('finances.destroy', $fin->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin hapus transaksi?')">
-                            @csrf @method('DELETE')
-                            <button type="submit" class="btn btn-outline-danger btn-sm"><i class="ti ti-trash"></i></button>
-                          </form>
-                        </div>
-                      </td>
-                    </tr>
-                  @endforeach
-                </tbody>
-              </table>
-            </div>
-            <div class="mt-3">{{ $finances->links() }}</div>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Deskripsi</th>
+                  <th>Organisasi</th>
+                  <th>Tipe</th>
+                  <th>Jumlah</th>
+                  <th>Status</th>
+                  <th class="text-end">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach($finances as $fin)
+                <tr>
+                  <td class="fw-semibold text-dark">{{ $fin->description ?: $fin->category }}</td>
+                  <td class="text-muted small">{{ $fin->organization->name ?? '-' }}</td>
+                  <td>
+                    <span class="badge bg-{{ $fin->type === 'income' ? 'success' : 'danger' }}">{{ ucfirst($fin->type) }}</span>
+                  </td>
+                  <td class="text-muted small">Rp {{ number_format($fin->amount, 0, ',', '.') }}</td>
+                  <td>
+                    <span class="status-badge {{ $fin->status }}">{{ ucfirst($fin->status) }}</span>
+                  </td>
+                  <td class="text-end">
+                    <div class="d-flex gap-1 justify-content-end">
+                      <a href="{{ route('finances.show', $fin->id) }}" class="btn btn-outline-info btn-sm"><i class="ti ti-eye"></i></a>
+                      <a href="{{ route('finances.edit', $fin->id) }}" class="btn btn-outline-primary btn-sm"><i class="ti ti-pencil"></i></a>
+                      <form action="{{ route('finances.destroy', $fin->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin hapus transaksi?')">
+                        @csrf @method('DELETE')
+                        <button type="submit" class="btn btn-outline-danger btn-sm"><i class="ti ti-trash"></i></button>
+                      </form>
+                    </div>
+                  </td>
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-3">{{ $finances->links() }}</div>
           @else
-            <div class="text-center text-muted py-5">
-              <i class="ti ti-information fs-4 mb-2 d-block opacity-50"></i>
-              <div class="fw-semibold text-dark small">Tidak ada transaksi</div>
-              <a href="{{ route('finances.create') }}" class="btn btn-primary mt-2">Tambah Transaksi</a>
-            </div>
+          <div class="text-center text-muted py-5">
+            <i class="ti ti-information fs-4 mb-2 d-block opacity-50"></i>
+            <div class="fw-semibold text-dark small">Tidak ada transaksi</div>
+            <a href="{{ route('finances.create') }}" class="btn btn-primary mt-2">Tambah Transaksi</a>
+          </div>
           @endif
         </div>
       </div>

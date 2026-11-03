@@ -37,6 +37,7 @@ class AgendaController extends Controller
         ]);
 
         $agenda = $meeting->agendas()->create(array_merge($data, [
+            'status' => $data['status'] ?? 'draft',
             'created_by' => $request->user()?->id,
         ]));
 

@@ -51,6 +51,7 @@ class FinanceController extends Controller
         }
 
         $finance = FinanceModel::create(array_merge($data, [
+            'status' => $data['status'] ?? 'draft',
             'created_by' => $request->user()?->id,
         ]));
 

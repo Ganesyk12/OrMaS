@@ -1,60 +1,247 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cameleon — Organize Management System (Karang Taruna)</title>
+    <title>Organize Management System</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #1f2937; background: #f9fafb; padding: 0; }
-        .container { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; background: #ffffff; box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1); border-radius: 8px; }
-        header { border-bottom: 1px solid #e5e7eb; padding-bottom: 1rem; margin-bottom: 1.5rem; }
-        h1 { font-size: 1.875rem; font-weight: 700; color: #111827; margin-bottom: 0.5rem; }
-        h2 { font-size: 1.5rem; font-weight: 600; color: #111827; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #e5e7eb; padding-bottom: 0.5rem; }
-        h3 { font-size: 1.25rem; font-weight: 600; color: #374151; margin-top: 1.5rem; margin-bottom: 0.5rem; }
-        p { margin-bottom: 1rem; }
-        a { color: #2563eb; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; font-size: 0.95rem; }
-        th, td { border: 1px solid #d1d5db; padding: 0.625rem 0.75rem; text-align: left; }
-        th { background-color: #f3f4f6; font-weight: 600; color: #374151; }
-        tr:nth-child(even) { background-color: #f9fafb; }
-        code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; background: #f3f4f6; padding: 0.125rem 0.375rem; border-radius: 4px; font-size: 0.875rem; }
-        pre { background: #1f2937; color: #e5e7eb; padding: 1rem; border-radius: 6px; overflow-x: auto; margin-bottom: 1rem; }
-        pre code { background: transparent; padding: 0; color: inherit; font-size: 0.9rem; }
-        .badge { display: inline-block; padding: 0.125rem 0.5rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; margin-right: 0.5rem; }
-        .badge-green { background: #dcfce7; color: #166534; }
-        .badge-blue { background: #dbeafe; color: #1e40af; }
-        .badge-gray { background: #e5e7eb; color: #374151; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
-        .card { border: 1px solid #e5e7eb; border-radius: 6px; padding: 1rem; background: #f9fafb; }
-        .card h4 { font-size: 0.875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #4b5563; margin-bottom: 0.5rem; }
-        .card ul { list-style: disc inside; padding-left: 0; color: #374151; font-size: 0.9rem; }
-        .card ul li { margin-bottom: 0.375rem; }
-        footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e5e7eb; font-size: 0.875rem; color: #6b7280; }
-        .meta-table td:first-child { font-weight: 600; width: 30%; color: #374151; background: #f9fafb; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background: #f9fafb;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            background: #ffffff;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            border-radius: 8px;
+        }
+
+        header {
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #111827;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #374151;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        th,
+        td {
+            border: 1px solid #d1d5db;
+            padding: 0.625rem 0.75rem;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f3f4f6;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            background: #f3f4f6;
+            padding: 0.125rem 0.375rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+
+        pre {
+            background: #1f2937;
+            color: #e5e7eb;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+
+        pre code {
+            background: transparent;
+            padding: 0;
+            color: inherit;
+            font-size: 0.9rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        .badge-green {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-blue {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-gray {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card {
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 1rem;
+            background: #f9fafb;
+        }
+
+        .card h4 {
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #4b5563;
+            margin-bottom: 0.5rem;
+        }
+
+        .card ul {
+            list-style: disc inside;
+            padding-left: 0;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+
+        .card ul li {
+            margin-bottom: 0.375rem;
+        }
+
+        footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .meta-table td:first-child {
+            font-weight: 600;
+            width: 30%;
+            color: #374151;
+            background: #f9fafb;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <header>
-            <h1>Cameleon — Organize Management System (Karang Taruna)</h1>
-            <p>Sistem administrasi <strong>Karang Taruna</strong> (organisasi kemasyarakatan pemuda) berbasis <strong>Modular Monolith</strong> dengan Laravel 12 + SQLite.</p>
+            <h1>Organize Management System</h1>
+            <p>Sistem administrasi berbasis
+                <strong>Modular Monolith</strong> dengan Laravel 12.
+            </p>
         </header>
 
         <h2>Ringkasan Project</h2>
         <table class="meta-table">
-            <tr><td>Nama Project</td><td>Cameleon</td></tr>
-            <tr><td>Tujuan</td><td>Administrasi Karang Taruna (RT/RW/Kelurahan/Kecamatan)</td></tr>
-            <tr><td>Framework</td><td>Laravel 12</td></tr>
-            <tr><td>PHP</td><td>8.2+</td></tr>
-            <tr><td>Database</td><td>SQLite (default), dukungan MySQL/PostgreSQL via <code>.env</code></td></tr>
-            <tr><td>Arsitektur</td><td>Modular Monolith</td></tr>
-            <tr><td>Status</td><td><span class="badge badge-green">Siap pengembangan (MVP teruji)</span></td></tr>
+            <tr>
+                <td>Nama Project</td>
+                <td>Cameleon</td>
+            </tr>
+            <tr>
+                <td>Tujuan</td>
+                <td>Administrasi Karang Taruna (RT/RW/Kelurahan/Kecamatan)</td>
+            </tr>
+            <tr>
+                <td>Framework</td>
+                <td>Laravel 12</td>
+            </tr>
+            <tr>
+                <td>PHP</td>
+                <td>8.2+</td>
+            </tr>
+            <tr>
+                <td>Database</td>
+                <td>SQLite (default), dukungan MySQL/PostgreSQL via <code>.env</code></td>
+            </tr>
+            <tr>
+                <td>Arsitektur</td>
+                <td>Modular Monolith</td>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td><span class="badge badge-green">Siap pengembangan (MVP teruji)</span></td>
+            </tr>
         </table>
 
         <h2>Arsitektur Modular Monolith</h2>
-        <p>Semua kode berada dalam satu repositori (satu Composer project), tapi diorganisir per <strong>modul / bounded context</strong> di bawah <code>app/Modules/</code>. Setiap modul mandiri memiliki model, migration, seeder, controller, resource, dan route-nya sendiri. Nantinya setiap modul dapat diekstrak menjadi layanan terpisah tanpa menulis ulang logika inti.</p>
+        <p>Semua kode berada dalam satu repositori (satu Composer project), tapi diorganisir per <strong>modul / bounded
+                context</strong> di bawah <code>app/Modules/</code>. Setiap modul mandiri memiliki model, migration,
+            seeder, controller, resource, dan route-nya sendiri. Nantinya setiap modul dapat diekstrak menjadi layanan
+            terpisah tanpa menulis ulang logika inti.</p>
 
         <pre><code>app/
 ├── Models/User.php                 # Model autentikasi (Laravel Authenticatable)
@@ -78,18 +265,58 @@
         <h3>Daftar Modul</h3>
         <table>
             <thead>
-                <tr><th>Modul</th><th>Tabel</th><th>Deskripsi</th></tr>
+                <tr>
+                    <th>Modul</th>
+                    <th>Tabel</th>
+                    <th>Deskripsi</th>
+                </tr>
             </thead>
             <tbody>
-                <tr><td>Organization</td><td><code>organizations</code></td><td>Organisasi Karang Taruna (rt, rw, kelurahan, kecamatan)</td></tr>
-                <tr><td>Role</td><td><code>roles</code></td><td>Jabatan kepengurusan (Ketua, Sekretaris, Bendahara, Anggota, dst)</td></tr>
-                <tr><td>Member</td><td><code>organization_members</code></td><td>Anggota organisasi (terkait user & role)</td></tr>
-                <tr><td>UserAccess</td><td><code>user_accesses</code></td><td>Hak akses user per modul & izin (view/create/edit/delete)</td></tr>
-                <tr><td>User</td><td><code>users</code></td><td>Pengguna sistem (autentikasi)</td></tr>
-                <tr><td>Agenda</td><td><code>agendas</code></td><td>Agenda rapat (milik Meeting)</td></tr>
-                <tr><td>Activity</td><td><code>activities</code></td><td>Kegiatan / program kerja</td></tr>
-                <tr><td>Meeting</td><td><code>meetings</code></td><td>Rapat</td></tr>
-                <tr><td>Finance</td><td><code>finances</code></td><td>Transaksi keuangan (pemasukan / pengeluaran)</td></tr>
+                <tr>
+                    <td>Organization</td>
+                    <td><code>organizations</code></td>
+                    <td>Organisasi Karang Taruna (rt, rw, kelurahan, kecamatan)</td>
+                </tr>
+                <tr>
+                    <td>Role</td>
+                    <td><code>roles</code></td>
+                    <td>Jabatan kepengurusan (Ketua, Sekretaris, Bendahara, Anggota, dst)</td>
+                </tr>
+                <tr>
+                    <td>Member</td>
+                    <td><code>organization_members</code></td>
+                    <td>Anggota organisasi (terkait user & role)</td>
+                </tr>
+                <tr>
+                    <td>UserAccess</td>
+                    <td><code>user_accesses</code></td>
+                    <td>Hak akses user per modul & izin (view/create/edit/delete)</td>
+                </tr>
+                <tr>
+                    <td>User</td>
+                    <td><code>users</code></td>
+                    <td>Pengguna sistem (autentikasi)</td>
+                </tr>
+                <tr>
+                    <td>Agenda</td>
+                    <td><code>agendas</code></td>
+                    <td>Agenda rapat (milik Meeting)</td>
+                </tr>
+                <tr>
+                    <td>Activity</td>
+                    <td><code>activities</code></td>
+                    <td>Kegiatan / program kerja</td>
+                </tr>
+                <tr>
+                    <td>Meeting</td>
+                    <td><code>meetings</code></td>
+                    <td>Rapat</td>
+                </tr>
+                <tr>
+                    <td>Finance</td>
+                    <td><code>finances</code></td>
+                    <td>Transaksi keuangan (pemasukan / pengeluaran)</td>
+                </tr>
             </tbody>
         </table>
 
@@ -192,7 +419,10 @@ PUT    /user-accesses/{id}
 DELETE /user-accesses/{id}</code></pre>
 
         <h2>Pendaftaran Modul</h2>
-        <p>Semua <code>*ServiceProvider</code> didaftarkan di <code>bootstrap/providers.php</code> (gaya Laravel 12). Autoload namespace <code>Modules\</code> dipetakan ke <code>app/Modules/</code> di <code>composer.json</code>.</p>
+        <p>Semua <code>*ServiceProvider</code> didaftarkan di <code>bootstrap/providers.php</code> (gaya Laravel 12).
+            Autoload namespace <code>Modules\</code> dipetakan ke <code>app/Modules/</code> di
+            <code>composer.json</code>.
+        </p>
         <pre><code>"autoload": {
     "psr-4": {
         "App\\": "app/",
@@ -209,67 +439,70 @@ php artisan test
 
 # Hasilkan laporan coverage (jika Xdebug tersedia)
 php artisan test --coverage</code></pre>
-        <p>Tes mencakup CRUD lengkap (index, store, show, update, destroy, soft delete) untuk setiap modul di <code>tests/Feature/</code>. Saat ini <strong>47 tes lulus (92 assertions)</strong>.</p>
+        <p>Tes mencakup CRUD lengkap (index, store, show, update, destroy, soft delete) untuk setiap modul di
+            <code>tests/Feature/</code>. Saat ini <strong>47 tes lulus (92 assertions)</strong>.
+        </p>
 
         <h2>Catatan Implementasi</h2>
         <ul>
-            <li>Semua tabel domain pakai <code>softDeletes()</code> (kecuali <code>users</code> yang dihapus permanen dalam contoh ini).</li>
+            <li>Semua tabel domain pakai <code>softDeletes()</code> (kecuali <code>users</code> yang dihapus permanen
+                dalam contoh ini).</li>
             <li>Model menggunakan <code>HasFactory</code> dengan factory di <code>database/factories/</code>.</li>
             <li>Response API diformat melalui <code>JsonResource</code> per modul.</li>
             <li>Validasi request ditulis inline di controller.</li>
-            <li>Implicit route model binding diganti dengan <code>findOrFail()</code> eksplisit untuk deterministik.</li>
-            <li>Foreign key menghubungkan modul satu sama lain (misal <code>organization_members</code> → <code>organizations</code>, <code>users</code>, <code>roles</code>).</li>
+            <li>Implicit route model binding diganti dengan <code>findOrFail()</code> eksplisit untuk deterministik.
+            </li>
+            <li>Foreign key menghubungkan modul satu sama lain (misal <code>organization_members</code> →
+                <code>organizations</code>, <code>users</code>, <code>roles</code>).
+            </li>
         </ul>
-
-        <h2>Diagram Alur Kerja</h2>
-        <p>Diagram workflow pendaftaran anggota tersedia di:</p>
-        <p><a href="../.archify/workflow-member-registration-20261101-063000/member-registration.html">Pendaftaran Anggota Karang Taruna — Workflow Diagram</a></p>
 
         <h2>Business Process / User Journey</h2>
         <div class="mermaid">
             flowchart TD
-                classDef user fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
-                classDef system fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
-                classDef data fill:#fff3e0,stroke:#ef6c00,stroke-width:2px
-                classDef decision fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+            classDef user fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
+            classDef system fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+            classDef data fill:#fff3e0,stroke:#ef6c00,stroke-width:2px
+            classDef decision fill:#fce4ec,stroke:#c2185b,stroke-width:2px
 
-                A[Warga Tertarik] -->|daftar| B[Formulir Pendaftaran]
-                B -->|kirim| C{Validasi Input}
-                C -->|tidak valid| D[Notifikasi Penolakan]
-                C -->|valid| E[Verifikasi Data Admin]
-                E -->|ditolak| D
-                E -->|disetujui| F[Aktifkan Member]
-                F -->|member aktif| G[Homepage Member]
+            A[Warga Tertarik] -->|daftar| B[Formulir Pendaftaran]
+            B -->|kirim| C{Validasi Input}
+            C -->|tidak valid| D[Notifikasi Penolakan]
+            C -->|valid| E[Verifikasi Data Admin]
+            E -->|ditolak| D
+            E -->|disetujui| F[Aktifkan Member]
+            F -->|member aktif| G[Homepage Member]
 
-                G -->|ikuti| H[Kegiatan / Activity]
-                G -->|hadiri| I[Rapat / Meeting]
-                I -->|buat| J[Agenda Rapat]
-                J -->|diskusikan| K[Catatan Keputusan]
+            G -->|ikuti| H[Kegiatan / Activity]
+            G -->|hadiri| I[Rapat / Meeting]
+            I -->|buat| J[Agenda Rapat]
+            J -->|diskusikan| K[Catatan Keputusan]
 
-                H -->|biaya| L[Transaksi Keuangan]
-                L -->|pemasukan/pengeluaran| M[Laporan Keuangan]
-                M -->|verifikasi| N[Bendahara Verifikasi]
-                N -->|disetujui| O[Laporan Akhir]
-                N -->|ditolak| L
+            H -->|biaya| L[Transaksi Keuangan]
+            L -->|pemasukan/pengeluaran| M[Laporan Keuangan]
+            M -->|verifikasi| N[Bendahara Verifikasi]
+            N -->|disetujui| O[Laporan Akhir]
+            N -->|ditolak| L
 
-                A:::user
-                B:::user
-                C:::decision
-                D:::system
-                E:::system
-                F:::system
-                G:::user
-                H:::data
-                I:::data
-                J:::data
-                K:::data
-                L:::data
-                M:::data
-                N:::system
-                O:::data
+            A:::user
+            B:::user
+            C:::decision
+            D:::system
+            E:::system
+            F:::system
+            G:::user
+            H:::data
+            I:::data
+            J:::data
+            K:::data
+            L:::data
+            M:::data
+            N:::system
+            O:::data
         </div>
         <p class="card" style="font-size:0.9rem; color:#555; border-top:1px solid #e5e7eb; padding-top:0.75rem;">
-            Diagram di atas menggunakan <strong>Mermaid flowchart</strong> untuk menggambarkan journey warga dari pendaftaran hingga keikutsertaan dalam kegiatan, rapat, dan keuangan Karang Taruna.
+            Diagram di atas menggunakan <strong>Mermaid flowchart</strong> untuk menggambarkan journey warga dari
+            pendaftaran hingga keikutsertaan dalam kegiatan, rapat, dan keuangan Karang Taruna.
         </p>
 
         <footer>
@@ -283,4 +516,5 @@ php artisan test --coverage</code></pre>
         mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
     </script>
 </body>
+
 </html>

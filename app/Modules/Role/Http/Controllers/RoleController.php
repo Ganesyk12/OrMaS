@@ -18,8 +18,8 @@ class RoleController extends Controller
         $query = RoleModel::query()->active();
 
         if ($request->filled('search')) {
-            $query->where('name', 'like', '%'.$request->search.'%')
-                ->orWhere('code', 'like', '%'.$request->search.'%');
+            $query->where('name', 'like', '%' . $request->search . '%')
+                ->orWhere('code', 'like', '%' . $request->search . '%');
         }
 
         return \Modules\Role\Http\Resources\RoleResource::collection($query->paginate($request->get('per_page', 15)))
@@ -31,7 +31,6 @@ class RoleController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'code' => 'required|string|max:50|unique:roles',
             'description' => 'nullable|string',
             'level' => 'nullable|integer|min:0',
             'is_active' => 'boolean',
@@ -67,7 +66,6 @@ class RoleController extends Controller
 
         $data = $request->validate([
             'name' => 'sometimes|string|max:255',
-            'code' => 'sometimes|string|max:50|unique:roles,code,'.$role->id,
             'description' => 'nullable|string',
             'level' => 'sometimes|integer|min:0',
             'is_active' => 'sometimes|boolean',
@@ -112,8 +110,8 @@ class RoleController extends Controller
         $query = RoleModel::query()->active();
 
         if ($request->filled('search')) {
-            $query->where('name', 'like', '%'.$request->search.'%')
-                ->orWhere('code', 'like', '%'.$request->search.'%');
+            $query->where('name', 'like', '%' . $request->search . '%')
+                ->orWhere('code', 'like', '%' . $request->search . '%');
         }
 
         $roles = $query->paginate(15)->withQueryString();

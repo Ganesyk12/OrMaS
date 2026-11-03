@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('code')->unique();
-            $table->enum('type', ['rt', 'rw', 'kelurahan', 'kecamatan'])->default('rw');
+            $table->string('type')->nullable();
             $table->string('level')->nullable();
             $table->text('address')->nullable();
             $table->text('description')->nullable();

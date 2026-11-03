@@ -17,11 +17,16 @@ class RoleModel extends Model
     {
         static::creating(function ($role) {
             if (empty($role->code)) {
-                $role->code = 'RL' . strtoupper(Str::random(4));
+                $prefix = 'RL' . now()->format('Ymd');
+                $last = static::where('code', 'like', $prefix . '%')
+                    ->orderBy('code', 'desc')
+                    ->value('code');
+                $seq = $last ? (int) substr($last, -3) + 1 : 1;
+                $role->code = $prefix . str_pad($seq, 3, '0', STR_PAD_LEFT);
             }
         });
     }
-{
+
     use HasFactory, SoftDeletes;
 
     protected static function newFactory()

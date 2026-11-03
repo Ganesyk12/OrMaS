@@ -1,17 +1,17 @@
 <!-- [ Sidebar Menu ] start -->
 @php
-  $isOrganisasiActive = request()->routeIs('organizations.*') || request()->routeIs('members.*') || request()->routeIs('roles.*');
-  $isKegiatanActive = request()->routeIs('activities.*') || request()->routeIs('meetings.*') || request()->routeIs('agendas.*');
-  $isSuratActive = request()->routeIs('letters.*') || request()->routeIs('letter-categories.*');
-  $currentLetterDirection = request()->route('direction');
-  $isKeuanganActive = request()->routeIs('finances.*');
-  $isPengaturanActive = request()->routeIs('users.*') || request()->routeIs('user-accesses.*');
+$isOrganisasiActive = request()->routeIs('organizations.*') || request()->routeIs('members.*') || request()->routeIs('roles.*');
+$isKegiatanActive = request()->routeIs('activities.*') || request()->routeIs('meetings.*') || request()->routeIs('agendas.*');
+$isSuratActive = request()->routeIs('letters.*') || request()->routeIs('letter-categories.*');
+$currentLetterDirection = request()->route('direction');
+$isKeuanganActive = request()->routeIs('finances.*');
+$isPengaturanActive = request()->routeIs('users.*') || request()->routeIs('user-accesses.*');
 @endphp
 <nav class="pc-sidebar sidebar-dark" id="main-sidebar">
   <div class="navbar-wrapper">
     <div class="m-header">
       <a href="{{ route('dashboard.index') }}" class="b-brand text-primary">
-        <h3 class="text-white"><?= config('app.name') ?></h3>
+        <img src="{{ asset('images/logo.webp') }}" alt="KARLAS-Apps" style="height:40px;">
       </a>
     </div>
     <div class="navbar-content">

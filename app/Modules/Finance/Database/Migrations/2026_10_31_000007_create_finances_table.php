@@ -15,13 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('organization_id')->constrained()->onDelete('cascade');
             $table->foreignId('activity_id')->nullable()->constrained()->onDelete('set null');
-            $table->enum('type', ['income', 'expense']);
+            $table->string('type', 20);
             $table->string('category');
             $table->decimal('amount', 15, 2);
             $table->text('description')->nullable();
             $table->date('transaction_date');
             $table->string('receipt')->nullable();
-            $table->enum('status', ['draft', 'approved', 'rejected'])->default('draft');
+            $table->string('status');
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();

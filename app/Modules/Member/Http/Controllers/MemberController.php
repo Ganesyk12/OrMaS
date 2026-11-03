@@ -24,8 +24,8 @@ class MemberController extends Controller
             $query->where('role_id', $request->role_id);
         }
         if ($request->filled('search')) {
-            $query->whereHas('user', fn ($q) => $q->where('name', 'like', '%'.$request->search.'%'))
-                ->orWhere('member_number', 'like', '%'.$request->search.'%');
+            $query->whereHas('user', fn($q) => $q->where('name', 'like', '%' . $request->search . '%'))
+                ->orWhere('member_number', 'like', '%' . $request->search . '%');
         }
 
         return \Modules\Member\Http\Resources\MemberResource::collection($query->paginate($request->get('per_page', 15)))
@@ -39,7 +39,6 @@ class MemberController extends Controller
             'organization_id' => 'required|exists:organizations,id',
             'user_id' => 'required|exists:users,id',
             'role_id' => 'required|exists:roles,id',
-            'member_number' => 'required|string|max:50|unique:organization_members',
             'join_date' => 'required|date',
             'is_active' => 'boolean',
         ]);
@@ -76,7 +75,6 @@ class MemberController extends Controller
             'organization_id' => 'sometimes|exists:organizations,id',
             'user_id' => 'sometimes|exists:users,id',
             'role_id' => 'sometimes|exists:roles,id',
-            'member_number' => 'sometimes|string|max:50|unique:organization_members,member_number,'.$member->id,
             'join_date' => 'sometimes|date',
             'is_active' => 'sometimes|boolean',
         ]);
@@ -123,8 +121,8 @@ class MemberController extends Controller
             $query->where('organization_id', $request->organization_id);
         }
         if ($request->filled('search')) {
-            $query->whereHas('user', fn ($q) => $q->where('name', 'like', '%'.$request->search.'%'))
-                ->orWhere('member_number', 'like', '%'.$request->search.'%');
+            $query->whereHas('user', fn($q) => $q->where('name', 'like', '%' . $request->search . '%'))
+                ->orWhere('member_number', 'like', '%' . $request->search . '%');
         }
 
         $members = $query->paginate(15)->withQueryString();

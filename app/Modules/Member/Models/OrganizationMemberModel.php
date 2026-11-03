@@ -19,11 +19,16 @@ class OrganizationMemberModel extends Model
     {
         static::creating(function ($member) {
             if (empty($member->member_number)) {
-                $member->member_number = 'MEMB' . strtoupper(Str::random(4));
+                $prefix = 'MEMB' . now()->format('Ymd');
+                $last = static::where('member_number', 'like', $prefix . '%')
+                    ->orderBy('member_number', 'desc')
+                    ->value('member_number');
+                $seq = $last ? (int) substr($last, -3) + 1 : 1;
+                $member->member_number = $prefix . str_pad($seq, 3, '0', STR_PAD_LEFT);
             }
         });
     }
-{
+
     use HasFactory, SoftDeletes;
 
     protected static function newFactory()

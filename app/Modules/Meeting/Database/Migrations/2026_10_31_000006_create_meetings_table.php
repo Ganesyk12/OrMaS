@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->dateTime('meeting_date');
             $table->string('location')->nullable();
-            $table->enum('status', ['scheduled', 'completed', 'cancelled'])->default('scheduled');
+            $table->string('status');
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();

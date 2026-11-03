@@ -4,16 +4,12 @@
     <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $organization->name ?? '') }}" required>
     @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
   </div>
-  <div class="col-md-6">
-    <label class="form-label">Kode <span class="text-danger">*</span></label>
-    <input type="text" name="code" class="form-control @error('code') is-invalid @enderror" value="{{ old('code', $organization->code ?? '') }}" required>
-    @error('code')<div class="invalid-feedback">{{ $message }}</div>@enderror
-  </div>
+
   <div class="col-md-6">
     <label class="form-label">Tipe <span class="text-danger">*</span></label>
     <select name="type" class="form-select @error('type') is-invalid @enderror" required>
-      @foreach(['rt' => 'RT', 'rw' => 'RW', 'kelurahan' => 'Kelurahan', 'kecamatan' => 'Kecamatan'] as $value => $label)
-        <option value="{{ $value }}" @selected(old('type', $organization->type ?? 'rw') === $value)>{{ $label }}</option>
+      @foreach(['RT' => 'RT', 'RW' => 'RW', 'KELURAHAN' => 'Kelurahan', 'KECAMATAN' => 'Kecamatan'] as $value => $label)
+      <option value="{{ $value }}" @selected(old('type', $organization->type ?? 'RT') === $value)>{{ $label }}</option>
       @endforeach
     </select>
     @error('type')<div class="invalid-feedback">{{ $message }}</div>@enderror

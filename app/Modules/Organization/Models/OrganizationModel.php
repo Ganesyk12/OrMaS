@@ -18,11 +18,15 @@ class OrganizationModel extends Model
     {
         static::creating(function ($organization) {
             if (empty($organization->code)) {
-                $organization->code = 'ORGS' . strtoupper(Str::random(4));
+                $prefix = 'ORGS' . now()->format('Ymd');
+                $last = static::where('code', 'like', $prefix . '%')
+                    ->orderBy('code', 'desc')
+                    ->value('code');
+                $seq = $last ? (int) substr($last, -3) + 1 : 1;
+                $organization->code = $prefix . str_pad($seq, 3, '0', STR_PAD_LEFT);
             }
         });
     }
-{
     use HasFactory, SoftDeletes;
 
     protected static function newFactory()

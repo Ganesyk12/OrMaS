@@ -16,12 +16,12 @@ return new class extends Migration
             $table->foreignId('organization_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('description')->nullable();
-            $table->enum('type', ['program', 'kegiatan', 'pelatihan', 'sosial']);
+            $table->string('type', 20);
             $table->date('start_date');
             $table->date('end_date')->nullable();
             $table->string('location')->nullable();
             $table->decimal('budget', 15, 2)->default(0);
-            $table->enum('status', ['planning', 'ongoing', 'completed', 'cancelled'])->default('planning');
+            $table->string('status');
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
