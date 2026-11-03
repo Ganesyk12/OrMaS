@@ -13,38 +13,33 @@
 <div class="container-fluid">
   <div class="row mb-4">
     <div class="col-xl-12">
-      <div class="d-flex justify-content-between align-items-center">
-        <div>
-          <h1 class="h4 mb-1 text-dark">Kegiatan</h1>
-          <p class="text-muted mb-0">Kelola kegiatan rutin</p>
-        </div>
-        <a href="{{ route('activities.create') }}" class="btn btn-primary">
-          <i class="ti ti-plus me-1"></i> Tambah Kegiatan
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xl-12">
       <div class="card h-100">
-        <div class="card-header border-0 d-flex justify-content-between align-items-center">
-          <div class="d-flex align-items-center">
-            <span class="card-title-professional me-2">Daftar Kegiatan</span>
+        <div class="card-header border-1 d-flex justify-content-between align-items-center">
+          <div>
+            <h1 class="h4 mb-1 text-dark">Kegiatan</h1>
+            <p class="text-muted mb-0">Kelola kegiatan rutin</p>
           </div>
-          <form method="GET" action="{{ route('activities.index') }}" class="d-flex">
-            <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari kegiatan..." value="{{ request('search') }}">
-            <select name="status" class="form-select form-select-sm ms-2" style="width:auto;">
-              <option value="">Semua Status</option>
-              <option value="planning" {{ request('status') == 'planning' ? 'selected' : '' }}>Perencanaan</option>
-              <option value="ongoing" {{ request('status') == 'ongoing' ? 'selected' : '' }}>Berlangsung</option>
-              <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Selesai</option>
-              <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
-            </select>
-            <button type="submit" class="btn btn-outline-primary btn-sm ms-2"><i class="ti ti-search"></i></button>
-          </form>
+          <a href="{{ route('activities.create') }}" class="btn btn-primary">
+            <i class="ti ti-plus me-1"></i> Tambah Kegiatan
+          </a>
         </div>
         <div class="card-body p-0">
+          <div class="card-header border-0 d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+              <span class="card-title-professional me-2">Daftar Kegiatan</span>
+            </div>
+            <form method="GET" action="{{ route('activities.index') }}" class="d-flex">
+              <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari kegiatan..." value="{{ request('search') }}">
+              <select name="status" class="form-select form-select-sm ms-2" style="width:auto;">
+                <option value="">Semua Status</option>
+                <option value="planning" {{ request('status') == 'planning' ? 'selected' : '' }}>Perencanaan</option>
+                <option value="ongoing" {{ request('status') == 'ongoing' ? 'selected' : '' }}>Berlangsung</option>
+                <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Selesai</option>
+                <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
+              </select>
+              <button type="submit" class="btn btn-outline-primary btn-sm ms-2"><i class="ti ti-search"></i></button>
+            </form>
+          </div>
           @if($activities->count())
             <div class="table-responsive">
               <table class="table table-hover align-middle mb-0">

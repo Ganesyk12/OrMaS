@@ -2,20 +2,22 @@
 
 @section('title', 'Edit Hak Akses')
 @php
-    $pageTitle = 'Edit Hak Akses';
-    $breadcrumbs = [
-        'Dashboard' => route('dashboard.index'),
-        'Hak Akses' => route('user-accesses.index'),
-        'Edit' => route('user-accesses.edit', $access->id),
-    ];
+$pageTitle = 'Edit Hak Akses';
+$breadcrumbs = [
+'Dashboard' => route('dashboard.index'),
+'Hak Akses' => route('user-accesses.index'),
+'Edit' => route('user-accesses.edit', $access->id),
+];
 @endphp
 
 @section('content')
 <div class="container-fluid">
   <div class="row">
-    <div class="col-xl-8">
+    <div class="col-xl-12">
       <div class="card">
-        <div class="card-header"><h5 class="mb-0">Edit Hak Akses</h5></div>
+        <div class="card-header">
+          <h5 class="mb-0">Edit Hak Akses</h5>
+        </div>
         <div class="card-body">
           @include('layouts.partials.form-errors')
           <form action="{{ route('user-accesses.update', $access->id) }}" method="POST">

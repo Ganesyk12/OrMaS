@@ -2,20 +2,22 @@
 
 @section('title', 'Tambah Hak Akses')
 @php
-    $pageTitle = 'Tambah Hak Akses';
-    $breadcrumbs = [
-        'Dashboard' => route('dashboard.index'),
-        'Hak Akses' => route('user-accesses.index'),
-        'Tambah' => route('user-accesses.create'),
-    ];
+$pageTitle = 'Tambah Hak Akses';
+$breadcrumbs = [
+'Dashboard' => route('dashboard.index'),
+'Hak Akses' => route('user-accesses.index'),
+'Tambah' => route('user-accesses.create'),
+];
 @endphp
 
 @section('content')
 <div class="container-fluid">
   <div class="row">
-    <div class="col-xl-8">
+    <div class="col-xl-12">
       <div class="card">
-        <div class="card-header"><h5 class="mb-0">Form Hak Akses</h5></div>
+        <div class="card-header">
+          <h5 class="mb-0">Form Hak Akses</h5>
+        </div>
         <div class="card-body">
           @include('layouts.partials.form-errors')
           <form action="{{ route('user-accesses.store') }}" method="POST">

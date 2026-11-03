@@ -2,18 +2,18 @@
 
 @section('title', 'Tambah Organisasi')
 @php
-    $pageTitle = 'Tambah Organisasi';
-    $breadcrumbs = [
-        'Dashboard' => route('dashboard.index'),
-        'Organisasi' => route('organizations.index'),
-        'Tambah' => route('organizations.create'),
-    ];
+$pageTitle = 'Tambah Organisasi';
+$breadcrumbs = [
+'Dashboard' => route('dashboard.index'),
+'Organisasi' => route('organizations.index'),
+'Tambah' => route('organizations.create'),
+];
 @endphp
 
 @section('content')
 <div class="container-fluid">
   <div class="row">
-    <div class="col-xl-8">
+    <div class="col-xl-12">
       <div class="card">
         <div class="card-header">
           <h5 class="mb-0">Form Organisasi</h5>

@@ -1,14 +1,14 @@
 @extends('layouts.base')
 
 @php
-    $isIncoming = $direction === 'incoming';
-    $title = $isIncoming ? 'Surat Masuk' : 'Surat Keluar';
-    $pageTitle = 'Edit '.$title;
-    $breadcrumbs = [
-        'Dashboard' => route('dashboard.index'),
-        $title => route('letters.index', ['direction' => $direction]),
-        'Edit' => route('letters.edit', ['direction' => $direction, 'letter' => $letter->id]),
-    ];
+$isIncoming = $direction === 'incoming';
+$title = $isIncoming ? 'Surat Masuk' : 'Surat Keluar';
+$pageTitle = 'Edit '.$title;
+$breadcrumbs = [
+'Dashboard' => route('dashboard.index'),
+$title => route('letters.index', ['direction' => $direction]),
+'Edit' => route('letters.edit', ['direction' => $direction, 'letter' => $letter->id]),
+];
 @endphp
 
 @section('title', 'Edit '.$title)
@@ -16,7 +16,7 @@
 @section('content')
 <div class="container-fluid">
   <div class="row">
-    <div class="col-xl-8">
+    <div class="col-xl-12">
       <div class="card">
         <div class="card-header">
           <h5 class="mb-0">Edit {{ $title }}: {{ $letter->letter_number }}</h5>

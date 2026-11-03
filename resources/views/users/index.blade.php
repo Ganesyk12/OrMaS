@@ -13,31 +13,26 @@
 <div class="container-fluid">
   <div class="row mb-4">
     <div class="col-xl-12">
-      <div class="d-flex justify-content-between align-items-center">
-        <div>
-          <h1 class="h4 mb-1 text-dark">Pengguna</h1>
-          <p class="text-muted mb-0">Kelola akun pengguna sistem</p>
-        </div>
-        <a href="{{ route('users.create') }}" class="btn btn-primary">
-          <i class="ti ti-plus me-1"></i> Tambah Pengguna
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xl-12">
       <div class="card h-100">
-        <div class="card-header border-0 d-flex justify-content-between align-items-center">
-          <div class="d-flex align-items-center">
-            <span class="card-title-professional me-2">Daftar Pengguna</span>
+        <div class="card-header border-1 d-flex justify-content-between align-items-center">
+          <div>
+            <h1 class="h4 mb-1 text-dark">Pengguna</h1>
+            <p class="text-muted mb-0">Kelola akun pengguna sistem</p>
           </div>
-          <form method="GET" action="{{ route('users.index') }}" class="d-flex">
-            <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari pengguna..." value="{{ request('search') }}">
-            <button type="submit" class="btn btn-outline-primary btn-sm ms-2"><i class="ti ti-search"></i></button>
-          </form>
+          <a href="{{ route('users.create') }}" class="btn btn-primary">
+            <i class="ti ti-plus me-1"></i> Tambah Pengguna
+          </a>
         </div>
         <div class="card-body p-0">
+          <div class="card-header border-0 d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+              <span class="card-title-professional me-2">Daftar Pengguna</span>
+            </div>
+            <form method="GET" action="{{ route('users.index') }}" class="d-flex">
+              <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari pengguna..." value="{{ request('search') }}">
+              <button type="submit" class="btn btn-outline-primary btn-sm ms-2"><i class="ti ti-search"></i></button>
+            </form>
+          </div>
           @if($users->count())
             <div class="table-responsive">
               <table class="table table-hover align-middle mb-0">

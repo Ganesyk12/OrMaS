@@ -2,18 +2,18 @@
 
 @section('title', 'Edit Organisasi')
 @php
-    $pageTitle = 'Edit Organisasi';
-    $breadcrumbs = [
-        'Dashboard' => route('dashboard.index'),
-        'Organisasi' => route('organizations.index'),
-        'Edit' => route('organizations.edit', $organization->id),
-    ];
+$pageTitle = 'Edit Organisasi';
+$breadcrumbs = [
+'Dashboard' => route('dashboard.index'),
+'Organisasi' => route('organizations.index'),
+'Edit' => route('organizations.edit', $organization->id),
+];
 @endphp
 
 @section('content')
 <div class="container-fluid">
   <div class="row">
-    <div class="col-xl-8">
+    <div class="col-xl-12">
       <div class="card">
         <div class="card-header">
           <h5 class="mb-0">Edit Organisasi: {{ $organization->name }}</h5>

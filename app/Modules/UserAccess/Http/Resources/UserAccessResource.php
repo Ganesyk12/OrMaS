@@ -18,8 +18,10 @@ class UserAccessResource extends JsonResource
             'id' => $this->id,
             'user_id' => $this->user_id,
             'module' => $this->module,
-            'permission' => $this->permission,
-            'is_allowed' => (bool) $this->is_allowed,
+            'allow_create' => (bool) $this->allow_create,
+            'allow_edit' => (bool) $this->allow_edit,
+            'allow_view' => (bool) $this->allow_view,
+            'allow_delete' => (bool) $this->allow_delete,
             'user' => $this->whenLoaded('user', fn () => [
                 'id' => $this->user->id,
                 'name' => $this->user->name,

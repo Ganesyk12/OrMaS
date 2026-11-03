@@ -13,36 +13,31 @@
 <div class="container-fluid">
   <div class="row mb-4">
     <div class="col-xl-12">
-      <div class="d-flex justify-content-between align-items-center">
-        <div>
-          <h1 class="h4 mb-1 text-dark">Keuangan</h1>
-          <p class="text-muted mb-0">Kelola transaksi keuangan</p>
-        </div>
-        <a href="{{ route('finances.create') }}" class="btn btn-primary">
-          <i class="ti ti-plus me-1"></i> Tambah Transaksi
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xl-12">
       <div class="card h-100">
-        <div class="card-header border-0 d-flex justify-content-between align-items-center">
-          <div class="d-flex align-items-center">
-            <span class="card-title-professional me-2">Daftar Transaksi</span>
+        <div class="card-header border-1 d-flex justify-content-between align-items-center">
+          <div>
+            <h1 class="h4 mb-1 text-dark">Keuangan</h1>
+            <p class="text-muted mb-0">Kelola transaksi keuangan</p>
           </div>
-          <form method="GET" action="{{ route('finances.index') }}" class="d-flex">
-            <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari transaksi..." value="{{ request('search') }}">
-            <select name="type" class="form-select form-select-sm ms-2" style="width:auto;">
-              <option value="">Semua Tipe</option>
-              <option value="income" {{ request('type') == 'income' ? 'selected' : '' }}>Pemasukan</option>
-              <option value="expense" {{ request('type') == 'expense' ? 'selected' : '' }}>Pengeluaran</option>
-            </select>
-            <button type="submit" class="btn btn-outline-primary btn-sm ms-2"><i class="ti ti-search"></i></button>
-          </form>
+          <a href="{{ route('finances.create') }}" class="btn btn-primary">
+            <i class="ti ti-plus me-1"></i> Tambah Transaksi
+          </a>
         </div>
         <div class="card-body p-0">
+          <div class="card-header border-0 d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+              <span class="card-title-professional me-2">Daftar Transaksi</span>
+            </div>
+            <form method="GET" action="{{ route('finances.index') }}" class="d-flex">
+              <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari transaksi..." value="{{ request('search') }}">
+              <select name="type" class="form-select form-select-sm ms-2" style="width:auto;">
+                <option value="">Semua Tipe</option>
+                <option value="income" {{ request('type') == 'income' ? 'selected' : '' }}>Pemasukan</option>
+                <option value="expense" {{ request('type') == 'expense' ? 'selected' : '' }}>Pengeluaran</option>
+              </select>
+              <button type="submit" class="btn btn-outline-primary btn-sm ms-2"><i class="ti ti-search"></i></button>
+            </form>
+          </div>
           @if($finances->count())
             <div class="table-responsive">
               <table class="table table-hover align-middle mb-0">

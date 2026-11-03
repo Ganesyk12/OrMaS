@@ -11,7 +11,18 @@ use Modules\Organization\Models\OrganizationModel;
 use Modules\Role\Models\RoleModel;
 use App\Models\User;
 
+use Illuminate\Support\Str;
+
 class OrganizationMemberModel extends Model
+{
+    protected static function booted()
+    {
+        static::creating(function ($member) {
+            if (empty($member->member_number)) {
+                $member->member_number = 'MEMB' . strtoupper(Str::random(4));
+            }
+        });
+    }
 {
     use HasFactory, SoftDeletes;
 

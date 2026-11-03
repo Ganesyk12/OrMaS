@@ -35,13 +35,20 @@ class UserAccessController extends Controller
         $data = $request->validate([
             'user_id' => 'required|exists:users,id',
             'module' => 'required|string|max:100',
-            'permission' => 'required|string|max:100',
-            'is_allowed' => 'boolean',
+            'allow_create' => 'sometimes|boolean',
+            'allow_edit' => 'sometimes|boolean',
+            'allow_view' => 'sometimes|boolean',
+            'allow_delete' => 'sometimes|boolean',
         ]);
 
         $access = UserAccessModel::updateOrCreate(
-            ['user_id' => $data['user_id'], 'module' => $data['module'], 'permission' => $data['permission']],
-            ['is_allowed' => $data['is_allowed'] ?? true]
+            ['user_id' => $data['user_id'], 'module' => $data['module']],
+            [
+                'allow_create' => $data['allow_create'] ?? false,
+                'allow_edit' => $data['allow_edit'] ?? false,
+                'allow_view' => $data['allow_view'] ?? false,
+                'allow_delete' => $data['allow_delete'] ?? false,
+            ]
         );
 
         if ($request->expectsJson()) {
@@ -69,7 +76,10 @@ class UserAccessController extends Controller
         $userAccess = UserAccessModel::findOrFail($userAccess);
 
         $data = $request->validate([
-            'is_allowed' => 'sometimes|boolean',
+            'allow_create' => 'sometimes|boolean',
+            'allow_edit' => 'sometimes|boolean',
+            'allow_view' => 'sometimes|boolean',
+            'allow_delete' => 'sometimes|boolean',
         ]);
 
         $userAccess->update($data);
@@ -104,16 +114,16 @@ class UserAccessController extends Controller
     public function check(Request $request, User $user)
     {
         $module = $request->string('module');
-        $permission = $request->string('permission');
+        $action = $request->string('action'); // create, edit, view, delete
 
-        $allowed = UserAccessModel::checkAllowed($user, $module, $permission);
+        $allowed = UserAccessModel::checkAllowed($user, $module, $action);
 
         return response()->json([
             'message' => 'Hasil cek hak akses.',
             'data' => [
                 'user_id' => $user->id,
                 'module' => $module,
-                'permission' => $permission,
+                'action' => $action,
                 'allowed' => $allowed,
             ],
         ], 200);

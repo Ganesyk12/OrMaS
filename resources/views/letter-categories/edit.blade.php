@@ -2,18 +2,18 @@
 
 @section('title', 'Edit Kategori Surat')
 @php
-    $pageTitle = 'Edit Kategori Surat';
-    $breadcrumbs = [
-        'Dashboard' => route('dashboard.index'),
-        'Kategori Surat' => route('letter-categories.index'),
-        'Edit' => route('letter-categories.edit', $category->id),
-    ];
+$pageTitle = 'Edit Kategori Surat';
+$breadcrumbs = [
+'Dashboard' => route('dashboard.index'),
+'Kategori Surat' => route('letter-categories.index'),
+'Edit' => route('letter-categories.edit', $category->id),
+];
 @endphp
 
 @section('content')
 <div class="container-fluid">
   <div class="row">
-    <div class="col-xl-8">
+    <div class="col-xl-12">
       <div class="card">
         <div class="card-header">
           <h5 class="mb-0">Edit Kategori: {{ $category->name }}</h5>

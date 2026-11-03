@@ -22,16 +22,24 @@ class UserAccessModel extends Model
     protected $fillable = [
         'user_id',
         'module',
-        'permission',
-        'is_allowed',
+        'allow_create',
+        'allow_edit',
+        'allow_view',
+        'allow_delete',
     ];
 
     protected $casts = [
-        'is_allowed' => 'boolean',
+        'allow_create' => 'boolean',
+        'allow_edit' => 'boolean',
+        'allow_view' => 'boolean',
+        'allow_delete' => 'boolean',
     ];
 
     protected $attributes = [
-        'is_allowed' => true,
+        'allow_create' => false,
+        'allow_edit' => false,
+        'allow_view' => false,
+        'allow_delete' => false,
     ];
 
     /**
@@ -45,12 +53,21 @@ class UserAccessModel extends Model
     /**
      * Cek apakah user memiliki izin pada module dan permission tertentu.
      */
-    public static function checkAllowed(User $user, string $module, string $permission): bool
+    public static function checkAllowed(User $user, string $module, string $action): bool
     {
+        $column = match(strtolower($action)) {
+            'create' => 'allow_create',
+            'edit' => 'allow_edit',
+            'view' => 'allow_view',
+            'delete' => 'allow_delete',
+            default => null,
+        };
+        if (!$column) {
+            return false;
+        }
         return self::where('user_id', $user->id)
             ->where('module', $module)
-            ->where('permission', $permission)
-            ->where('is_allowed', true)
+            ->where($column, true)
             ->exists();
     }
 }

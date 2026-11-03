@@ -9,7 +9,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Database\Factories\RoleFactory;
 use Modules\Member\Models\OrganizationMemberModel;
 
+use Illuminate\Support\Str;
+
 class RoleModel extends Model
+{
+    protected static function booted()
+    {
+        static::creating(function ($role) {
+            if (empty($role->code)) {
+                $role->code = 'RL' . strtoupper(Str::random(4));
+            }
+        });
+    }
 {
     use HasFactory, SoftDeletes;
 

@@ -14,7 +14,7 @@
   <div class="row mb-4">
     <div class="col-xl-12">
       <div class="card h-100">
-        <div class="card-header border-0 d-flex justify-content-between align-items-center">
+        <div class="card-header border-1 d-flex justify-content-between align-items-center">
           <div>
             <h1 class="h4 mb-1 text-dark">Kategori Surat</h1>
             <p class="text-muted mb-0">Master data kategori yang digunakan pada form surat masuk & keluar</p>

@@ -7,43 +7,39 @@
         'Dashboard' => route('dashboard.index'),
         'Hak Akses' => route('user-accesses.index'),
     ];
+    $moduleOptions = ['organizations', 'members', 'roles', 'users', 'user-accesses', 'activities', 'meetings', 'agendas', 'finances', 'letters', 'letter-categories'];
 @endphp
 
 @section('content')
 <div class="container-fluid">
   <div class="row mb-4">
     <div class="col-xl-12">
-      <div class="d-flex justify-content-between align-items-center">
-        <div>
-          <h1 class="h4 mb-1 text-dark">Hak Akses</h1>
-          <p class="text-muted mb-0">Kelola hak akses pengguna per modul & permission</p>
-        </div>
-        <a href="{{ route('user-accesses.create') }}" class="btn btn-primary">
-          <i class="ti ti-plus me-1"></i> Tambah Hak Akses
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xl-12">
       <div class="card h-100">
-        <div class="card-header border-0 d-flex justify-content-between align-items-center">
-          <div class="d-flex align-items-center">
-            <span class="card-title-professional me-2">Daftar Hak Akses</span>
+        <div class="card-header border-1 d-flex justify-content-between align-items-center">
+          <div>
+            <h1 class="h4 mb-1 text-dark">Hak Akses</h1>
+            <p class="text-muted mb-0">Kelola hak akses pengguna per modul & permission</p>
           </div>
-          <form method="GET" action="{{ route('user-accesses.index') }}" class="d-flex">
-            <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari hak akses..." value="{{ request('search') }}">
-            <select name="module" class="form-select form-select-sm ms-2" style="width:auto;">
-              <option value="">Semua Modul</option>
-              @foreach($users as $u)
-                <option value="{{ $u->id }}" {{ request('module') == $u->id ? 'selected' : '' }}>{{ $u->name }}</option>
-              @endforeach
-            </select>
-            <button type="submit" class="btn btn-outline-primary btn-sm ms-2"><i class="ti ti-search"></i></button>
-          </form>
+          <a href="{{ route('user-accesses.create') }}" class="btn btn-primary">
+            <i class="ti ti-plus me-1"></i> Tambah Hak Akses
+          </a>
         </div>
         <div class="card-body p-0">
+          <div class="card-header border-0 d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+              <span class="card-title-professional me-2">Daftar Hak Akses</span>
+            </div>
+            <form method="GET" action="{{ route('user-accesses.index') }}" class="d-flex">
+              <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari hak akses..." value="{{ request('search') }}">
+              <select name="module" class="form-select form-select-sm ms-2" style="width:auto;">
+                <option value="">Semua Modul</option>
+                @foreach($moduleOptions as $module)
+                  <option value="{{ $module }}" @selected(request('module') === $module)>{{ ucfirst(str_replace('-', ' ', $module)) }}</option>
+                @endforeach
+              </select>
+              <button type="submit" class="btn btn-outline-primary btn-sm ms-2"><i class="ti ti-search"></i></button>
+            </form>
+          </div>
           @if($accesses->count())
             <div class="table-responsive">
               <table class="table table-hover align-middle mb-0">

@@ -15,13 +15,15 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('module');
-            $table->string('permission');
-            $table->boolean('is_allowed')->default(true);
+            $table->boolean('allow_create')->default(false);
+            $table->boolean('allow_edit')->default(false);
+            $table->boolean('allow_view')->default(false);
+            $table->boolean('allow_delete')->default(false);
             $table->timestamps();
             $table->softDeletes();
 
-            $table->unique(['user_id', 'module', 'permission']);
-            $table->index(['module', 'permission']);
+            $table->unique(['user_id', 'module']);
+            $table->index(['module']);
         });
     }
 

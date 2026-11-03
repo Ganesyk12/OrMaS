@@ -2,20 +2,22 @@
 
 @section('title', 'Edit Anggota')
 @php
-    $pageTitle = 'Edit Anggota';
-    $breadcrumbs = [
-        'Dashboard' => route('dashboard.index'),
-        'Anggota' => route('members.index'),
-        'Edit' => route('members.edit', $member->id),
-    ];
+$pageTitle = 'Edit Anggota';
+$breadcrumbs = [
+'Dashboard' => route('dashboard.index'),
+'Anggota' => route('members.index'),
+'Edit' => route('members.edit', $member->id),
+];
 @endphp
 
 @section('content')
 <div class="container-fluid">
   <div class="row">
-    <div class="col-xl-8">
+    <div class="col-xl-12">
       <div class="card">
-        <div class="card-header"><h5 class="mb-0">Edit Anggota: {{ $member->user->name ?? $member->member_number }}</h5></div>
+        <div class="card-header">
+          <h5 class="mb-0">Edit Anggota: {{ $member->user->name ?? $member->member_number }}</h5>
+        </div>
         <div class="card-body">
           @include('layouts.partials.form-errors')
           <form action="{{ route('members.update', $member->id) }}" method="POST">

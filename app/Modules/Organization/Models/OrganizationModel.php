@@ -10,7 +10,18 @@ use Database\Factories\OrganizationFactory;
 use Modules\Member\Models\OrganizationMemberModel;
 use Modules\Activity\Models\ActivityModel;
 
+use Illuminate\Support\Str;
+
 class OrganizationModel extends Model
+{
+    protected static function booted()
+    {
+        static::creating(function ($organization) {
+            if (empty($organization->code)) {
+                $organization->code = 'ORGS' . strtoupper(Str::random(4));
+            }
+        });
+    }
 {
     use HasFactory, SoftDeletes;
 

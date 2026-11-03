@@ -2,12 +2,12 @@
 
 @section('title', 'Detail Rapat')
 @php
-    $pageTitle = 'Detail Rapat';
-    $breadcrumbs = [
-        'Dashboard' => route('dashboard.index'),
-        'Rapat' => route('meetings.index'),
-        $meeting->title => route('meetings.show', $meeting->id),
-    ];
+$pageTitle = 'Detail Rapat';
+$breadcrumbs = [
+'Dashboard' => route('dashboard.index'),
+'Rapat' => route('meetings.index'),
+$meeting->title => route('meetings.show', $meeting->id),
+];
 @endphp
 
 @section('content')
@@ -21,11 +21,26 @@
         </div>
         <div class="card-body">
           <table class="table table-borderless mb-0">
-            <tr><th style="width:200px;">Organisasi</th><td>{{ $meeting->organization->name ?? '-' }}</td></tr>
-            <tr><th>Tanggal & Waktu</th><td>{{ $meeting->meeting_date?->format('d M Y H:i') ?? '-' }}</td></tr>
-            <tr><th>Lokasi</th><td>{{ $meeting->location ?? '-' }}</td></tr>
-            <tr><th>Status</th><td>{{ ucfirst($meeting->status) }}</td></tr>
-            <tr><th>Deskripsi</th><td>{{ $meeting->description ?? '-' }}</td></tr>
+            <tr>
+              <th style="width:200px;">Organisasi</th>
+              <td>{{ $meeting->organization->name ?? '-' }}</td>
+            </tr>
+            <tr>
+              <th>Tanggal & Waktu</th>
+              <td>{{ $meeting->meeting_date?->format('d M Y H:i') ?? '-' }}</td>
+            </tr>
+            <tr>
+              <th>Lokasi</th>
+              <td>{{ $meeting->location ?? '-' }}</td>
+            </tr>
+            <tr>
+              <th>Status</th>
+              <td>{{ ucfirst($meeting->status) }}</td>
+            </tr>
+            <tr>
+              <th>Deskripsi</th>
+              <td>{{ $meeting->description ?? '-' }}</td>
+            </tr>
           </table>
         </div>
       </div>
@@ -38,12 +53,12 @@
         </div>
         <div class="card-body p-0">
           @forelse($meeting->agendas->sortBy('order') as $agenda)
-            <div class="border-bottom px-3 py-2">
-              <div class="fw-semibold">{{ $agenda->order }}. {{ $agenda->title }}</div>
-              <div class="text-muted small">{{ ucfirst($agenda->status) }}{{ $agenda->presenter ? ' · '.$agenda->presenter : '' }}</div>
-            </div>
+          <div class="border-bottom px-3 py-2">
+            <div class="fw-semibold">{{ $agenda->order }}. {{ $agenda->title }}</div>
+            <div class="text-muted small">{{ ucfirst($agenda->status) }}{{ $agenda->presenter ? ' · '.$agenda->presenter : '' }}</div>
+          </div>
           @empty
-            <div class="text-muted p-3">Belum ada agenda.</div>
+          <div class="text-muted p-3">Belum ada agenda.</div>
           @endforelse
         </div>
         <div class="card-footer">

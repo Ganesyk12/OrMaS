@@ -16,7 +16,7 @@
 @section('content')
 <div class="container-fluid">
   <div class="row">
-    <div class="col-xl-8">
+    <div class="col-xl-12">
       <div class="card">
         <div class="card-header">
           <h5 class="mb-0">Form {{ $title }}</h5>
