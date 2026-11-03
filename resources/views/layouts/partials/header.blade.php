@@ -50,8 +50,8 @@
         </li>
         <li class="dropdown pc-h-item header-user-profile">
           <a class="pc-head-link head-link-primary dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-            
-            <span><i class="ti ti-settings"></i></span>
+
+            <span><i class="ti ti-user"></i></span>
           </a>
           <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
             <div class="dropdown-header">

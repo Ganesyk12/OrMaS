@@ -2,6 +2,8 @@
 @php
   $isOrganisasiActive = request()->routeIs('organizations.*') || request()->routeIs('members.*') || request()->routeIs('roles.*');
   $isKegiatanActive = request()->routeIs('activities.*') || request()->routeIs('meetings.*') || request()->routeIs('agendas.*');
+  $isSuratActive = request()->routeIs('letters.*') || request()->routeIs('letter-categories.*');
+  $currentLetterDirection = request()->route('direction');
   $isKeuanganActive = request()->routeIs('finances.*');
   $isPengaturanActive = request()->routeIs('users.*') || request()->routeIs('user-accesses.*');
 @endphp
@@ -60,6 +62,31 @@
             <li class="pc-item {{ request()->routeIs('meetings.*') || request()->routeIs('agendas.*') ? 'pc-active' : '' }}">
               <a href="{{ route('meetings.index') }}" class="pc-link">
                 <span class="pc-mtext">Rapat</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="pc-item pc-hasmenu {{ $isSuratActive ? 'pc-trigger pc-active' : '' }}">
+          <a href="#!" class="pc-link" aria-expanded="{{ $isSuratActive ? 'true' : 'false' }}">
+            <span class="pc-micon"><i class="ti ti-mail"></i></span>
+            <span class="pc-mtext">Surat</span>
+            <span class="pc-arrow"><i class="ti ti-chevron-right"></i></span>
+          </a>
+          <ul class="pc-submenu">
+            <li class="pc-item {{ request()->routeIs('letters.*') && $currentLetterDirection === 'incoming' ? 'pc-active' : '' }}">
+              <a href="{{ route('letters.index', ['direction' => 'incoming']) }}" class="pc-link">
+                <span class="pc-mtext">Surat Masuk</span>
+              </a>
+            </li>
+            <li class="pc-item {{ request()->routeIs('letters.*') && $currentLetterDirection === 'outgoing' ? 'pc-active' : '' }}">
+              <a href="{{ route('letters.index', ['direction' => 'outgoing']) }}" class="pc-link">
+                <span class="pc-mtext">Surat Keluar</span>
+              </a>
+            </li>
+            <li class="pc-item {{ request()->routeIs('letter-categories.*') ? 'pc-active' : '' }}">
+              <a href="{{ route('letter-categories.index') }}" class="pc-link">
+                <span class="pc-mtext">Kategori Surat</span>
               </a>
             </li>
           </ul>

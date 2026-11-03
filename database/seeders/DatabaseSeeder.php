@@ -15,6 +15,8 @@ use Illuminate\Database\Seeder;
 use Modules\Activity\Models\ActivityModel;
 use Modules\Agenda\Models\AgendaModel;
 use Modules\Finance\Models\FinanceModel;
+use Modules\Letter\Models\LetterModel;
+use Modules\LetterCategory\Models\LetterCategoryModel;
 use Modules\Meeting\Models\MeetingModel;
 use Modules\Member\Models\OrganizationMemberModel;
 use Modules\Organization\Models\OrganizationModel;
@@ -70,7 +72,7 @@ class DatabaseSeeder extends Seeder
         });
 
         // Hak akses admin
-        foreach (['organizations', 'members', 'roles', 'activities', 'meetings', 'finances'] as $module) {
+        foreach (['organizations', 'members', 'roles', 'activities', 'meetings', 'finances', 'letters', 'letter-categories'] as $module) {
             foreach (['view', 'create', 'edit', 'delete'] as $permission) {
                 UserAccessModel::factory()->create([
                     'user_id' => $admin->id,
@@ -117,6 +119,48 @@ class DatabaseSeeder extends Seeder
             'amount' => 750000,
             'status' => 'approved',
         ]);
+
+        // Kategori surat (master data)
+        $letterCategories = collect([
+            ['code' => 'UND', 'name' => 'Undangan', 'description' => 'Surat undangan kegiatan atau rapat'],
+            ['code' => 'PMB', 'name' => 'Pemberitahuan', 'description' => 'Surat pemberitahuan informasi'],
+            ['code' => 'PMH', 'name' => 'Permohonan', 'description' => 'Surat permohonan bantuan atau kerja sama'],
+            ['code' => 'LAP', 'name' => 'Laporan', 'description' => 'Surat laporan kegiatan'],
+        ])->mapWithKeys(function (array $data) {
+            $category = LetterCategoryModel::firstOrCreate(
+                ['code' => $data['code']],
+                $data + ['is_active' => true]
+            );
+
+            return [$data['code'] => $category];
+        });
+
+        // Contoh surat masuk & keluar
+        LetterModel::updateOrCreate(
+            ['direction' => 'incoming', 'letter_number' => '001/UND/XI/2026'],
+            [
+                'category_id' => $letterCategories['UND']->id,
+                'subject' => 'Undangan Rapat Koordinasi Karang Taruna',
+                'sender' => 'Kelurahan Sentral',
+                'recipient' => null,
+                'letter_date' => '2026-11-01',
+                'received_date' => '2026-11-02',
+                'notes' => 'Rapat dilaksanakan di aula kelurahan.',
+            ]
+        );
+
+        LetterModel::updateOrCreate(
+            ['direction' => 'outgoing', 'letter_number' => '002/PMH/XI/2026'],
+            [
+                'category_id' => $letterCategories['PMH']->id,
+                'subject' => 'Permohonan Bantuan Dana Kegiatan',
+                'sender' => null,
+                'recipient' => 'Pemerintah Kota',
+                'letter_date' => '2026-11-03',
+                'received_date' => null,
+                'notes' => 'Ditujukan kepada bagian pemberdayaan masyarakat.',
+            ]
+        );
 
         $this->command->info('Database seeding selesai. Admin: admin@karangtaruna.id / password');
     }

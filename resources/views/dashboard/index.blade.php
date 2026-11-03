@@ -1,9 +1,7 @@
 @extends('layouts.base')
-
 @section('title', 'Dashboard')
-
 @php
-$pageTitle = 'Dashboard';
+$pageTitle = 'Dashboard Pages';
 $breadcrumbs = [
 'Dashboard' => route('dashboard.index'),
 ];
@@ -316,17 +314,13 @@ $breadcrumbs = [
 @section('content')
 <div class="container-fluid">
     <div class="card">
-        <div class="card-header">
+        <div class="card-header" style="background-color: #1B365D;">
             <!-- header kiri -->
             <div class="row mb-4">
                 <div class="col-xl-12">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h1 class="h4 mb-1 text-dark">Dashboard</h1>
-                            <p class="text-muted mb-0">Selamat datang kembali, {{ Auth::user()->name ?? 'Admin' }}</p>
-                        </div>
-                        <div class="text-end">
-                            <p class="mb-0 text-muted small">{{ \Carbon\Carbon::now()->locale('id')->isoFormat('dddd, D MMMM Y') }}</p>
+                            <h3 class="text-white mb-0">Selamat datang kembali, {{ Auth::user()->name ?? 'Admin' }}</h3>
                         </div>
                     </div>
                 </div>
@@ -340,12 +334,12 @@ $breadcrumbs = [
                         <div class="card-body">
                             <div class="stat-header">
                                 <div class="stat-content">
-                                    <div class="stat-label">Total Organisasi</div>
-                                    <h2 class="stat-value mb-2">{{ $stats['organizations'] ?? 0 }}</h2>
-                                    <span class="badge bg-light text-dark border">Aktif</span>
+                                    <div class="stat-label">Total Anggota</div>
+                                    <h2 class="stat-value mb-2">{{ $stats['members'] ?? 0 }}</h2>
+                                    <span class="badge bg-light text-dark border">Terdaftar</span>
                                 </div>
-                                <div class="stat-icon primary">
-                                    <i class="ti ti-building"></i>
+                                <div class="stat-icon info">
+                                    <i class="ti ti-users"></i>
                                 </div>
                             </div>
                         </div>
@@ -356,12 +350,12 @@ $breadcrumbs = [
                         <div class="card-body">
                             <div class="stat-header">
                                 <div class="stat-content">
-                                    <div class="stat-label">Total Anggota</div>
-                                    <h2 class="stat-value mb-2">{{ $stats['members'] ?? 0 }}</h2>
-                                    <span class="badge bg-light text-dark border">Terdaftar</span>
+                                    <div class="stat-label">Total Surat</div>
+                                    <h2 class="stat-value mb-2">{{ $stats['letters'] ?? 0 }}</h2>
+                                    <span class="badge bg-light text-dark border">Dibuat</span>
                                 </div>
                                 <div class="stat-icon info">
-                                    <i class="ti ti-users"></i>
+                                    <i class="ti ti-file-text"></i>
                                 </div>
                             </div>
                         </div>

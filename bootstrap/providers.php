@@ -4,6 +4,8 @@ use App\Providers\AppServiceProvider;
 use Modules\Activity\ActivityServiceProvider;
 use Modules\Agenda\AgendaServiceProvider;
 use Modules\Finance\FinanceServiceProvider;
+use Modules\Letter\LetterServiceProvider;
+use Modules\LetterCategory\LetterCategoryServiceProvider;
 use Modules\Member\MemberServiceProvider;
 use Modules\Meeting\MeetingServiceProvider;
 use Modules\Organization\OrganizationServiceProvider;
@@ -22,4 +24,6 @@ return [
     ActivityServiceProvider::class,
     MeetingServiceProvider::class,
     FinanceServiceProvider::class,
+    LetterCategoryServiceProvider::class,
+    LetterServiceProvider::class,
 ];

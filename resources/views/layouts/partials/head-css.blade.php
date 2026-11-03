@@ -56,6 +56,14 @@
         left: 88px;
     }
 
+    /* Card: beri border tipis agar batas kartu tetap terlihat */
+    .card {
+        --bs-card-border-width: 1px;
+        --bs-card-border-color: #e2e8f0;
+        --bs-card-inner-border-radius: calc(var(--bs-card-border-radius) - 1px);
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    }
+
     /* Footer tetap di bottom viewport ketika konten pendek */
     .pc-footer {
         margin-top: auto;
@@ -122,5 +130,116 @@
     /* Saat sidebar collapse, submenu disembunyikan (klik menu induk akan membuka sidebar) */
     .pc-sidebar.collapsed .pc-submenu {
         display: none !important;
+    }
+
+    /* Overlay sidebar mobile: default disembunyikan agar desktop tidak ikut blur */
+    .pc-menu-overlay {
+        display: none;
+    }
+    .pc-menu-overlay.show {
+        display: block;
+    }
+
+    /* ===== Responsive Mobile ===== */
+    @media (max-width: 1024px) {
+        .pc-maincontent,
+        .pc-maincontent.sidebar-collapsed {
+            width: 100%;
+            margin-left: 0 !important;
+            padding: 92px 14px 18px;
+        }
+
+        .pc-header,
+        body.sidebar-is-collapsed .pc-header {
+            left: 0 !important;
+        }
+
+        .pc-sidebar {
+            width: 260px !important;
+            min-width: 260px !important;
+            max-width: 86vw;
+            z-index: 1030;
+            overflow-y: auto;
+        }
+
+        .pc-sidebar .navbar-wrapper {
+            width: 260px;
+        }
+
+        .pc-menu-overlay {
+            z-index: 1026;
+        }
+
+        body.mobile-sidebar-open {
+            overflow: hidden;
+        }
+    }
+
+    @media (max-width: 767.98px) {
+        .pc-maincontent {
+            padding: 88px 10px 16px;
+        }
+
+        .page-header {
+            padding: 12px 16px;
+            margin-bottom: 14px;
+        }
+
+        .page-header .page-title {
+            font-size: 1.15rem;
+        }
+
+        .card-header {
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .card-header > div:first-child {
+            min-width: 0;
+        }
+
+        .card-header form.d-flex {
+            flex-wrap: wrap;
+            width: 100%;
+            margin-top: 4px;
+        }
+
+        .card-header form.d-flex .form-control,
+        .card-header form.d-flex .form-select {
+            width: 100% !important;
+            min-width: 0;
+        }
+
+        .card-header form.d-flex .ms-2 {
+            margin-left: 0 !important;
+        }
+
+        .container-fluid {
+            padding-left: 4px;
+            padding-right: 4px;
+        }
+    }
+
+    /* Tombol profil di navbar: pastikan ikon tetap tampil di layar kecil.
+       Template bawaan menyembunyikan <span> ikon pada max-width 575.98px,
+       sehingga tombol hanya tampil sebagai lingkaran kosong. */
+    @media (max-width: 575.98px) {
+        .pc-header .header-user-profile .pc-head-link {
+            width: 48px;
+            height: 48px;
+        }
+
+        .pc-header .header-user-profile .pc-head-link > span {
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pc-header .header-user-profile .pc-head-link > span > i {
+            display: inline-block !important;
+            margin-right: 0;
+            font-size: 22px;
+            color: #2196f3;
+        }
     }
 </style>

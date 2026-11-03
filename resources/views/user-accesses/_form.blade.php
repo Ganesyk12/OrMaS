@@ -27,7 +27,7 @@
       <label class="form-label">Modul <span class="text-danger">*</span></label>
       <select name="module" class="form-select @error('module') is-invalid @enderror" required>
         <option value="">-- Pilih Modul --</option>
-        @foreach(['organizations', 'members', 'roles', 'users', 'user-accesses', 'activities', 'meetings', 'agendas', 'finances'] as $module)
+        @foreach(['organizations', 'members', 'roles', 'users', 'user-accesses', 'activities', 'meetings', 'agendas', 'finances', 'letters', 'letter-categories'] as $module)
           <option value="{{ $module }}" @selected(old('module') === $module)>{{ $module }}</option>
         @endforeach
       </select>

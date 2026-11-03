@@ -3,113 +3,28 @@
 <!-- Define feather as no-op (we use Tabler Icons only) to avoid ReferenceError in script.js -->
 <script>
   if (typeof window.feather === 'undefined') {
-    window.feather = { replace: function () {} };
+    window.feather = {
+      replace: function() {}
+    };
   }
-</script>
-<script>
-    // Dummy functions to prevent JS errors after asset cleanup
-    window.layout_change = function(){ console.log('layout_change stub'); };
-    window.font_change = function(){ console.log('font_change stub'); };
-    window.change_box_container = function(){ console.log('change_box_container stub'); };
-    window.layout_caption_change = function(){ console.log('layout_caption_change stub'); };
-    window.layout_rtl_change = function(){ console.log('layout_rtl_change stub'); };
-    window.preset_change = function(){ console.log('preset_change stub'); };
-</script>
-
-
-<script>layout_change('light');</script>
-<script>
-    // Dummy functions to prevent JS errors after asset cleanup
-    window.layout_change = function(){ console.log('layout_change stub'); };
-    window.font_change = function(){ console.log('font_change stub'); };
-    window.change_box_container = function(){ console.log('change_box_container stub'); };
-    window.layout_caption_change = function(){ console.log('layout_caption_change stub'); };
-    window.layout_rtl_change = function(){ console.log('layout_rtl_change stub'); };
-    window.preset_change = function(){ console.log('preset_change stub'); };
-</script>
-
-<!-- Restore logo src after theme.js may overwrite it with relative path -->
-<script>
-  document.querySelectorAll('.pc-sidebar .m-header .logo-lg, .navbar-brand .logo-lg').forEach(function (el) {
+  document.querySelectorAll('.pc-sidebar .m-header .logo-lg, .navbar-brand .logo-lg').forEach(function(el) {
     el.setAttribute('src', '{{ asset('berry-admin-template/dist/assets/images/favicon.svg') }}');
   });
-</script>
-<script>
-    // Dummy functions to prevent JS errors after asset cleanup
-    window.layout_change = function(){ console.log('layout_change stub'); };
-    window.font_change = function(){ console.log('font_change stub'); };
-    window.change_box_container = function(){ console.log('change_box_container stub'); };
-    window.layout_caption_change = function(){ console.log('layout_caption_change stub'); };
-    window.layout_rtl_change = function(){ console.log('layout_rtl_change stub'); };
-    window.preset_change = function(){ console.log('preset_change stub'); };
-</script>
-<script>font_change('Roboto');</script>
-<script>
-    // Dummy functions to prevent JS errors after asset cleanup
-    window.layout_change = function(){ console.log('layout_change stub'); };
-    window.font_change = function(){ console.log('font_change stub'); };
-    window.change_box_container = function(){ console.log('change_box_container stub'); };
-    window.layout_caption_change = function(){ console.log('layout_caption_change stub'); };
-    window.layout_rtl_change = function(){ console.log('layout_rtl_change stub'); };
-    window.preset_change = function(){ console.log('preset_change stub'); };
-</script>
-<script>change_box_container('false');</script>
-<script>
-    // Dummy functions to prevent JS errors after asset cleanup
-    window.layout_change = function(){ console.log('layout_change stub'); };
-    window.font_change = function(){ console.log('font_change stub'); };
-    window.change_box_container = function(){ console.log('change_box_container stub'); };
-    window.layout_caption_change = function(){ console.log('layout_caption_change stub'); };
-    window.layout_rtl_change = function(){ console.log('layout_rtl_change stub'); };
-    window.preset_change = function(){ console.log('preset_change stub'); };
-</script>
-<script>layout_caption_change('true');</script>
-<script>
-    // Dummy functions to prevent JS errors after asset cleanup
-    window.layout_change = function(){ console.log('layout_change stub'); };
-    window.font_change = function(){ console.log('font_change stub'); };
-    window.change_box_container = function(){ console.log('change_box_container stub'); };
-    window.layout_caption_change = function(){ console.log('layout_caption_change stub'); };
-    window.layout_rtl_change = function(){ console.log('layout_rtl_change stub'); };
-    window.preset_change = function(){ console.log('preset_change stub'); };
-</script>
-<script>layout_rtl_change('false');</script>
-<script>
-    // Dummy functions to prevent JS errors after asset cleanup
-    window.layout_change = function(){ console.log('layout_change stub'); };
-    window.font_change = function(){ console.log('font_change stub'); };
-    window.change_box_container = function(){ console.log('change_box_container stub'); };
-    window.layout_caption_change = function(){ console.log('layout_caption_change stub'); };
-    window.layout_rtl_change = function(){ console.log('layout_rtl_change stub'); };
-    window.preset_change = function(){ console.log('preset_change stub'); };
-</script>
-<script>preset_change('preset-1');</script>
-<script>
-    // Dummy functions to prevent JS errors after asset cleanup
-    window.layout_change = function(){ console.log('layout_change stub'); };
-    window.font_change = function(){ console.log('font_change stub'); };
-    window.change_box_container = function(){ console.log('change_box_container stub'); };
-    window.layout_caption_change = function(){ console.log('layout_caption_change stub'); };
-    window.layout_rtl_change = function(){ console.log('layout_rtl_change stub'); };
-    window.preset_change = function(){ console.log('preset_change stub'); };
-</script>
 
-<!-- Sidebar & header dropdown toggle (pengganti Bootstrap JS yang tidak tersedia) -->
-<script>
-  (function () {
+  (function() {
     var dropdownToggles = document.querySelectorAll('[data-bs-toggle="dropdown"]');
 
     function closeAllDropdowns() {
-      document.querySelectorAll('.dropdown-menu.show').forEach(function (menu) {
+      document.querySelectorAll('.dropdown-menu.show').forEach(function(menu) {
         menu.classList.remove('show');
       });
-      document.querySelectorAll('[data-bs-toggle="dropdown"][aria-expanded="true"]').forEach(function (toggle) {
+      document.querySelectorAll('[data-bs-toggle="dropdown"][aria-expanded="true"]').forEach(function(toggle) {
         toggle.setAttribute('aria-expanded', 'false');
       });
     }
 
-    dropdownToggles.forEach(function (toggle) {
-      toggle.addEventListener('click', function (event) {
+    dropdownToggles.forEach(function(toggle) {
+      toggle.addEventListener('click', function(event) {
         event.preventDefault();
         event.stopPropagation();
 
@@ -127,27 +42,24 @@
       });
     });
 
-    document.addEventListener('click', function (event) {
+    document.addEventListener('click', function(event) {
       if (event.target.closest('.dropdown-menu')) return;
       closeAllDropdowns();
     });
 
-    document.addEventListener('keydown', function (event) {
+    document.addEventListener('keydown', function(event) {
       if (event.key === 'Escape') closeAllDropdowns();
     });
   })();
-</script>
 
-<!-- Sidebar collapse toggle -->
-<script>
-  (function () {
+  (function() {
     var sidebar = document.getElementById('main-sidebar');
     var btn = document.getElementById('sidebar-hide');
     var maincontent = document.querySelector('.pc-maincontent');
 
     if (!sidebar || !btn) return;
 
-    btn.addEventListener('click', function (e) {
+    btn.addEventListener('click', function(e) {
       e.preventDefault();
       var isCollapsed = sidebar.classList.contains('collapsed');
 
@@ -162,11 +74,70 @@
       }
     });
   })();
-</script>
 
-<!-- Sidebar submenu expand/collapse -->
-<script>
-  (function () {
+  // Sidebar mobile (off-canvas)
+  (function() {
+    var sidebar = document.getElementById('main-sidebar');
+    var btn = document.getElementById('mobile-collapse');
+    var overlay = document.getElementById('mobile-sidebar-overlay');
+    var maincontent = document.querySelector('.pc-maincontent');
+
+    if (!sidebar || !btn) return;
+
+    function isMobile() {
+      return window.matchMedia('(max-width: 1024px)').matches;
+    }
+
+    function resetCollapsedState() {
+      sidebar.classList.remove('collapsed');
+      if (maincontent) maincontent.classList.remove('sidebar-collapsed');
+      document.body.classList.remove('sidebar-is-collapsed');
+    }
+
+    function closeSidebar() {
+      sidebar.classList.remove('mob-sidebar-active');
+      if (overlay) overlay.classList.remove('show');
+      document.body.classList.remove('mobile-sidebar-open');
+    }
+
+    function openSidebar() {
+      resetCollapsedState();
+      sidebar.classList.add('mob-sidebar-active');
+      if (overlay) overlay.classList.add('show');
+      document.body.classList.add('mobile-sidebar-open');
+    }
+
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (sidebar.classList.contains('mob-sidebar-active')) {
+        closeSidebar();
+      } else {
+        openSidebar();
+      }
+    });
+
+    if (overlay) {
+      overlay.addEventListener('click', closeSidebar);
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeSidebar();
+    });
+
+    window.addEventListener('resize', function() {
+      if (!isMobile()) {
+        closeSidebar();
+      } else {
+        resetCollapsedState();
+      }
+    });
+
+    if (isMobile()) {
+      resetCollapsedState();
+    }
+  })();
+
+  (function() {
     var sidebar = document.getElementById('main-sidebar');
     if (!sidebar) return;
 
@@ -178,11 +149,11 @@
       if (link) link.setAttribute('aria-expanded', expanded ? 'true' : 'false');
     }
 
-    parentItems.forEach(function (item) {
+    parentItems.forEach(function(item) {
       var link = item.querySelector(':scope > .pc-link');
       if (!link) return;
 
-      link.addEventListener('click', function (event) {
+      link.addEventListener('click', function(event) {
         event.preventDefault();
         event.stopPropagation();
 
@@ -201,7 +172,7 @@
         // Accordion: tutup submenu lain pada level yang sama
         var list = item.parentElement;
         if (list) {
-          Array.prototype.forEach.call(list.children, function (sibling) {
+          Array.prototype.forEach.call(list.children, function(sibling) {
             if (sibling !== item && sibling.classList && sibling.classList.contains('pc-hasmenu')) {
               setExpanded(sibling, false);
             }
@@ -213,14 +184,4 @@
     });
   })();
 </script>
-<script>
-    // Dummy functions to prevent JS errors after asset cleanup
-    window.layout_change = function(){ console.log('layout_change stub'); };
-    window.font_change = function(){ console.log('font_change stub'); };
-    window.change_box_container = function(){ console.log('change_box_container stub'); };
-    window.layout_caption_change = function(){ console.log('layout_caption_change stub'); };
-    window.layout_rtl_change = function(){ console.log('layout_rtl_change stub'); };
-    window.preset_change = function(){ console.log('preset_change stub'); };
-</script>
-
 @stack('scripts')
