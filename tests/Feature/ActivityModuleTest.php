@@ -4,11 +4,12 @@ use Database\Factories\ActivityFactory;
 use Database\Factories\OrganizationFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Activity\Models\ActivityModel;
+use Tests\Concerns\AuthenticatesModuleAccess;
 use Tests\TestCase;
 
 class ActivityModuleTest extends TestCase
 {
-    use RefreshDatabase;
+    use AuthenticatesModuleAccess, RefreshDatabase;
 
     /** @test */
     public function activity_can_be_listed(): void

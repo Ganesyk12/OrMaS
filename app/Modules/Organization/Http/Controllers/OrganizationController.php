@@ -20,8 +20,8 @@ class OrganizationController extends Controller
 
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
-                $q->where('name', 'like', '%'.$request->search.'%')
-                    ->orWhere('code', 'like', '%'.$request->search.'%');
+                $q->where('name', 'like', '%' . $request->search . '%')
+                    ->orWhere('code', 'like', '%' . $request->search . '%');
             });
         }
 
@@ -38,7 +38,7 @@ class OrganizationController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            
+
             'type' => 'required|string',
             'level' => 'nullable|string|max:100',
             'address' => 'nullable|string',
@@ -77,8 +77,8 @@ class OrganizationController extends Controller
 
         $data = $request->validate([
             'name' => 'sometimes|string|max:255',
-            
-            'type' => 'sometimes|in:rt,rw,kelurahan,kecamatan',
+
+            'type' => 'required|string',
             'level' => 'nullable|string|max:100',
             'address' => 'nullable|string',
             'description' => 'nullable|string',
@@ -126,8 +126,8 @@ class OrganizationController extends Controller
 
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
-                $q->where('name', 'like', '%'.$request->search.'%')
-                    ->orWhere('code', 'like', '%'.$request->search.'%');
+                $q->where('name', 'like', '%' . $request->search . '%')
+                    ->orWhere('code', 'like', '%' . $request->search . '%');
             });
         }
 

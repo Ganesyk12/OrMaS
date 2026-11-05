@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Finance\Http\Controllers\FinanceController;
 
-Route::prefix('finances')->name('finances.')->group(function () {
+Route::prefix('finances')->name('finances.')->middleware(['auth', 'module.access:finances'])->group(function () {
     Route::get('/', [FinanceController::class, 'index'])->name('index');
     Route::get('/create', [FinanceController::class, 'create'])->name('create');
     Route::post('/', [FinanceController::class, 'apiStore'])->name('store');

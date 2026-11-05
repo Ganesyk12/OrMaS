@@ -5,11 +5,12 @@ use Database\Factories\MeetingFactory;
 use Database\Factories\OrganizationFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Agenda\Models\AgendaModel;
+use Tests\Concerns\AuthenticatesModuleAccess;
 use Tests\TestCase;
 
 class AgendaModuleTest extends TestCase
 {
-    use RefreshDatabase;
+    use AuthenticatesModuleAccess, RefreshDatabase;
 
     /** @test */
     public function agenda_can_be_listed_under_a_meeting(): void

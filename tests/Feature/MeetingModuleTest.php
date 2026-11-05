@@ -4,11 +4,12 @@ use Database\Factories\MeetingFactory;
 use Database\Factories\OrganizationFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Meeting\Models\MeetingModel;
+use Tests\Concerns\AuthenticatesModuleAccess;
 use Tests\TestCase;
 
 class MeetingModuleTest extends TestCase
 {
-    use RefreshDatabase;
+    use AuthenticatesModuleAccess, RefreshDatabase;
 
     /** @test */
     public function meeting_can_be_listed(): void

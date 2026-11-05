@@ -51,6 +51,32 @@ class UserAccessModel extends Model
     }
 
     /**
+     * Daftar permission yang diizinkan: view, create, edit, delete.
+     *
+     * @return array<int, string>
+     */
+    public function allowedPermissions(): array
+    {
+        $allowed = [];
+
+        foreach (['view', 'create', 'edit', 'delete'] as $permission) {
+            if ($this->{'allow_'.$permission}) {
+                $allowed[] = $permission;
+            }
+        }
+
+        return $allowed;
+    }
+
+    /**
+     * Apakah user punya minimal satu permission pada modul ini.
+     */
+    public function hasAnyPermission(): bool
+    {
+        return $this->allowedPermissions() !== [];
+    }
+
+    /**
      * Cek apakah user memiliki izin pada module dan permission tertentu.
      */
     public static function checkAllowed(User $user, string $module, string $action): bool

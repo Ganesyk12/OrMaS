@@ -58,7 +58,7 @@
                         <div class="d-flex gap-1 justify-content-end">
                           <a href="{{ route('roles.show', $role->id) }}" class="btn btn-outline-info btn-sm"><i class="ti ti-eye"></i></a>
                           <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-outline-primary btn-sm"><i class="ti ti-pencil"></i></a>
-                          <form action="{{ route('roles.destroy', $role->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus peran ini?')">
+                          <form action="{{ route('roles.destroy', $role->id) }}" method="POST" class="d-inline" data-confirm="Yakin ingin menghapus peran ini?">
                             @csrf @method('DELETE')
                             <button type="submit" class="btn btn-outline-danger btn-sm"><i class="ti ti-trash"></i></button>
                           </form>

@@ -68,7 +68,7 @@
                         <div class="d-flex gap-1 justify-content-end">
                           <a href="{{ route('letter-categories.show', $category->id) }}" class="btn btn-outline-info btn-sm"><i class="ti ti-eye"></i></a>
                           <a href="{{ route('letter-categories.edit', $category->id) }}" class="btn btn-outline-primary btn-sm"><i class="ti ti-pencil"></i></a>
-                          <form action="{{ route('letter-categories.destroy', $category->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus kategori surat ini?')">
+                          <form action="{{ route('letter-categories.destroy', $category->id) }}" method="POST" class="d-inline" data-confirm="Yakin ingin menghapus kategori surat ini?">
                             @csrf @method('DELETE')
                             <button type="submit" class="btn btn-outline-danger btn-sm" @disabled($category->letters_count > 0) title="{{ $category->letters_count > 0 ? 'Kategori masih digunakan oleh surat' : 'Hapus' }}"><i class="ti ti-trash"></i></button>
                           </form>

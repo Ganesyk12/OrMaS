@@ -22,7 +22,7 @@ $breadcrumbs = [
           @include('layouts.partials.form-errors')
           <form action="{{ route('user-accesses.store') }}" method="POST">
             @csrf
-            @include('user-accesses._form', ['access' => null])
+            @include('user-accesses._form', ['access' => null, 'accessByModule' => $accessByModule, 'modules' => $modules])
             <div class="d-flex gap-2 mt-4">
               <button type="submit" class="btn btn-primary"><i class="ti ti-device-floppy me-1"></i> Simpan</button>
               <a href="{{ route('user-accesses.index') }}" class="btn btn-secondary">Batal</a>

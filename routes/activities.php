@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Activity\Http\Controllers\ActivityController;
 
-Route::prefix('activities')->name('activities.')->group(function () {
+Route::prefix('activities')->name('activities.')->middleware(['auth', 'module.access:activities'])->group(function () {
     Route::get('/', [ActivityController::class, 'index'])->name('index');
     Route::get('/create', [ActivityController::class, 'create'])->name('create');
     Route::post('/', [ActivityController::class, 'apiStore'])->name('store');

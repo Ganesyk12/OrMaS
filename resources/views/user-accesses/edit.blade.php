@@ -23,7 +23,7 @@ $breadcrumbs = [
           <form action="{{ route('user-accesses.update', $access->id) }}" method="POST">
             @csrf
             @method('PUT')
-            @include('user-accesses._form', ['access' => $access])
+            @include('user-accesses._form', ['access' => $access, 'accessByModule' => $accessByModule, 'modules' => $modules])
             <div class="d-flex gap-2 mt-4">
               <button type="submit" class="btn btn-primary"><i class="ti ti-device-floppy me-1"></i> Simpan Perubahan</button>
               <a href="{{ route('user-accesses.index') }}" class="btn btn-secondary">Batal</a>

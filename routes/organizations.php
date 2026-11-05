@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Organization\Http\Controllers\OrganizationController;
 
-Route::prefix('organizations')->name('organizations.')->group(function () {
+Route::prefix('organizations')->name('organizations.')->middleware(['auth', 'module.access:organizations'])->group(function () {
     Route::get('/', [OrganizationController::class, 'index'])->name('index');
     Route::get('/create', [OrganizationController::class, 'create'])->name('create');
     Route::post('/', [OrganizationController::class, 'apiStore'])->name('store');

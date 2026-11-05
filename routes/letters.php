@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Letter\Http\Controllers\LetterController;
 
-Route::prefix('letters')->name('letters.')->group(function () {
+Route::prefix('letters')->name('letters.')->middleware(['auth', 'module.access:letters'])->group(function () {
     Route::get('/', function () {
         return redirect()->route('letters.index', ['direction' => 'incoming']);
     })->name('home');

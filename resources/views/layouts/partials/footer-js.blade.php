@@ -1,5 +1,8 @@
 <!-- Required Js -->
 
+<!-- SweetAlert2 (konfirmasi global, mis. tombol hapus) -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <!-- Define feather as no-op (we use Tabler Icons only) to avoid ReferenceError in script.js -->
 <script>
   if (typeof window.feather === 'undefined') {
@@ -180,6 +183,73 @@
         }
 
         setExpanded(item, willOpen);
+      });
+    });
+  })();
+
+  // Konfirmasi hapus global dengan SweetAlert2.
+  // Cukup tambahkan atribut data-confirm pada <form> untuk mengaktifkannya.
+  (function() {
+    var forms = document.querySelectorAll('form[data-confirm]');
+    if (!forms.length) return;
+
+    forms.forEach(function(form) {
+      form.addEventListener('submit', function(event) {
+        // Lanjutkan submit jika konfirmasi sudah disetujui.
+        if (form.dataset.confirmed === '1') return;
+
+        event.preventDefault();
+
+        var message = form.dataset.confirm || 'Yakin ingin menghapus data ini?';
+
+        if (typeof Swal === 'undefined') {
+          if (window.confirm(message)) {
+            form.dataset.confirmed = '1';
+            form.submit();
+          }
+          return;
+        }
+
+        Swal.fire({
+          title: 'Konfirmasi Hapus',
+          text: message,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#dc3545',
+          cancelButtonColor: '#6c757d',
+          confirmButtonText: '<i class="ti ti-trash me-1"></i> Ya, Hapus',
+          cancelButtonText: 'Batal',
+          reverseButtons: true,
+          focusCancel: true
+        }).then(function(result) {
+          if (result.isConfirmed) {
+            form.dataset.confirmed = '1';
+            form.submit();
+          }
+        });
+      });
+    });
+  })();
+
+  // Toggle show/hide password untuk input dengan tombol data-toggle-password.
+  (function() {
+    document.querySelectorAll('[data-toggle-password]').forEach(function(toggle) {
+      var target = document.getElementById(toggle.getAttribute('data-toggle-password'));
+      if (!target) return;
+
+      toggle.addEventListener('click', function() {
+        var isHidden = target.type === 'password';
+        target.type = isHidden ? 'text' : 'password';
+
+        var icon = toggle.querySelector('i');
+        if (icon) {
+          icon.classList.toggle('ti-eye', !isHidden);
+          icon.classList.toggle('ti-eye-off', isHidden);
+        }
+
+        var label = isHidden ? 'Sembunyikan password' : 'Tampilkan password';
+        toggle.setAttribute('aria-label', label);
+        toggle.setAttribute('title', label);
       });
     });
   })();

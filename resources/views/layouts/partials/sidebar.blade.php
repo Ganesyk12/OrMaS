@@ -1,5 +1,11 @@
 <!-- [ Sidebar Menu ] start -->
 @php
+$currentUser = auth()->user();
+$accessByModule = $currentUser
+    ? \Modules\UserAccess\Models\UserAccessModel::where('user_id', $currentUser->id)->get()->keyBy('module')
+    : collect();
+$canView = fn (string $module): bool => (bool) ($accessByModule->get($module)?->allow_view ?? false);
+
 $isOrganisasiActive = request()->routeIs('organizations.*') || request()->routeIs('members.*') || request()->routeIs('roles.*');
 $isKegiatanActive = request()->routeIs('activities.*') || request()->routeIs('meetings.*') || request()->routeIs('agendas.*');
 $isSuratActive = request()->routeIs('letters.*') || request()->routeIs('letter-categories.*');
@@ -22,6 +28,7 @@ $isPengaturanActive = request()->routeIs('users.*') || request()->routeIs('user-
           </a>
         </li>
 
+        @if($canView('organizations') || $canView('members') || $canView('roles'))
         <li class="pc-item pc-hasmenu {{ $isOrganisasiActive ? 'pc-trigger pc-active' : '' }}">
           <a href="#!" class="pc-link" aria-expanded="{{ $isOrganisasiActive ? 'true' : 'false' }}">
             <span class="pc-micon"><i class="ti ti-building"></i></span>
@@ -29,24 +36,32 @@ $isPengaturanActive = request()->routeIs('users.*') || request()->routeIs('user-
             <span class="pc-arrow"><i class="ti ti-chevron-right"></i></span>
           </a>
           <ul class="pc-submenu">
+            @if($canView('organizations'))
             <li class="pc-item {{ request()->routeIs('organizations.*') ? 'pc-active' : '' }}">
               <a href="{{ route('organizations.index') }}" class="pc-link">
                 <span class="pc-mtext">Data Organisasi</span>
               </a>
             </li>
+            @endif
+            @if($canView('members'))
             <li class="pc-item {{ request()->routeIs('members.*') ? 'pc-active' : '' }}">
               <a href="{{ route('members.index') }}" class="pc-link">
                 <span class="pc-mtext">Anggota</span>
               </a>
             </li>
+            @endif
+            @if($canView('roles'))
             <li class="pc-item {{ request()->routeIs('roles.*') ? 'pc-active' : '' }}">
               <a href="{{ route('roles.index') }}" class="pc-link">
                 <span class="pc-mtext">Role / Jabatan</span>
               </a>
             </li>
+            @endif
           </ul>
         </li>
+        @endif
 
+        @if($canView('activities') || $canView('meetings') || $canView('agendas'))
         <li class="pc-item pc-hasmenu {{ $isKegiatanActive ? 'pc-trigger pc-active' : '' }}">
           <a href="#!" class="pc-link" aria-expanded="{{ $isKegiatanActive ? 'true' : 'false' }}">
             <span class="pc-micon"><i class="ti ti-calendar"></i></span>
@@ -54,19 +69,25 @@ $isPengaturanActive = request()->routeIs('users.*') || request()->routeIs('user-
             <span class="pc-arrow"><i class="ti ti-chevron-right"></i></span>
           </a>
           <ul class="pc-submenu">
+            @if($canView('activities'))
             <li class="pc-item {{ request()->routeIs('activities.*') ? 'pc-active' : '' }}">
               <a href="{{ route('activities.index') }}" class="pc-link">
                 <span class="pc-mtext">Daftar Kegiatan</span>
               </a>
             </li>
+            @endif
+            @if($canView('meetings') || $canView('agendas'))
             <li class="pc-item {{ request()->routeIs('meetings.*') || request()->routeIs('agendas.*') ? 'pc-active' : '' }}">
               <a href="{{ route('meetings.index') }}" class="pc-link">
                 <span class="pc-mtext">Rapat</span>
               </a>
             </li>
+            @endif
           </ul>
         </li>
+        @endif
 
+        @if($canView('letters') || $canView('letter-categories'))
         <li class="pc-item pc-hasmenu {{ $isSuratActive ? 'pc-trigger pc-active' : '' }}">
           <a href="#!" class="pc-link" aria-expanded="{{ $isSuratActive ? 'true' : 'false' }}">
             <span class="pc-micon"><i class="ti ti-mail"></i></span>
@@ -74,6 +95,7 @@ $isPengaturanActive = request()->routeIs('users.*') || request()->routeIs('user-
             <span class="pc-arrow"><i class="ti ti-chevron-right"></i></span>
           </a>
           <ul class="pc-submenu">
+            @if($canView('letters'))
             <li class="pc-item {{ request()->routeIs('letters.*') && $currentLetterDirection === 'incoming' ? 'pc-active' : '' }}">
               <a href="{{ route('letters.index', ['direction' => 'incoming']) }}" class="pc-link">
                 <span class="pc-mtext">Surat Masuk</span>
@@ -84,14 +106,19 @@ $isPengaturanActive = request()->routeIs('users.*') || request()->routeIs('user-
                 <span class="pc-mtext">Surat Keluar</span>
               </a>
             </li>
+            @endif
+            @if($canView('letter-categories'))
             <li class="pc-item {{ request()->routeIs('letter-categories.*') ? 'pc-active' : '' }}">
               <a href="{{ route('letter-categories.index') }}" class="pc-link">
                 <span class="pc-mtext">Kategori Surat</span>
               </a>
             </li>
+            @endif
           </ul>
         </li>
+        @endif
 
+        @if($canView('finances'))
         <li class="pc-item pc-hasmenu {{ $isKeuanganActive ? 'pc-trigger pc-active' : '' }}">
           <a href="#!" class="pc-link" aria-expanded="{{ $isKeuanganActive ? 'true' : 'false' }}">
             <span class="pc-micon"><i class="ti ti-currency-dollar"></i></span>
@@ -106,7 +133,9 @@ $isPengaturanActive = request()->routeIs('users.*') || request()->routeIs('user-
             </li>
           </ul>
         </li>
+        @endif
 
+        @if($canView('users') || $canView('user-accesses'))
         <li class="pc-item pc-hasmenu {{ $isPengaturanActive ? 'pc-trigger pc-active' : '' }}">
           <a href="#!" class="pc-link" aria-expanded="{{ $isPengaturanActive ? 'true' : 'false' }}">
             <span class="pc-micon"><i class="ti ti-settings"></i></span>
@@ -114,18 +143,23 @@ $isPengaturanActive = request()->routeIs('users.*') || request()->routeIs('user-
             <span class="pc-arrow"><i class="ti ti-chevron-right"></i></span>
           </a>
           <ul class="pc-submenu">
+            @if($canView('users'))
             <li class="pc-item {{ request()->routeIs('users.*') ? 'pc-active' : '' }}">
               <a href="{{ route('users.index') }}" class="pc-link">
                 <span class="pc-mtext">Pengguna</span>
               </a>
             </li>
+            @endif
+            @if($canView('user-accesses'))
             <li class="pc-item {{ request()->routeIs('user-accesses.*') ? 'pc-active' : '' }}">
               <a href="{{ route('user-accesses.index') }}" class="pc-link">
                 <span class="pc-mtext">Hak Akses</span>
               </a>
             </li>
+            @endif
           </ul>
         </li>
+        @endif
       </ul>
     </div>
   </div>

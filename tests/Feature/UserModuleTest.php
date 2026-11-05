@@ -2,11 +2,12 @@
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Concerns\AuthenticatesModuleAccess;
 use Tests\TestCase;
 
 class UserModuleTest extends TestCase
 {
-    use RefreshDatabase;
+    use AuthenticatesModuleAccess, RefreshDatabase;
 
     /** @test */
     public function user_can_be_listed(): void
@@ -16,7 +17,7 @@ class UserModuleTest extends TestCase
         $response = $this->getJson('/users');
 
         $response->assertStatus(200);
-        $response->assertJsonCount(3, 'data');
+        $response->assertJsonCount(User::count(), 'data');
     }
 
     /** @test */

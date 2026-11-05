@@ -126,7 +126,7 @@
       letter-spacing: -0.025em;
     }
 
-    .auth-visual-body > p {
+    .auth-visual-body>p {
       max-width: 460px;
       margin-bottom: 0;
       color: rgba(255, 255, 255, 0.72);
@@ -233,7 +233,7 @@
       position: relative;
     }
 
-    .auth-input > i {
+    .auth-input>i {
       position: absolute;
       top: 50%;
       left: 14px;
@@ -400,7 +400,7 @@
 <body class="pc-default auth-page">
   <main class="auth-shell">
     <section class="auth-visual" aria-hidden="true">
-      <a href="{{ route('welcome') }}" class="auth-brand">
+      <a href="#" class="auth-brand">
         <span class="brand-mark"><i class="ti ti-affiliate"></i></span>
         <span>{{ config('app.name') }}</span>
       </a>
@@ -435,20 +435,20 @@
         </div>
 
         @if (session('status'))
-          <div class="alert alert-success auth-alert" role="alert">
-            {{ session('status') }}
-          </div>
+        <div class="alert alert-success auth-alert" role="alert">
+          {{ session('status') }}
+        </div>
         @endif
 
         @if ($errors->any())
-          <div class="alert alert-danger auth-alert" role="alert">
-            <div class="fw-semibold mb-1">Login gagal</div>
-            <ul class="ps-3">
-              @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-              @endforeach
-            </ul>
-          </div>
+        <div class="alert alert-danger auth-alert" role="alert">
+          <div class="fw-semibold mb-1">Login gagal</div>
+          <ul class="ps-3">
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+          </ul>
+        </div>
         @endif
 
         <form method="POST" action="{{ route('login') }}" novalidate>
@@ -467,8 +467,7 @@
                 placeholder="nama@email.com"
                 autocomplete="username"
                 autofocus
-                required
-              >
+                required>
             </div>
           </div>
 
@@ -486,8 +485,7 @@
                 class="form-control @error('password') is-invalid @enderror"
                 placeholder="Masukkan password"
                 autocomplete="current-password"
-                required
-              >
+                required>
               <button type="button" class="auth-password-toggle" id="toggle-password" aria-label="Tampilkan password">
                 <i class="ti ti-eye"></i>
               </button>
@@ -505,12 +503,12 @@
           </button>
         </form>
 
-        <div class="auth-divider"><span>atau</span></div>
+        <!-- <div class="auth-divider"><span>atau</span></div>
 
         <a href="{{ route('welcome') }}" class="btn auth-back w-100">
           <i class="ti ti-arrow-left"></i>
           <span>Kembali ke halaman utama</span>
-        </a>
+        </a> -->
 
         <div class="auth-copyright">
           &copy; {{ date('Y') }} {{ config('app.name') }}. Seluruh hak cipta dilindungi.
@@ -520,7 +518,7 @@
   </main>
 
   <script>
-    (function () {
+    (function() {
       var toggle = document.getElementById('toggle-password');
       var password = document.getElementById('password');
 
@@ -528,7 +526,7 @@
         return;
       }
 
-      toggle.addEventListener('click', function () {
+      toggle.addEventListener('click', function() {
         var isHidden = password.type === 'password';
         password.type = isHidden ? 'text' : 'password';
 

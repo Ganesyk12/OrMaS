@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Agenda\Http\Controllers\AgendaController;
 
-Route::prefix('meetings/{meeting}/agendas')->name('agendas.')->group(function () {
+Route::prefix('meetings/{meeting}/agendas')->name('agendas.')->middleware(['auth', 'module.access:agendas'])->group(function () {
     Route::get('/', [AgendaController::class, 'index'])->name('index');
     Route::get('/create', [AgendaController::class, 'create'])->name('create');
     Route::post('/', [AgendaController::class, 'apiStore'])->name('store');

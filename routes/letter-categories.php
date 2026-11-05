@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\LetterCategory\Http\Controllers\LetterCategoryController;
 
-Route::prefix('letter-categories')->name('letter-categories.')->group(function () {
+Route::prefix('letter-categories')->name('letter-categories.')->middleware(['auth', 'module.access:letter-categories'])->group(function () {
     Route::get('/', [LetterCategoryController::class, 'index'])->name('index');
     Route::get('/create', [LetterCategoryController::class, 'create'])->name('create');
     Route::post('/', [LetterCategoryController::class, 'apiStore'])->name('store');

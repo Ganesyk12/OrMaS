@@ -67,7 +67,7 @@ $breadcrumbs = [
                     <div class="d-flex gap-1 justify-content-end">
                       <a href="{{ route('finances.show', $fin->id) }}" class="btn btn-outline-info btn-sm"><i class="ti ti-eye"></i></a>
                       <a href="{{ route('finances.edit', $fin->id) }}" class="btn btn-outline-primary btn-sm"><i class="ti ti-pencil"></i></a>
-                      <form action="{{ route('finances.destroy', $fin->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin hapus transaksi?')">
+                      <form action="{{ route('finances.destroy', $fin->id) }}" method="POST" class="d-inline" data-confirm="Yakin hapus transaksi?">
                         @csrf @method('DELETE')
                         <button type="submit" class="btn btn-outline-danger btn-sm"><i class="ti ti-trash"></i></button>
                       </form>

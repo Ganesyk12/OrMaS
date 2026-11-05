@@ -4,11 +4,12 @@ use Database\Factories\LetterCategoryFactory;
 use Database\Factories\LetterFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\LetterCategory\Models\LetterCategoryModel;
+use Tests\Concerns\AuthenticatesModuleAccess;
 use Tests\TestCase;
 
 class LetterCategoryModuleTest extends TestCase
 {
-    use RefreshDatabase;
+    use AuthenticatesModuleAccess, RefreshDatabase;
 
     /** @test */
     public function letter_category_can_be_listed(): void

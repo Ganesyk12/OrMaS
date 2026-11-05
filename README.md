@@ -84,6 +84,10 @@ Akun admin default (dari seeder):
 - Email: `admin@karangtaruna.id`
 - Password: `password`
 
+Akun Superadmin default (akses penuh ke semua modul):
+- Email: `superadmin@karangtaruna.id`
+- Password: `password`
+
 ## Route (API REST JSON)
 
 Semua endpoint mengembalikan JSON. Contoh:

@@ -79,7 +79,7 @@
                         <div class="d-flex gap-1 justify-content-end">
                           <a href="{{ route('letters.show', ['direction' => $direction, 'letter' => $letter->id]) }}" class="btn btn-outline-info btn-sm"><i class="ti ti-eye"></i></a>
                           <a href="{{ route('letters.edit', ['direction' => $direction, 'letter' => $letter->id]) }}" class="btn btn-outline-primary btn-sm"><i class="ti ti-pencil"></i></a>
-                          <form action="{{ route('letters.destroy', ['direction' => $direction, 'letter' => $letter->id]) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus surat ini?')">
+                          <form action="{{ route('letters.destroy', ['direction' => $direction, 'letter' => $letter->id]) }}" method="POST" class="d-inline" data-confirm="Yakin ingin menghapus surat ini?">
                             @csrf @method('DELETE')
                             <button type="submit" class="btn btn-outline-danger btn-sm"><i class="ti ti-trash"></i></button>
                           </form>

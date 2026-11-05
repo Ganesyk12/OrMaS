@@ -67,7 +67,7 @@
                         <div class="d-flex gap-1 justify-content-end">
                           <a href="{{ route('activities.show', $act->id) }}" class="btn btn-outline-info btn-sm"><i class="ti ti-eye"></i></a>
                           <a href="{{ route('activities.edit', $act->id) }}" class="btn btn-outline-primary btn-sm"><i class="ti ti-pencil"></i></a>
-                          <form action="{{ route('activities.destroy', $act->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin hapus kegiatan?')">
+                          <form action="{{ route('activities.destroy', $act->id) }}" method="POST" class="d-inline" data-confirm="Yakin hapus kegiatan?">
                             @csrf @method('DELETE')
                             <button type="submit" class="btn btn-outline-danger btn-sm"><i class="ti ti-trash"></i></button>
                           </form>

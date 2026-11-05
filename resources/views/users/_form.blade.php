@@ -11,10 +11,15 @@
   </div>
   <div class="col-md-6">
     <label class="form-label">Password {{ $user ? '' : '*' }}</label>
-    <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" @required(! $user)>
+    <div class="input-group">
+      <input type="password" name="password" id="user_password" class="form-control @error('password') is-invalid @enderror" autocomplete="new-password" @required(! $user)>
+      <button type="button" class="btn btn-outline-secondary" data-toggle-password="user_password" aria-label="Tampilkan password" title="Tampilkan password">
+        <i class="ti ti-eye"></i>
+      </button>
+    </div>
     @if($user)
       <div class="form-text">Kosongkan jika tidak ingin mengubah password.</div>
     @endif
-    @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
+    @error('password')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
   </div>
 </div>

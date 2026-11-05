@@ -16,13 +16,14 @@ class UserAccessFactory extends Factory
     public function definition(): array
     {
         $modules = ['organizations', 'members', 'activities', 'meetings', 'finances', 'letters', 'letter-categories'];
-        $permissions = ['view', 'create', 'edit', 'delete'];
 
         return [
             'user_id' => User::factory()->create()->id,
             'module' => fake()->randomElement($modules),
-            'permission' => fake()->randomElement($permissions),
-            'is_allowed' => true,
+            'allow_view' => true,
+            'allow_create' => fake()->boolean(),
+            'allow_edit' => fake()->boolean(),
+            'allow_delete' => fake()->boolean(),
         ];
     }
 }

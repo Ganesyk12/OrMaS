@@ -3,11 +3,12 @@
 use Database\Factories\RoleFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Role\Models\RoleModel;
+use Tests\Concerns\AuthenticatesModuleAccess;
 use Tests\TestCase;
 
 class RoleModuleTest extends TestCase
 {
-    use RefreshDatabase;
+    use AuthenticatesModuleAccess, RefreshDatabase;
 
     /** @test */
     public function role_can_be_listed(): void

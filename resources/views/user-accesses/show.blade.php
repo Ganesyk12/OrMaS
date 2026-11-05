@@ -31,15 +31,31 @@ $breadcrumbs = [
             </tr>
             <tr>
               <th>Modul</th>
-              <td>{{ $access->module }}</td>
+              <td>{{ $moduleLabel }}</td>
             </tr>
             <tr>
-              <th>Permission</th>
-              <td>{{ $access->permission }}</td>
+              <th>Hak Akses</th>
+              <td>
+                @php
+                  $permissionLabels = ['view' => 'Lihat', 'create' => 'Tambah', 'edit' => 'Ubah', 'delete' => 'Hapus'];
+                  $allowedPermissions = $access->allowedPermissions();
+                @endphp
+                <div class="d-flex flex-wrap gap-1">
+                  @forelse($allowedPermissions as $permission)
+                    <span class="badge bg-light text-success border">{{ $permissionLabels[$permission] }}</span>
+                  @empty
+                    <span class="badge bg-light text-muted border">Tidak ada</span>
+                  @endforelse
+                </div>
+              </td>
             </tr>
             <tr>
               <th>Status</th>
-              <td>{{ $access->is_allowed ? 'Diizinkan' : 'Ditolak' }}</td>
+              <td>
+                <span class="status-badge {{ $access->hasAnyPermission() ? 'status-completed' : 'status-pending' }}">
+                  {{ $access->hasAnyPermission() ? 'Aktif' : 'Tidak Aktif' }}
+                </span>
+              </td>
             </tr>
           </table>
         </div>

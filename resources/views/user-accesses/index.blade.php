@@ -7,7 +7,6 @@
         'Dashboard' => route('dashboard.index'),
         'Hak Akses' => route('user-accesses.index'),
     ];
-    $moduleOptions = ['organizations', 'members', 'roles', 'users', 'user-accesses', 'activities', 'meetings', 'agendas', 'finances', 'letters', 'letter-categories'];
 @endphp
 
 @section('content')
@@ -33,8 +32,8 @@
               <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari hak akses..." value="{{ request('search') }}">
               <select name="module" class="form-select form-select-sm ms-2" style="width:auto;">
                 <option value="">Semua Modul</option>
-                @foreach($moduleOptions as $module)
-                  <option value="{{ $module }}" @selected(request('module') === $module)>{{ ucfirst(str_replace('-', ' ', $module)) }}</option>
+                @foreach($modules as $module)
+                  <option value="{{ $module->name }}" @selected(request('module') === $module->name)>{{ $module->label }}</option>
                 @endforeach
               </select>
               <button type="submit" class="btn btn-outline-primary btn-sm ms-2"><i class="ti ti-search"></i></button>
@@ -56,18 +55,30 @@
                   @foreach($accesses as $acc)
                     <tr>
                       <td class="fw-semibold text-dark">{{ $acc->user->name ?? '-' }}</td>
-                      <td class="text-muted small">{{ $acc->module }}</td>
-                      <td class="text-muted small">{{ $acc->permission }}</td>
+                      <td class="text-muted small">{{ $modules->firstWhere('name', $acc->module)?->label ?? $acc->module }}</td>
                       <td>
-                        <span class="status-badge {{ $acc->is_allowed ? 'status-completed' : 'status-pending' }}">
-                          {{ $acc->is_allowed ? 'Diizinkan' : 'Ditolak' }}
+                        @php
+                          $permissionLabels = ['view' => 'Lihat', 'create' => 'Tambah', 'edit' => 'Ubah', 'delete' => 'Hapus'];
+                          $allowedPermissions = $acc->allowedPermissions();
+                        @endphp
+                        <div class="d-flex flex-wrap gap-1">
+                          @forelse($allowedPermissions as $permission)
+                            <span class="badge bg-light text-success border">{{ $permissionLabels[$permission] }}</span>
+                          @empty
+                            <span class="badge bg-light text-muted border">Tidak ada</span>
+                          @endforelse
+                        </div>
+                      </td>
+                      <td>
+                        <span class="status-badge {{ $acc->hasAnyPermission() ? 'status-completed' : 'status-pending' }}">
+                          {{ $acc->hasAnyPermission() ? 'Aktif' : 'Tidak Aktif' }}
                         </span>
                       </td>
                       <td class="text-end">
                         <div class="d-flex gap-1 justify-content-end">
                           <a href="{{ route('user-accesses.show', $acc->id) }}" class="btn btn-outline-info btn-sm"><i class="ti ti-eye"></i></a>
                           <a href="{{ route('user-accesses.edit', $acc->id) }}" class="btn btn-outline-primary btn-sm"><i class="ti ti-pencil"></i></a>
-                          <form action="{{ route('user-accesses.destroy', $acc->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin hapus hak akses?')">
+                          <form action="{{ route('user-accesses.destroy', $acc->id) }}" method="POST" class="d-inline" data-confirm="Yakin hapus hak akses?">
                             @csrf @method('DELETE')
                             <button type="submit" class="btn btn-outline-danger btn-sm"><i class="ti ti-trash"></i></button>
                           </form>
@@ -78,7 +89,7 @@
                 </tbody>
               </table>
             </div>
-            <div class="mt-3">{{ $accesses->links() }}</div>
+            <div class="mt-3 px-3 pb-3">{{ $accesses->links() }}</div>
           @else
             <div class="text-center text-muted py-5">
               <i class="ti ti-information fs-4 mb-2 d-block opacity-50"></i>

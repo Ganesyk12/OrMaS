@@ -1,19 +1,9 @@
 <div class="row g-3">
-  @if($access)
-  <div class="col-md-6">
-    <label class="form-label">Pengguna</label>
-    <input type="text" class="form-control" value="{{ $access->user->name ?? '-' }}" disabled>
-  </div>
-  <div class="col-md-3">
-    <label class="form-label">Modul</label>
-    <input type="text" class="form-control" value="{{ $access->module }}" disabled>
-  </div>
-  <div class="col-md-3">
-    <label class="form-label">Permission</label>
-    <input type="text" class="form-control" value="{{ $access->permission }}" disabled>
-  </div>
-  @else
   <div class="col-md-12">
+    @if($access)
+    <label class="form-label">Pengguna</label>
+    <input type="text" class="form-control" value="{{ $access->user->name ?? '-' }} ({{ $access->user->email ?? '-' }})" disabled>
+    @else
     <label class="form-label">Pengguna <span class="text-danger">*</span></label>
     <select name="user_id" class="form-select @error('user_id') is-invalid @enderror" required>
       <option value="">-- Pilih Pengguna --</option>
@@ -22,40 +12,52 @@
       @endforeach
     </select>
     @error('user_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+    @endif
   </div>
-  <div class="col-md-6">
-    <label class="form-label">Modul <span class="text-danger">*</span></label>
-    <select name="module" class="form-select @error('module') is-invalid @enderror" required>
-      <option value="">-- Pilih Modul --</option>
-      @foreach(['organizations', 'members', 'roles', 'users', 'user-accesses', 'activities', 'meetings', 'agendas', 'finances', 'letters', 'letter-categories'] as $module)
-      <option value="{{ $module }}" @selected(old('module')===$module)>{{ $module }}</option>
-      @endforeach
-    </select>
-    @error('module')<div class="invalid-feedback">{{ $message }}</div>@enderror
-  </div>
+
   <div class="col-md-12">
-    <label class="form-label">Hak Akses</label>
-    <div class="form-check">
-      <input type="hidden" name="allow_create" value="0">
-      <input type="checkbox" name="allow_create" value="1" id="allow_create" class="form-check-input" @checked(old('allow_create', $access->allow_create ?? false))>
-      <label class="form-check-label" for="allow_create">Buat (Create)</label>
+    <input type="hidden" name="access_mode" value="1">
+    <label class="form-label">Hak Akses per Modul</label>
+    <div class="table-responsive border rounded">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th style="min-width:200px;">Modul</th>
+            @foreach(['view' => 'Lihat', 'create' => 'Buat', 'edit' => 'Ubah', 'delete' => 'Hapus'] as $permissionLabel)
+            <th class="text-center">{{ $permissionLabel }}</th>
+            @endforeach
+          </tr>
+        </thead>
+        <tbody>
+          @foreach($modules as $module)
+          @php
+            $moduleName = $module->name;
+            $moduleLabel = $module->label;
+            $existing = $accessByModule[$moduleName] ?? null;
+          @endphp
+          <tr>
+            <td class="fw-semibold text-dark">{{ $moduleLabel }}</td>
+            @foreach(['view' => 'Lihat', 'create' => 'Buat', 'edit' => 'Ubah', 'delete' => 'Hapus'] as $permission => $permissionLabel)
+            <td class="text-center">
+              <input type="checkbox"
+                name="access[{{ $moduleName }}][{{ $permission }}]"
+                id="access_{{ $moduleName }}_{{ $permission }}"
+                value="1"
+                class="form-check-input"
+                @checked(old('access.'.$moduleName.'.'.$permission, $existing?->{'allow_'.$permission} ?? false))>
+            </td>
+            @endforeach
+          </tr>
+          @endforeach
+        </tbody>
+      </table>
     </div>
-    <div class="form-check">
-      <input type="hidden" name="allow_edit" value="0">
-      <input type="checkbox" name="allow_edit" value="1" id="allow_edit" class="form-check-input" @checked(old('allow_edit', $access->allow_edit ?? false))>
-      <label class="form-check-label" for="allow_edit">Ubah (Edit)</label>
-    </div>
-    <div class="form-check">
-      <input type="hidden" name="allow_view" value="0">
-      <input type="checkbox" name="allow_view" value="1" id="allow_view" class="form-check-input" @checked(old('allow_view', $access->allow_view ?? false))>
-      <label class="form-check-label" for="allow_view">Lihat (View)</label>
-    </div>
-    <div class="form-check">
-      <input type="hidden" name="allow_delete" value="0">
-      <input type="checkbox" name="allow_delete" value="1" id="allow_delete" class="form-check-input" @checked(old('allow_delete', $access->allow_delete ?? false))>
-      <label class="form-check-label" for="allow_delete">Hapus (Delete)</label>
+    <div class="form-text">
+      @if($access)
+        Centang permission yang dibutuhkan. Modul yang tidak dicentang akan dihapus aksesnya.
+      @else
+        Centang permission yang dibutuhkan. Modul yang sudah ada tidak berubah kecuali dicentang dan disimpan.
+      @endif
     </div>
   </div>
-  @endif
-  
 </div>

@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Meeting\Http\Controllers\MeetingController;
 
-Route::prefix('meetings')->name('meetings.')->group(function () {
+Route::prefix('meetings')->name('meetings.')->middleware(['auth', 'module.access:meetings'])->group(function () {
     Route::get('/', [MeetingController::class, 'index'])->name('index');
     Route::get('/create', [MeetingController::class, 'create'])->name('create');
     Route::post('/', [MeetingController::class, 'apiStore'])->name('store');

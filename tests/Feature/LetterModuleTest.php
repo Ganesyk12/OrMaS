@@ -4,11 +4,12 @@ use Database\Factories\LetterCategoryFactory;
 use Database\Factories\LetterFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Letter\Models\LetterModel;
+use Tests\Concerns\AuthenticatesModuleAccess;
 use Tests\TestCase;
 
 class LetterModuleTest extends TestCase
 {
-    use RefreshDatabase;
+    use AuthenticatesModuleAccess, RefreshDatabase;
 
     /** @test */
     public function incoming_letters_can_be_listed(): void

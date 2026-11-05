@@ -9,7 +9,6 @@ use Database\Factories\FinanceFactory;
 use Database\Factories\OrganizationFactory;
 use Database\Factories\OrganizationMemberFactory;
 use Database\Factories\RoleFactory;
-use Database\Factories\UserAccessFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Modules\Activity\Models\ActivityModel;
@@ -21,6 +20,7 @@ use Modules\Meeting\Models\MeetingModel;
 use Modules\Member\Models\OrganizationMemberModel;
 use Modules\Organization\Models\OrganizationModel;
 use Modules\Role\Models\RoleModel;
+use Modules\UserAccess\Models\ModuleModel;
 use Modules\UserAccess\Models\UserAccessModel;
 
 class DatabaseSeeder extends Seeder
@@ -32,6 +32,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(ModuleSeeder::class);
+        $this->call(SuperadminSeeder::class);
+
         // Super admin (idempotent)
         $admin = User::updateOrCreate(
             ['email' => 'admin@karangtaruna.id'],
@@ -71,15 +74,17 @@ class DatabaseSeeder extends Seeder
             ]);
         });
 
-        // Hak akses admin
-        foreach (['organizations', 'members', 'roles', 'activities', 'meetings', 'finances', 'letters', 'letter-categories'] as $module) {
-            foreach (['view', 'create', 'edit', 'delete'] as $permission) {
-                UserAccessModel::factory()->create([
-                    'user_id' => $admin->id,
-                    'module' => $module,
-                    'permission' => $permission,
-                ]);
-            }
+        // Hak akses admin: semua modul aktif, semua permission.
+        foreach (ModuleModel::activeNames() as $module) {
+            UserAccessModel::updateOrCreate(
+                ['user_id' => $admin->id, 'module' => $module],
+                [
+                    'allow_view' => true,
+                    'allow_create' => true,
+                    'allow_edit' => true,
+                    'allow_delete' => true,
+                ]
+            );
         }
 
         // Kegiatan contoh

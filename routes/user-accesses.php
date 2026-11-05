@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\UserAccess\Http\Controllers\UserAccessController;
 
-Route::prefix('user-accesses')->name('user-accesses.')->group(function () {
+Route::prefix('user-accesses')->name('user-accesses.')->middleware(['auth', 'module.access:user-accesses'])->group(function () {
     Route::get('/', [UserAccessController::class, 'index'])->name('index');
     Route::get('/create', [UserAccessController::class, 'create'])->name('create');
     Route::post('/', [UserAccessController::class, 'apiStore'])->name('store');

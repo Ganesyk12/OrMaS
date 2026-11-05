@@ -64,7 +64,7 @@
                         <div class="d-flex gap-1 justify-content-end">
                           <a href="{{ route('meetings.show', $meet->id) }}" class="btn btn-outline-info btn-sm"><i class="ti ti-eye"></i></a>
                           <a href="{{ route('meetings.edit', $meet->id) }}" class="btn btn-outline-primary btn-sm"><i class="ti ti-pencil"></i></a>
-                          <form action="{{ route('meetings.destroy', $meet->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin hapus rapat?')">
+                          <form action="{{ route('meetings.destroy', $meet->id) }}" method="POST" class="d-inline" data-confirm="Yakin hapus rapat?">
                             @csrf @method('DELETE')
                             <button type="submit" class="btn btn-outline-danger btn-sm"><i class="ti ti-trash"></i></button>
                           </form>

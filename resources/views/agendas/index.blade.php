@@ -58,7 +58,7 @@
                         <div class="d-flex gap-1 justify-content-end">
                           <a href="{{ route('agendas.show', [$agenda->meeting_id, $agenda->id]) }}" class="btn btn-outline-info btn-sm"><i class="ti ti-eye"></i></a>
                           <a href="{{ route('agendas.edit', [$agenda->meeting_id, $agenda->id]) }}" class="btn btn-outline-primary btn-sm"><i class="ti ti-pencil"></i></a>
-                          <form action="{{ route('agendas.destroy', [$agenda->meeting_id, $agenda->id]) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin hapus agenda?')">
+                          <form action="{{ route('agendas.destroy', [$agenda->meeting_id, $agenda->id]) }}" method="POST" class="d-inline" data-confirm="Yakin hapus agenda?">
                             @csrf @method('DELETE')
                             <button type="submit" class="btn btn-outline-danger btn-sm"><i class="ti ti-trash"></i></button>
                           </form>
