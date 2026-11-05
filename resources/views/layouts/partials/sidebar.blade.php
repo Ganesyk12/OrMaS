@@ -17,7 +17,8 @@ $isPengaturanActive = request()->routeIs('users.*') || request()->routeIs('user-
   <div class="navbar-wrapper">
     <div class="m-header">
       <a href="{{ route('dashboard.index') }}" class="b-brand text-primary">
-        <img src="{{ asset('images/logo.webp') }}" alt="KARLAS-Apps" style="height:40px;">
+        <img src="{{ asset('images/logo.webp') }}" alt="{{ config('app.name') }}" class="brand-logo">
+        <span class="brand-name">{{ config('app.name') }}</span>
       </a>
     </div>
     <div class="navbar-content">

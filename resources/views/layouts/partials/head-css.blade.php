@@ -116,6 +116,42 @@
         color: #ffffff !important;
     }
 
+    /* Brand sidebar: logo + nama aplikasi saat expand, hanya logo saat collapse */
+    .pc-sidebar .m-header .b-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+        max-width: 100%;
+        text-decoration: none;
+    }
+    .pc-sidebar .m-header .b-brand .brand-logo {
+        flex-shrink: 0;
+        height: 40px;
+        width: auto;
+    }
+    .pc-sidebar .m-header .b-brand .brand-name {
+        overflow: hidden;
+        color: #ffffff;
+        font-size: 1.05rem;
+        font-weight: 700;
+        line-height: 1.2;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    .pc-sidebar.collapsed .m-header {
+        width: 88px;
+        justify-content: center;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .pc-sidebar.collapsed .m-header .b-brand {
+        max-width: 40px;
+    }
+    .pc-sidebar.collapsed .m-header .b-brand .brand-name {
+        display: none !important;
+    }
+
     /* Saat sidebar collapse, sembunyikan teks menu */
     .pc-sidebar.collapsed .pc-mtext,
     .pc-sidebar.collapsed .pc-arrow,
