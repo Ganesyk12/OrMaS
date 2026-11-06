@@ -29,7 +29,7 @@ $breadcrumbs = [
               <span class="card-title-professional me-2">Daftar Transaksi</span>
             </div>
             <form method="GET" action="{{ route('finances.index') }}" class="d-flex">
-              <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari transaksi..." value="{{ request('search') }}">
+              <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari kategori..." value="{{ request('search') }}">
               <select name="type" class="form-select form-select-sm ms-2" style="width:auto;">
                 <option value="">Semua Tipe</option>
                 <option value="income" {{ request('type') == 'income' ? 'selected' : '' }}>Pemasukan</option>
@@ -43,10 +43,10 @@ $breadcrumbs = [
             <table class="table table-hover align-middle mb-0">
               <thead class="table-light">
                 <tr>
-                  <th>Deskripsi</th>
+                  <th>Tanggal</th>
                   <th>Organisasi</th>
                   <th>Tipe</th>
-                  <th>Jumlah</th>
+                  <th>Total</th>
                   <th>Status</th>
                   <th class="text-end">Aksi</th>
                 </tr>
@@ -54,12 +54,15 @@ $breadcrumbs = [
               <tbody>
                 @foreach($finances as $fin)
                 <tr>
-                  <td class="fw-semibold text-dark">{{ $fin->description ?: $fin->category }}</td>
+                  <td class="fw-semibold text-dark">{{ $fin->transaction_date?->format('d M Y') ?? '-' }}</td>
                   <td class="text-muted small">{{ $fin->organization->name ?? '-' }}</td>
                   <td>
                     <span class="badge bg-{{ $fin->type === 'income' ? 'success' : 'danger' }}">{{ ucfirst($fin->type) }}</span>
                   </td>
-                  <td class="text-muted small">Rp {{ number_format($fin->amount, 0, ',', '.') }}</td>
+                  <td class="text-muted small">
+                    <div class="fw-semibold text-dark">Rp {{ number_format($fin->total, 0, ',', '.') }}</div>
+                    <div class="text-muted">{{ $fin->details_count }} detail</div>
+                  </td>
                   <td>
                     <span class="status-badge {{ $fin->status }}">{{ ucfirst($fin->status) }}</span>
                   </td>

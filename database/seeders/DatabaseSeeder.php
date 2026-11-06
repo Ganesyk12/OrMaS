@@ -3,12 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Database\Factories\ActivityFactory;
-use Database\Factories\AgendaFactory;
-use Database\Factories\FinanceFactory;
-use Database\Factories\OrganizationFactory;
-use Database\Factories\OrganizationMemberFactory;
-use Database\Factories\RoleFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Modules\Activity\Models\ActivityModel;
@@ -106,23 +100,31 @@ class DatabaseSeeder extends Seeder
             'meeting_id' => $meeting->id,
         ])->each(fn (AgendaModel $agenda) => $agenda->update(['order' => $agenda->id]));
 
-        // Keuangan contoh
-        FinanceModel::factory()->create([
+        // Keuangan contoh (header + detail)
+        $income = FinanceModel::factory()->create([
             'organization_id' => $org->id,
             'activity_id' => $activity->id,
             'type' => 'income',
+            'status' => 'approved',
+            'created_by' => $admin->email,
+        ]);
+        $income->details()->create([
             'category' => 'Sumbangan',
             'amount' => 2500000,
-            'status' => 'approved',
+            'created_by' => $admin->email,
         ]);
 
-        FinanceModel::factory()->create([
+        $expense = FinanceModel::factory()->create([
             'organization_id' => $org->id,
             'activity_id' => $activity->id,
             'type' => 'expense',
+            'status' => 'approved',
+            'created_by' => $admin->email,
+        ]);
+        $expense->details()->create([
             'category' => 'Biaya Kegiatan',
             'amount' => 750000,
-            'status' => 'approved',
+            'created_by' => $admin->email,
         ]);
 
         // Kategori surat (master data)

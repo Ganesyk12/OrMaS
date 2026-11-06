@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Modules\Activity\Models\ActivityModel;
+use Modules\Finance\Models\FinanceDetailModel;
 use Modules\Letter\Models\LetterModel;
 use Modules\Member\Models\OrganizationMemberModel;
-use Modules\Activity\Models\ActivityModel;
-use Modules\Finance\Models\FinanceModel;
 
 class DashboardController extends Controller
 {
@@ -16,8 +16,12 @@ class DashboardController extends Controller
             'members' => OrganizationMemberModel::count(),
             'letters' => LetterModel::count(),
             'activities' => ActivityModel::count(),
-            'income' => FinanceModel::where('type', 'income')->where('status', 'approved')->sum('amount') ?? 0,
-            'expense' => FinanceModel::where('type', 'expense')->where('status', 'approved')->sum('amount') ?? 0,
+            'income' => FinanceDetailModel::whereHas('finance', fn ($query) => $query
+                ->where('type', 'income')
+                ->where('status', 'approved'))->sum('amount') ?? 0,
+            'expense' => FinanceDetailModel::whereHas('finance', fn ($query) => $query
+                ->where('type', 'expense')
+                ->where('status', 'approved'))->sum('amount') ?? 0,
         ];
 
         $activities = ActivityModel::with('organization')

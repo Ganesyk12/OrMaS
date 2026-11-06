@@ -38,6 +38,19 @@ class ModuleAccessMiddlewareTest extends TestCase
     }
 
     /** @test */
+    public function forbidden_page_shows_dashboard_navigation_button(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->get('/organizations')
+            ->assertForbidden()
+            ->assertSee('403 - Akses Ditolak')
+            ->assertSee('Kembali ke Dashboard')
+            ->assertSee(route('dashboard.index'));
+    }
+
+    /** @test */
     public function view_only_user_can_list_but_cannot_create(): void
     {
         $user = User::factory()->create();

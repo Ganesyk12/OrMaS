@@ -55,10 +55,9 @@
           </a>
           <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
             <div class="dropdown-header">
-              <h4>Good Morning, <span class="small text-muted">{{ Auth::user()->name ?? 'Admin' }}</span></h4>
-              <p class="text-muted">Project Admin</p>
+              <h3>Welcome, <span class="small text-muted">{{ Auth::user()->name ?? 'User' }}</span></h3>
+              <p class="text-muted">{{ Auth::user()->email ?? 'undefined@mail.com' }}</p>
               <hr />
-              <a href="#" class="dropdown-item"><i class="ti ti-settings"></i> <span>Pengaturan Akun</span></a>
               <form method="POST" action="{{ route('logout') }}" class="m-0">
                 @csrf
                 <button type="submit" class="dropdown-item text-danger"><i class="ti ti-logout"></i> <span>Keluar</span></button>
