@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Modules\Activity\Models\ActivityModel;
 use Modules\Finance\Models\FinanceDetailModel;
+use Modules\Finance\Models\FinanceModel;
 use Modules\Letter\Models\LetterModel;
 use Modules\Member\Models\OrganizationMemberModel;
 
@@ -28,8 +29,17 @@ class DashboardController extends Controller
             ->orderBy('created_at', 'desc')
             ->limit(5)
             ->get();
+
+        $finances = FinanceModel::with('organization')
+            ->withSum('details', 'amount')
+            ->withCount('details')
+            ->orderByDesc('transaction_date')
+            ->orderByDesc('id')
+            ->limit(5)
+            ->get();
+
         $title = 'Dashboard';
 
-        return view('dashboard.index', compact('stats', 'activities', 'title'));
+        return view('dashboard.index', compact('stats', 'activities', 'finances', 'title'));
     }
 }

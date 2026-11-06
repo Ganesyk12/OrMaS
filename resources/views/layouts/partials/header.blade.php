@@ -19,6 +19,7 @@
     <!-- [Mobile Media Block end] -->
     <div class="ms-auto">
       <ul class="list-unstyled">
+        {{-- Notifikasi dinonaktifkan sementara karena fitur belum dibutuhkan.
         <li class="dropdown pc-h-item">
           <a class="pc-head-link head-link-secondary dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
             <i class="ti ti-bell"></i>
@@ -48,6 +49,7 @@
             <div class="text-center py-2"><a href="#" class="link-primary">Mark as all read</a></div>
           </div>
         </li>
+        --}}
         <li class="dropdown pc-h-item header-user-profile">
           <a class="pc-head-link head-link-primary dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
 

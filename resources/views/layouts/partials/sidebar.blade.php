@@ -7,7 +7,7 @@ $accessByModule = $currentUser
 $canView = fn (string $module): bool => (bool) ($accessByModule->get($module)?->allow_view ?? false);
 
 $isOrganisasiActive = request()->routeIs('organizations.*') || request()->routeIs('members.*') || request()->routeIs('roles.*');
-$isKegiatanActive = request()->routeIs('activities.*') || request()->routeIs('meetings.*') || request()->routeIs('agendas.*');
+$isKegiatanActive = request()->routeIs('activities.*') || request()->routeIs('meetings.*');
 $isSuratActive = request()->routeIs('letters.*') || request()->routeIs('letter-categories.*');
 $currentLetterDirection = request()->route('direction');
 $isKeuanganActive = request()->routeIs('finances.*');
@@ -62,7 +62,7 @@ $isPengaturanActive = request()->routeIs('users.*') || request()->routeIs('user-
         </li>
         @endif
 
-        @if($canView('activities') || $canView('meetings') || $canView('agendas'))
+        @if($canView('activities') || $canView('meetings'))
         <li class="pc-item pc-hasmenu {{ $isKegiatanActive ? 'pc-trigger pc-active' : '' }}">
           <a href="#!" class="pc-link" aria-expanded="{{ $isKegiatanActive ? 'true' : 'false' }}">
             <span class="pc-micon"><i class="ti ti-calendar"></i></span>
@@ -77,8 +77,8 @@ $isPengaturanActive = request()->routeIs('users.*') || request()->routeIs('user-
               </a>
             </li>
             @endif
-            @if($canView('meetings') || $canView('agendas'))
-            <li class="pc-item {{ request()->routeIs('meetings.*') || request()->routeIs('agendas.*') ? 'pc-active' : '' }}">
+            @if($canView('meetings'))
+            <li class="pc-item {{ request()->routeIs('meetings.*') ? 'pc-active' : '' }}">
               <a href="{{ route('meetings.index') }}" class="pc-link">
                 <span class="pc-mtext">Rapat</span>
               </a>

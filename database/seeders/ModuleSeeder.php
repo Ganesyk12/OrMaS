@@ -20,7 +20,6 @@ class ModuleSeeder extends Seeder
             ['name' => 'user-accesses', 'label' => 'Hak Akses'],
             ['name' => 'activities', 'label' => 'Kegiatan'],
             ['name' => 'meetings', 'label' => 'Rapat'],
-            ['name' => 'agendas', 'label' => 'Agenda'],
             ['name' => 'finances', 'label' => 'Keuangan'],
             ['name' => 'letters', 'label' => 'Surat'],
             ['name' => 'letter-categories', 'label' => 'Kategori Surat'],

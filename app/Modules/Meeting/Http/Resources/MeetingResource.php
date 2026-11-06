@@ -27,7 +27,6 @@ class MeetingResource extends JsonResource
                 'name' => $this->organization->name,
                 'code' => $this->organization->code,
             ]),
-            'agendas' => $this->whenLoaded('agendas', fn () => \Modules\Agenda\Http\Resources\AgendaResource::collection($this->agendas)),
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
             'created_at' => $this->created_at?->toISOString(),

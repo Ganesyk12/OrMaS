@@ -5,7 +5,9 @@ namespace Modules\Meeting\Http\Controllers;
 use App\Http\Controllers\Concerns\RendersModuleViews;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Meeting\Http\Resources\MeetingResource;
 use Modules\Meeting\Models\MeetingModel;
+use Modules\Organization\Models\OrganizationModel;
 
 class MeetingController extends Controller
 {
@@ -24,7 +26,7 @@ class MeetingController extends Controller
             $query->status($request->status);
         }
 
-        return \Modules\Meeting\Http\Resources\MeetingResource::collection($query->paginate($request->get('per_page', 15)))
+        return MeetingResource::collection($query->paginate($request->get('per_page', 15)))
             ->response()
             ->setStatusCode(200);
     }
@@ -47,7 +49,7 @@ class MeetingController extends Controller
         if ($request->expectsJson()) {
             return response()->json([
                 'message' => 'Rapat berhasil dijadwalkan.',
-                'data' => new \Modules\Meeting\Http\Resources\MeetingResource($meeting->load('organization')),
+                'data' => new MeetingResource($meeting->load('organization')),
             ], 201);
         }
 
@@ -60,7 +62,7 @@ class MeetingController extends Controller
 
         return response()->json([
             'message' => 'Data rapat.',
-            'data' => new \Modules\Meeting\Http\Resources\MeetingResource($meeting->load(['organization', 'agendas'])),
+            'data' => new MeetingResource($meeting->load('organization')),
         ], 200);
     }
 
@@ -84,7 +86,7 @@ class MeetingController extends Controller
         if ($request->expectsJson()) {
             return response()->json([
                 'message' => 'Rapat berhasil diperbarui.',
-                'data' => new \Modules\Meeting\Http\Resources\MeetingResource($meeting->fresh()->load('organization')),
+                'data' => new MeetingResource($meeting->fresh()->load('organization')),
             ], 200);
         }
 
@@ -123,14 +125,14 @@ class MeetingController extends Controller
         }
 
         $meetings = $query->paginate(15)->withQueryString();
-        $organizations = \Modules\Organization\Models\OrganizationModel::active()->get();
+        $organizations = OrganizationModel::active()->get();
 
         return $this->renderPage('index', compact('meetings', 'organizations'));
     }
 
     public function create()
     {
-        $organizations = \Modules\Organization\Models\OrganizationModel::active()->get();
+        $organizations = OrganizationModel::active()->get();
 
         return $this->renderPage('create', compact('organizations'));
     }
@@ -141,7 +143,7 @@ class MeetingController extends Controller
             return $this->apiShow($meeting);
         }
 
-        $meeting = MeetingModel::with(['organization', 'agendas'])->findOrFail($meeting);
+        $meeting = MeetingModel::with('organization')->findOrFail($meeting);
 
         return $this->renderPage('show', compact('meeting'));
     }
@@ -149,7 +151,7 @@ class MeetingController extends Controller
     public function edit(string $meeting)
     {
         $meeting = MeetingModel::findOrFail($meeting);
-        $organizations = \Modules\Organization\Models\OrganizationModel::active()->get();
+        $organizations = OrganizationModel::active()->get();
 
         return $this->renderPage('edit', compact('meeting', 'organizations'));
     }

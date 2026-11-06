@@ -255,7 +255,6 @@
 │   ├── Role/                       # Jabatan / Role kepengurusan
 │   ├── UserAccess/                 # Hak akses user per modul & izin
 │   ├── User/                       # Manajemen pengguna sistem
-│   ├── Agenda/                     # Agenda rapat (milik Meeting)
 │   ├── Activity/                   # Kegiatan / Program kerja
 │   ├── Meeting/                    # Rapat
 │   └── Finance/                    # Transaksi keuangan
@@ -296,11 +295,6 @@
                     <td>User</td>
                     <td><code>users</code></td>
                     <td>Pengguna sistem (autentikasi)</td>
-                </tr>
-                <tr>
-                    <td>Agenda</td>
-                    <td><code>agendas</code></td>
-                    <td>Agenda rapat (milik Meeting)</td>
                 </tr>
                 <tr>
                     <td>Activity</td>
@@ -390,13 +384,6 @@ GET    /meetings/{id}
 PUT    /meetings/{id}
 DELETE /meetings/{id}
 
-# Agenda (nested di bawah Meeting)
-GET    /meetings/{meeting}/agendas          # daftar agenda rapat
-POST   /meetings/{meeting}/agendas          # buat agenda
-GET    /meetings/{meeting}/agendas/{agenda}
-PUT    /meetings/{meeting}/agendas/{agenda}
-DELETE /meetings/{meeting}/agendas/{agenda}
-
 # Finance
 GET    /finances
 POST   /finances
@@ -475,8 +462,7 @@ php artisan test --coverage</code></pre>
 
             G -->|ikuti| H[Kegiatan / Activity]
             G -->|hadiri| I[Rapat / Meeting]
-            I -->|buat| J[Agenda Rapat]
-            J -->|diskusikan| K[Catatan Keputusan]
+            I -->|diskusikan| K[Catatan Keputusan]
 
             H -->|biaya| L[Transaksi Keuangan]
             L -->|pemasukan/pengeluaran| M[Laporan Keuangan]

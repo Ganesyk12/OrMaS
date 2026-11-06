@@ -2,14 +2,12 @@
 
 namespace Modules\Meeting\Models;
 
+use Database\Factories\MeetingFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Database\Factories\MeetingFactory;
 use Modules\Organization\Models\OrganizationModel;
-use Modules\Agenda\Models\AgendaModel;
 
 class MeetingModel extends Model
 {
@@ -19,6 +17,7 @@ class MeetingModel extends Model
     {
         return new MeetingFactory;
     }
+
     protected $table = 'meetings';
 
     protected $fillable = [
@@ -48,14 +47,6 @@ class MeetingModel extends Model
     public function organization(): BelongsTo
     {
         return $this->belongsTo(OrganizationModel::class, 'organization_id');
-    }
-
-    /**
-     * Relasi: satu rapat memiliki banyak agenda rapat.
-     */
-    public function agendas(): HasMany
-    {
-        return $this->hasMany(AgendaModel::class, 'meeting_id');
     }
 
     /**

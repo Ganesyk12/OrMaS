@@ -31,7 +31,6 @@ app/
 │   ├── Role/                       # Jabatan / Role kepengurusan
 │   ├── UserAccess/                 # Hak akses user per modul & izin
 │   ├── User/                       # Manajemen pengguna sistem
-│   ├── Agenda/                     # Agenda rapat (milik Meeting)
 │   ├── Activity/                   # Kegiatan / Program kerja
 │   ├── Meeting/                    # Rapat
 │   └── Finance/                    # Transaksi keuangan
@@ -48,7 +47,6 @@ app/
 | Member | `organization_members` | Anggota organisasi (terkait user & role) |
 | UserAccess | `user_accesses` | Hak akses user per modul & izin (view/create/edit/delete) |
 | User | `users` | Pengguna sistem (autentikasi) |
-| Agenda | `agendas` | Agenda rapat (milik Meeting) |
 | Activity | `activities` | Kegiatan / program kerja |
 | Meeting | `meetings` | Rapat |
 | Finance | `finances` | Transaksi keuangan (pemasukan / pengeluaran) |
@@ -123,13 +121,6 @@ POST   /meetings
 GET    /meetings/{id}
 PUT    /meetings/{id}
 DELETE /meetings/{id}
-
-# Agenda (nested di bawah Meeting)
-GET    /meetings/{meeting}/agendas          # daftar agenda rapat
-POST   /meetings/{meeting}/agendas          # buat agenda
-GET    /meetings/{meeting}/agendas/{agenda}
-PUT    /meetings/{meeting}/agendas/{agenda}
-DELETE /meetings/{meeting}/agendas/{agenda}
 
 # Finance
 GET    /finances

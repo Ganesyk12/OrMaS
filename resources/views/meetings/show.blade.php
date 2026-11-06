@@ -13,7 +13,7 @@ $meeting->title => route('meetings.show', $meeting->id),
 @section('content')
 <div class="container-fluid">
   <div class="row">
-    <div class="col-xl-8">
+    <div class="col-xl-12">
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
           <h5 class="mb-0">{{ $meeting->title }}</h5>
@@ -42,27 +42,6 @@ $meeting->title => route('meetings.show', $meeting->id),
               <td>{{ $meeting->description ?? '-' }}</td>
             </tr>
           </table>
-        </div>
-      </div>
-    </div>
-    <div class="col-xl-4">
-      <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <h6 class="mb-0">Agenda ({{ $meeting->agendas->count() }})</h6>
-          <a href="{{ route('agendas.create', $meeting->id) }}" class="btn btn-primary btn-sm"><i class="ti ti-plus"></i></a>
-        </div>
-        <div class="card-body p-0">
-          @forelse($meeting->agendas->sortBy('order') as $agenda)
-          <div class="border-bottom px-3 py-2">
-            <div class="fw-semibold">{{ $agenda->order }}. {{ $agenda->title }}</div>
-            <div class="text-muted small">{{ ucfirst($agenda->status) }}{{ $agenda->presenter ? ' · '.$agenda->presenter : '' }}</div>
-          </div>
-          @empty
-          <div class="text-muted p-3">Belum ada agenda.</div>
-          @endforelse
-        </div>
-        <div class="card-footer">
-          <a href="{{ route('agendas.index', $meeting->id) }}" class="btn btn-outline-primary btn-sm w-100">Kelola Agenda</a>
         </div>
       </div>
     </div>

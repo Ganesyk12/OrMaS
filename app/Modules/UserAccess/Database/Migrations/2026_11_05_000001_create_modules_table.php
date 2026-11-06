@@ -29,7 +29,6 @@ return new class extends Migration
             ['name' => 'user-accesses', 'label' => 'Hak Akses'],
             ['name' => 'activities', 'label' => 'Kegiatan'],
             ['name' => 'meetings', 'label' => 'Rapat'],
-            ['name' => 'agendas', 'label' => 'Agenda'],
             ['name' => 'finances', 'label' => 'Keuangan'],
             ['name' => 'letters', 'label' => 'Surat'],
             ['name' => 'letter-categories', 'label' => 'Kategori Surat'],

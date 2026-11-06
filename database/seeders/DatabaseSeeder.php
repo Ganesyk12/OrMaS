@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Modules\Activity\Models\ActivityModel;
-use Modules\Agenda\Models\AgendaModel;
 use Modules\Finance\Models\FinanceModel;
 use Modules\Letter\Models\LetterModel;
 use Modules\LetterCategory\Models\LetterCategoryModel;
@@ -89,16 +88,12 @@ class DatabaseSeeder extends Seeder
             'status' => 'completed',
         ]);
 
-        // Rapat contoh dengan agenda
+        // Rapat contoh
         $meeting = MeetingModel::factory()->create([
             'organization_id' => $org->id,
             'title' => 'Rapat Kerja Bulanan',
             'status' => 'completed',
         ]);
-
-        AgendaModel::factory()->count(4)->create([
-            'meeting_id' => $meeting->id,
-        ])->each(fn (AgendaModel $agenda) => $agenda->update(['order' => $agenda->id]));
 
         // Keuangan contoh (header + detail)
         $income = FinanceModel::factory()->create([

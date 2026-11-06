@@ -200,67 +200,6 @@ $breadcrumbs = [
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const ctx = document.getElementById('activityChart');
-        if (ctx) {
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
-                    datasets: [{
-                        label: 'Kegiatan',
-                        data: [12, 15, 11, 18, 14, 20, 16],
-                        borderColor: '#2563eb',
-                        backgroundColor: 'rgba(37, 99, 235, 0.05)',
-                        borderWidth: 2,
-                        pointBackgroundColor: '#2563eb',
-                        pointRadius: 3,
-                        pointHoverRadius: 5,
-                        fill: true,
-                        tension: 0.3
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            padding: 10,
-                            cornerRadius: 6
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                color: '#f3f4f6'
-                            },
-                            ticks: {
-                                color: '#9ca3af',
-                                font: {
-                                    size: 11
-                                }
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                color: '#9ca3af',
-                                font: {
-                                    size: 11
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
         const ctx2 = document.getElementById('financeChart');
         if (ctx2) {
             new Chart(ctx2, {
@@ -438,18 +377,41 @@ $breadcrumbs = [
                     </div>
                 </div>
 
-                <!-- Activity Chart -->
+                <!-- Latest Finances -->
                 <div class="col-xl-4 col-md-6">
                     <div class="card h-100">
-                        <div class="card-header border-0">
-                            <div class="d-flex align-items-center">
-                                <span class="card-title-professional me-2">Kegiatan per Minggu</span>
-                            </div>
+                        <div class="card-header border-0 d-flex justify-content-between align-items-center">
+                            <span class="card-title-professional">Data Keuangan Terbaru</span>
+                            <a href="{{ route('finances.index') }}" class="btn btn-sm btn-outline-primary">Lihat Semua</a>
                         </div>
-                        <div class="card-body p-0">
-                            <div class="chart-container">
-                                <canvas id="activityChart"></canvas>
+                        <div class="card-body p-3">
+                            @forelse($finances as $finance)
+                            <a href="{{ route('finances.show', $finance->id) }}" class="activity-item d-flex align-items-start text-decoration-none">
+                                <div class="flex-shrink-0">
+                                    <div class="activity-icon">
+                                        <i class="ti ti-{{ $finance->type === 'income' ? 'arrow-down-left' : 'arrow-up-right' }}"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-2">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="fw-semibold small {{ $finance->type === 'income' ? 'text-success' : 'text-danger' }}">
+                                            {{ $finance->type === 'income' ? 'Pemasukan' : 'Pengeluaran' }}
+                                        </span>
+                                        <small class="text-muted">{{ $finance->transaction_date?->format('d M Y') ?? '-' }}</small>
+                                    </div>
+                                    <div class="fw-semibold text-dark">Rp {{ number_format($finance->total, 0, ',', '.') }}</div>
+                                    <div class="text-muted smaller">
+                                        {{ $finance->organization->name ?? '-' }} · {{ $finance->details_count }} detail
+                                    </div>
+                                </div>
+                            </a>
+                            @empty
+                            <div class="text-center text-muted py-4">
+                                <i class="ti ti-information fs-4 mb-2 d-block opacity-50"></i>
+                                <div class="fw-semibold text-dark small">Belum ada transaksi</div>
+                                <div class="text-muted smallest">Tambahkan transaksi dari menu Keuangan.</div>
                             </div>
+                            @endforelse
                         </div>
                     </div>
                 </div>

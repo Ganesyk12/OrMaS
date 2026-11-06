@@ -17,7 +17,7 @@
         <div class="card-header border-1 d-flex justify-content-between align-items-center">
           <div>
             <h1 class="h4 mb-1 text-dark">Rapat</h1>
-            <p class="text-muted mb-0">Kelola rapat dan agenda</p>
+            <p class="text-muted mb-0">Kelola rapat</p>
           </div>
           <a href="{{ route('meetings.create') }}" class="btn btn-primary">
             <i class="ti ti-plus me-1"></i> Tambah Rapat

@@ -412,7 +412,7 @@
 
         <ul class="auth-features">
           <li><i class="ti ti-check"></i> Data organisasi dan anggota yang terstruktur</li>
-          <li><i class="ti ti-check"></i> Jadwal kegiatan, rapat, dan agenda yang mudah dipantau</li>
+          <li><i class="ti ti-check"></i> Jadwal kegiatan dan rapat yang mudah dipantau</li>
           <li><i class="ti ti-check"></i> Pencatatan keuangan serta surat masuk dan keluar</li>
         </ul>
       </div>
