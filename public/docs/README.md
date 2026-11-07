@@ -77,6 +77,20 @@ npm install && npm run build
 php artisan serve
 ```
 
+### PostgreSQL dengan Schema Custom
+
+```dotenv
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=nama_database
+DB_USERNAME=postgres
+DB_PASSWORD=password
+DB_SCHEMA=ORMS
+```
+
+`DB_SCHEMA` dipakai sebagai `search_path` PostgreSQL. Schema custom dibuat otomatis saat migrasi jika belum ada. Gunakan `DB_SCHEMA="ORMS,public"` jika perlu fallback ke schema `public`.
+
 ### Akun Admin Default (dari seeder)
 
 - Email: `admin@karangtaruna.id`

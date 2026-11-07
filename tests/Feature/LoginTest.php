@@ -45,4 +45,26 @@ class LoginTest extends TestCase
         $response->assertSessionHasErrors('email');
         $this->assertGuest();
     }
+
+    /** @test */
+    public function user_cannot_login_with_unknown_email(): void
+    {
+        $response = $this->from('/login')->post('/login', [
+            'email' => 'tidak-terdaftar@example.com',
+            'password' => 'password',
+        ]);
+
+        $response->assertRedirect('/login');
+        $response->assertSessionHasErrors(['email' => 'Email atau password salah.']);
+        $this->assertGuest();
+    }
+
+    /** @test */
+    public function login_page_shows_session_expired_message(): void
+    {
+        $response = $this->get('/login?expired=1');
+
+        $response->assertOk();
+        $response->assertSee('Sesi halaman kedaluwarsa');
+    }
 }

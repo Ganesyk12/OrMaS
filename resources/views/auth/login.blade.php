@@ -440,6 +440,13 @@
         </div>
         @endif
 
+        @if (request()->boolean('expired'))
+        <div class="alert alert-warning auth-alert" role="alert">
+          <div class="fw-semibold mb-1">Sesi halaman kedaluwarsa</div>
+          <div>Token keamanan halaman sudah tidak valid. Silakan coba login lagi.</div>
+        </div>
+        @endif
+
         @if ($errors->any())
         <div class="alert alert-danger auth-alert" role="alert">
           <div class="fw-semibold mb-1">Login gagal</div>

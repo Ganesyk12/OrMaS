@@ -78,6 +78,25 @@ npm install && npm run build
 php artisan serve
 ```
 
+### PostgreSQL dengan Schema Custom
+
+Isi `.env` seperti berikut:
+
+```dotenv
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=nama_database
+DB_USERNAME=postgres
+DB_PASSWORD=password
+DB_SCHEMA=ORMS
+```
+
+- `DB_SCHEMA` menjadi `search_path` koneksi PostgreSQL.
+- Schema custom dibuat otomatis saat `php artisan migrate` jika belum ada.
+- Jika butuh schema `public` sebagai fallback (mis. untuk extension), gunakan `DB_SCHEMA="ORMS,public"`.
+- Untuk schema yang namanya mengandung huruf besar, nilainya akan di-quote otomatis oleh Laravel.
+
 Akun admin default (dari seeder):
 - Email: `admin@karangtaruna.id`
 - Password: `password`
