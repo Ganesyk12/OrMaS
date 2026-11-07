@@ -4,8 +4,11 @@ namespace Modules\Activity\Http\Controllers;
 
 use App\Http\Controllers\Concerns\RendersModuleViews;
 use App\Http\Controllers\Controller;
+use App\Rules\AccessibleOrganization;
 use Illuminate\Http\Request;
+use Modules\Activity\Http\Resources\ActivityResource;
 use Modules\Activity\Models\ActivityModel;
+use Modules\Organization\Models\OrganizationModel;
 
 class ActivityController extends Controller
 {
@@ -15,7 +18,9 @@ class ActivityController extends Controller
 
     public function apiIndex(Request $request)
     {
-        $query = ActivityModel::query()->with('organization');
+        $query = ActivityModel::query()
+            ->with('organization')
+            ->visibleToUser($request->user());
 
         if ($request->filled('organization_id')) {
             $query->where('organization_id', $request->organization_id);
@@ -27,7 +32,7 @@ class ActivityController extends Controller
             $query->where('type', $request->type);
         }
 
-        return \Modules\Activity\Http\Resources\ActivityResource::collection($query->paginate($request->get('per_page', 15)))
+        return ActivityResource::collection($query->paginate($request->get('per_page', 15)))
             ->response()
             ->setStatusCode(200);
     }
@@ -35,7 +40,7 @@ class ActivityController extends Controller
     public function apiStore(Request $request)
     {
         $data = $request->validate([
-            'organization_id' => 'required|exists:organizations,id',
+            'organization_id' => ['required', new AccessibleOrganization($request->user())],
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'type' => 'required|in:program,kegiatan,pelatihan,sosial',
@@ -53,29 +58,33 @@ class ActivityController extends Controller
         if ($request->expectsJson()) {
             return response()->json([
                 'message' => 'Kegiatan berhasil dibuat.',
-                'data' => new \Modules\Activity\Http\Resources\ActivityResource($activity->load('organization')),
+                'data' => new ActivityResource($activity->load('organization')),
             ], 201);
         }
 
         return redirect()->route('activities.index')->with('success', 'Kegiatan berhasil dibuat.');
     }
 
-    public function apiShow(string $activity)
+    public function apiShow(Request $request, string $activity)
     {
-        $activity = ActivityModel::findOrFail($activity);
+        $activity = ActivityModel::query()
+            ->visibleToUser($request->user())
+            ->findOrFail($activity);
 
         return response()->json([
             'message' => 'Data kegiatan.',
-            'data' => new \Modules\Activity\Http\Resources\ActivityResource($activity->load('organization')),
+            'data' => new ActivityResource($activity->load('organization')),
         ], 200);
     }
 
     public function apiUpdate(Request $request, string $activity)
     {
-        $activity = ActivityModel::findOrFail($activity);
+        $activity = ActivityModel::query()
+            ->visibleToUser($request->user())
+            ->findOrFail($activity);
 
         $data = $request->validate([
-            'organization_id' => 'sometimes|exists:organizations,id',
+            'organization_id' => ['sometimes', new AccessibleOrganization($request->user())],
             'title' => 'sometimes|string|max:255',
             'description' => 'nullable|string',
             'type' => 'sometimes|in:program,kegiatan,pelatihan,sosial',
@@ -93,7 +102,7 @@ class ActivityController extends Controller
         if ($request->expectsJson()) {
             return response()->json([
                 'message' => 'Kegiatan berhasil diperbarui.',
-                'data' => new \Modules\Activity\Http\Resources\ActivityResource($activity->fresh()->load('organization')),
+                'data' => new ActivityResource($activity->fresh()->load('organization')),
             ], 200);
         }
 
@@ -102,7 +111,9 @@ class ActivityController extends Controller
 
     public function apiDestroy(Request $request, string $activity)
     {
-        $activity = ActivityModel::findOrFail($activity);
+        $activity = ActivityModel::query()
+            ->visibleToUser($request->user())
+            ->findOrFail($activity);
         $activity->delete();
 
         if ($request->expectsJson()) {
@@ -122,7 +133,9 @@ class ActivityController extends Controller
             return $this->apiIndex($request);
         }
 
-        $query = ActivityModel::query()->with('organization');
+        $query = ActivityModel::query()
+            ->with('organization')
+            ->visibleToUser($request->user());
 
         if ($request->filled('organization_id')) {
             $query->where('organization_id', $request->organization_id);
@@ -132,14 +145,20 @@ class ActivityController extends Controller
         }
 
         $activities = $query->paginate(15)->withQueryString();
-        $organizations = \Modules\Organization\Models\OrganizationModel::active()->get();
+        $organizations = OrganizationModel::active()
+            ->visibleTo($request->user())
+            ->orderBy('name')
+            ->get();
 
         return $this->renderPage('index', compact('activities', 'organizations'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $organizations = \Modules\Organization\Models\OrganizationModel::active()->get();
+        $organizations = OrganizationModel::active()
+            ->visibleTo($request->user())
+            ->orderBy('name')
+            ->get();
 
         return $this->renderPage('create', compact('organizations'));
     }
@@ -147,18 +166,26 @@ class ActivityController extends Controller
     public function show(Request $request, string $activity)
     {
         if ($request->expectsJson()) {
-            return $this->apiShow($activity);
+            return $this->apiShow($request, $activity);
         }
 
-        $activity = ActivityModel::with('organization')->findOrFail($activity);
+        $activity = ActivityModel::query()
+            ->with('organization')
+            ->visibleToUser($request->user())
+            ->findOrFail($activity);
 
         return $this->renderPage('show', compact('activity'));
     }
 
-    public function edit(string $activity)
+    public function edit(Request $request, string $activity)
     {
-        $activity = ActivityModel::findOrFail($activity);
-        $organizations = \Modules\Organization\Models\OrganizationModel::active()->get();
+        $activity = ActivityModel::query()
+            ->visibleToUser($request->user())
+            ->findOrFail($activity);
+        $organizations = OrganizationModel::active()
+            ->visibleTo($request->user())
+            ->orderBy('name')
+            ->get();
 
         return $this->renderPage('edit', compact('activity', 'organizations'));
     }

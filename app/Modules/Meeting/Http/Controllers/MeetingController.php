@@ -4,6 +4,7 @@ namespace Modules\Meeting\Http\Controllers;
 
 use App\Http\Controllers\Concerns\RendersModuleViews;
 use App\Http\Controllers\Controller;
+use App\Rules\AccessibleOrganization;
 use Illuminate\Http\Request;
 use Modules\Meeting\Http\Resources\MeetingResource;
 use Modules\Meeting\Models\MeetingModel;
@@ -17,7 +18,9 @@ class MeetingController extends Controller
 
     public function apiIndex(Request $request)
     {
-        $query = MeetingModel::query()->with('organization');
+        $query = MeetingModel::query()
+            ->with('organization')
+            ->visibleToUser($request->user());
 
         if ($request->filled('organization_id')) {
             $query->where('organization_id', $request->organization_id);
@@ -34,7 +37,7 @@ class MeetingController extends Controller
     public function apiStore(Request $request)
     {
         $data = $request->validate([
-            'organization_id' => 'required|exists:organizations,id',
+            'organization_id' => ['required', new AccessibleOrganization($request->user())],
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'meeting_date' => 'required|date',
@@ -56,9 +59,11 @@ class MeetingController extends Controller
         return redirect()->route('meetings.index')->with('success', 'Rapat berhasil dijadwalkan.');
     }
 
-    public function apiShow(string $meeting)
+    public function apiShow(Request $request, string $meeting)
     {
-        $meeting = MeetingModel::findOrFail($meeting);
+        $meeting = MeetingModel::query()
+            ->visibleToUser($request->user())
+            ->findOrFail($meeting);
 
         return response()->json([
             'message' => 'Data rapat.',
@@ -68,10 +73,12 @@ class MeetingController extends Controller
 
     public function apiUpdate(Request $request, string $meeting)
     {
-        $meeting = MeetingModel::findOrFail($meeting);
+        $meeting = MeetingModel::query()
+            ->visibleToUser($request->user())
+            ->findOrFail($meeting);
 
         $data = $request->validate([
-            'organization_id' => 'sometimes|exists:organizations,id',
+            'organization_id' => ['sometimes', new AccessibleOrganization($request->user())],
             'title' => 'sometimes|string|max:255',
             'description' => 'nullable|string',
             'meeting_date' => 'sometimes|date',
@@ -95,7 +102,9 @@ class MeetingController extends Controller
 
     public function apiDestroy(Request $request, string $meeting)
     {
-        $meeting = MeetingModel::findOrFail($meeting);
+        $meeting = MeetingModel::query()
+            ->visibleToUser($request->user())
+            ->findOrFail($meeting);
         $meeting->delete();
 
         if ($request->expectsJson()) {
@@ -115,7 +124,9 @@ class MeetingController extends Controller
             return $this->apiIndex($request);
         }
 
-        $query = MeetingModel::query()->with('organization');
+        $query = MeetingModel::query()
+            ->with('organization')
+            ->visibleToUser($request->user());
 
         if ($request->filled('organization_id')) {
             $query->where('organization_id', $request->organization_id);
@@ -125,14 +136,20 @@ class MeetingController extends Controller
         }
 
         $meetings = $query->paginate(15)->withQueryString();
-        $organizations = OrganizationModel::active()->get();
+        $organizations = OrganizationModel::active()
+            ->visibleTo($request->user())
+            ->orderBy('name')
+            ->get();
 
         return $this->renderPage('index', compact('meetings', 'organizations'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $organizations = OrganizationModel::active()->get();
+        $organizations = OrganizationModel::active()
+            ->visibleTo($request->user())
+            ->orderBy('name')
+            ->get();
 
         return $this->renderPage('create', compact('organizations'));
     }
@@ -140,18 +157,26 @@ class MeetingController extends Controller
     public function show(Request $request, string $meeting)
     {
         if ($request->expectsJson()) {
-            return $this->apiShow($meeting);
+            return $this->apiShow($request, $meeting);
         }
 
-        $meeting = MeetingModel::with('organization')->findOrFail($meeting);
+        $meeting = MeetingModel::query()
+            ->with('organization')
+            ->visibleToUser($request->user())
+            ->findOrFail($meeting);
 
         return $this->renderPage('show', compact('meeting'));
     }
 
-    public function edit(string $meeting)
+    public function edit(Request $request, string $meeting)
     {
-        $meeting = MeetingModel::findOrFail($meeting);
-        $organizations = OrganizationModel::active()->get();
+        $meeting = MeetingModel::query()
+            ->visibleToUser($request->user())
+            ->findOrFail($meeting);
+        $organizations = OrganizationModel::active()
+            ->visibleTo($request->user())
+            ->orderBy('name')
+            ->get();
 
         return $this->renderPage('edit', compact('meeting', 'organizations'));
     }

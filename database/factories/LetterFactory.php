@@ -5,6 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Letter\Models\LetterModel;
 use Modules\LetterCategory\Models\LetterCategoryModel;
+use Modules\Organization\Models\OrganizationModel;
 
 /**
  * @extends Factory<LetterModel>
@@ -20,6 +21,7 @@ class LetterFactory extends Factory
 
         return [
             'category_id' => LetterCategoryModel::factory(),
+            'organization_id' => OrganizationModel::factory(),
             'direction' => $direction,
             'letter_number' => fake()->unique()->bothify('SRT/####/XI/2026'),
             'subject' => fake()->sentence(5),

@@ -17,6 +17,7 @@ class LetterResource extends JsonResource
         return [
             'id' => $this->id,
             'category_id' => $this->category_id,
+            'organization_id' => $this->organization_id,
             'direction' => $this->direction,
             'direction_label' => $this->direction_label,
             'letter_number' => $this->letter_number,
@@ -30,6 +31,11 @@ class LetterResource extends JsonResource
                 'id' => $this->category->id,
                 'code' => $this->category->code,
                 'name' => $this->category->name,
+            ]),
+            'organization' => $this->whenLoaded('organization', fn () => [
+                'id' => $this->organization->id,
+                'name' => $this->organization->name,
+                'code' => $this->organization->code,
             ]),
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,

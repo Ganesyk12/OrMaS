@@ -4,6 +4,16 @@
 
 <div class="row g-3">
   <div class="col-md-6">
+    <label class="form-label">Organisasi <span class="text-danger">*</span></label>
+    <select name="organization_id" class="form-select @error('organization_id') is-invalid @enderror" required>
+      <option value="">-- Pilih Organisasi --</option>
+      @foreach($organizations as $org)
+        <option value="{{ $org->id }}" @selected((string) old('organization_id', $letter->organization_id ?? '') === (string) $org->id)>{{ $org->name }}</option>
+      @endforeach
+    </select>
+    @error('organization_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+  </div>
+  <div class="col-md-6">
     <label class="form-label">Kategori Surat <span class="text-danger">*</span></label>
     <select name="category_id" class="form-select @error('category_id') is-invalid @enderror" required>
       <option value="">-- Pilih Kategori --</option>

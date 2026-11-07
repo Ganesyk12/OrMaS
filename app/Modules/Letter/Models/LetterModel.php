@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\LetterCategory\Models\LetterCategoryModel;
+use Modules\Organization\Models\OrganizationModel;
+use Modules\Shared\Concerns\BelongsToVisibleOrganization;
 
 class LetterModel extends Model
 {
-    use HasFactory, SoftDeletes;
+    use BelongsToVisibleOrganization, HasFactory, SoftDeletes;
 
     protected static function newFactory()
     {
@@ -22,6 +24,7 @@ class LetterModel extends Model
 
     protected $fillable = [
         'category_id',
+        'organization_id',
         'direction',
         'letter_number',
         'subject',
@@ -47,6 +50,14 @@ class LetterModel extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(LetterCategoryModel::class, 'category_id');
+    }
+
+    /**
+     * Relasi: surat milik satu organisasi.
+     */
+    public function organization(): BelongsTo
+    {
+        return $this->belongsTo(OrganizationModel::class, 'organization_id');
     }
 
     /**

@@ -2,8 +2,8 @@
 
 use Database\Factories\LetterCategoryFactory;
 use Database\Factories\LetterFactory;
+use Database\Factories\OrganizationFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\Letter\Models\LetterModel;
 use Tests\Concerns\AuthenticatesModuleAccess;
 use Tests\TestCase;
 
@@ -34,9 +34,11 @@ class LetterModuleTest extends TestCase
     public function incoming_letter_can_be_created(): void
     {
         $category = LetterCategoryFactory::new()->create();
+        $organization = OrganizationFactory::new()->create();
 
         $response = $this->postJson('/letters/incoming', [
             'category_id' => $category->id,
+            'organization_id' => $organization->id,
             'letter_number' => '001/UND/XI/2026',
             'subject' => 'Undangan Rapat Koordinasi',
             'sender' => 'Kelurahan Sentral',
@@ -56,9 +58,11 @@ class LetterModuleTest extends TestCase
     public function outgoing_letter_can_be_created(): void
     {
         $category = LetterCategoryFactory::new()->create();
+        $organization = OrganizationFactory::new()->create();
 
         $response = $this->postJson('/letters/outgoing', [
             'category_id' => $category->id,
+            'organization_id' => $organization->id,
             'letter_number' => '002/PMH/XI/2026',
             'subject' => 'Permohonan Bantuan Dana',
             'recipient' => 'Pemerintah Kota',

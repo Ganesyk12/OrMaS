@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Activity\Models\ActivityModel;
 use Modules\Organization\Models\OrganizationModel;
+use Modules\Shared\Concerns\BelongsToVisibleOrganization;
 
 class FinanceModel extends Model
 {
-    use HasFactory, SoftDeletes;
+    use BelongsToVisibleOrganization, HasFactory, SoftDeletes;
 
     protected static function newFactory()
     {

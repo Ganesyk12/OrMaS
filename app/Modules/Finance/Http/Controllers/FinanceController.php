@@ -4,6 +4,7 @@ namespace Modules\Finance\Http\Controllers;
 
 use App\Http\Controllers\Concerns\RendersModuleViews;
 use App\Http\Controllers\Controller;
+use App\Rules\AccessibleOrganization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Modules\Activity\Models\ActivityModel;
@@ -55,9 +56,12 @@ class FinanceController extends Controller
         return redirect()->route('finances.index')->with('success', 'Transaksi keuangan berhasil dibuat.');
     }
 
-    public function apiShow(string $finance)
+    public function apiShow(Request $request, string $finance)
     {
-        $finance = FinanceModel::with(['organization', 'activity', 'details'])->findOrFail($finance);
+        $finance = FinanceModel::query()
+            ->with(['organization', 'activity', 'details'])
+            ->visibleToUser($request->user())
+            ->findOrFail($finance);
 
         return response()->json([
             'message' => 'Data keuangan.',
@@ -67,7 +71,9 @@ class FinanceController extends Controller
 
     public function apiUpdate(Request $request, string $finance)
     {
-        $finance = FinanceModel::findOrFail($finance);
+        $finance = FinanceModel::query()
+            ->visibleToUser($request->user())
+            ->findOrFail($finance);
 
         $data = $this->validateFinance($request, false);
         $details = $data['details'] ?? null;
@@ -99,7 +105,9 @@ class FinanceController extends Controller
 
     public function apiDestroy(Request $request, string $finance)
     {
-        $finance = FinanceModel::findOrFail($finance);
+        $finance = FinanceModel::query()
+            ->visibleToUser($request->user())
+            ->findOrFail($finance);
 
         DB::transaction(function () use ($finance) {
             $finance->details()->delete();
@@ -124,16 +132,28 @@ class FinanceController extends Controller
         }
 
         $finances = $this->filteredQuery($request)->paginate(15)->withQueryString();
-        $organizations = OrganizationModel::active()->get();
-        $activities = ActivityModel::all();
+        $organizations = OrganizationModel::active()
+            ->visibleTo($request->user())
+            ->orderBy('name')
+            ->get();
+        $activities = ActivityModel::query()
+            ->visibleToUser($request->user())
+            ->orderBy('title')
+            ->get();
 
         return $this->renderPage('index', compact('finances', 'organizations', 'activities'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $organizations = OrganizationModel::active()->get();
-        $activities = ActivityModel::all();
+        $organizations = OrganizationModel::active()
+            ->visibleTo($request->user())
+            ->orderBy('name')
+            ->get();
+        $activities = ActivityModel::query()
+            ->visibleToUser($request->user())
+            ->orderBy('title')
+            ->get();
 
         return $this->renderPage('create', compact('organizations', 'activities'));
     }
@@ -141,19 +161,31 @@ class FinanceController extends Controller
     public function show(Request $request, string $finance)
     {
         if ($request->expectsJson()) {
-            return $this->apiShow($finance);
+            return $this->apiShow($request, $finance);
         }
 
-        $finance = FinanceModel::with(['organization', 'activity', 'details'])->findOrFail($finance);
+        $finance = FinanceModel::query()
+            ->with(['organization', 'activity', 'details'])
+            ->visibleToUser($request->user())
+            ->findOrFail($finance);
 
         return $this->renderPage('show', compact('finance'));
     }
 
-    public function edit(string $finance)
+    public function edit(Request $request, string $finance)
     {
-        $finance = FinanceModel::with('details')->findOrFail($finance);
-        $organizations = OrganizationModel::active()->get();
-        $activities = ActivityModel::all();
+        $finance = FinanceModel::query()
+            ->with('details')
+            ->visibleToUser($request->user())
+            ->findOrFail($finance);
+        $organizations = OrganizationModel::active()
+            ->visibleTo($request->user())
+            ->orderBy('name')
+            ->get();
+        $activities = ActivityModel::query()
+            ->visibleToUser($request->user())
+            ->orderBy('title')
+            ->get();
 
         return $this->renderPage('edit', compact('finance', 'organizations', 'activities'));
     }
@@ -166,7 +198,8 @@ class FinanceController extends Controller
         $query = FinanceModel::query()
             ->with(['organization', 'activity'])
             ->withSum('details', 'amount')
-            ->withCount('details');
+            ->withCount('details')
+            ->visibleToUser($request->user());
 
         if ($request->filled('organization_id')) {
             $query->where('organization_id', $request->organization_id);
@@ -195,7 +228,9 @@ class FinanceController extends Controller
         $required = $creating ? 'required' : 'sometimes';
 
         return $request->validate([
-            'organization_id' => "{$required}|exists:organizations,id",
+            'organization_id' => $creating
+                ? ['required', new AccessibleOrganization($request->user())]
+                : ['sometimes', new AccessibleOrganization($request->user())],
             'activity_id' => 'nullable|exists:activities,id',
             'type' => "{$required}|in:income,expense",
             'transaction_date' => "{$required}|date",

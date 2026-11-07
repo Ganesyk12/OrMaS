@@ -2,15 +2,14 @@
 
 namespace Modules\Organization\Models;
 
+use App\Models\User;
+use Database\Factories\OrganizationFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Database\Factories\OrganizationFactory;
-use Modules\Member\Models\OrganizationMemberModel;
 use Modules\Activity\Models\ActivityModel;
-
-use Illuminate\Support\Str;
+use Modules\Member\Models\OrganizationMemberModel;
 
 class OrganizationModel extends Model
 {
@@ -18,21 +17,23 @@ class OrganizationModel extends Model
     {
         static::creating(function ($organization) {
             if (empty($organization->code)) {
-                $prefix = 'ORGS' . now()->format('Ymd');
-                $last = static::where('code', 'like', $prefix . '%')
+                $prefix = 'ORGS'.now()->format('Ymd');
+                $last = static::where('code', 'like', $prefix.'%')
                     ->orderBy('code', 'desc')
                     ->value('code');
                 $seq = $last ? (int) substr($last, -3) + 1 : 1;
-                $organization->code = $prefix . str_pad($seq, 3, '0', STR_PAD_LEFT);
+                $organization->code = $prefix.str_pad($seq, 3, '0', STR_PAD_LEFT);
             }
         });
     }
+
     use HasFactory, SoftDeletes;
 
     protected static function newFactory()
     {
         return new OrganizationFactory;
     }
+
     protected $table = 'organizations';
 
     protected $fillable = [
@@ -79,6 +80,22 @@ class OrganizationModel extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    /**
+     * Scope: batasi organisasi sesuai penugasan user.
+     *
+     * User tanpa penugasan tetap dapat melihat seluruh organisasi.
+     */
+    public function scopeVisibleTo($query, ?User $user)
+    {
+        $organizationIds = $user?->assignedOrganizationIds() ?? [];
+
+        if ($organizationIds === []) {
+            return $query;
+        }
+
+        return $query->whereIn('organizations.id', $organizationIds);
     }
 
     /**

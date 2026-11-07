@@ -4,10 +4,12 @@ namespace Modules\Letter\Http\Controllers;
 
 use App\Http\Controllers\Concerns\RendersModuleViews;
 use App\Http\Controllers\Controller;
+use App\Rules\AccessibleOrganization;
 use Illuminate\Http\Request;
 use Modules\Letter\Http\Resources\LetterResource;
 use Modules\Letter\Models\LetterModel;
 use Modules\LetterCategory\Models\LetterCategoryModel;
+use Modules\Organization\Models\OrganizationModel;
 
 class LetterController extends Controller
 {
@@ -35,7 +37,8 @@ class LetterController extends Controller
         $direction = $this->resolveDirection($direction);
 
         $query = LetterModel::query()
-            ->with('category')
+            ->with(['category', 'organization'])
+            ->visibleToUser($request->user())
             ->direction($direction);
 
         if ($request->filled('search')) {
@@ -59,6 +62,7 @@ class LetterController extends Controller
 
         $data = $request->validate([
             'category_id' => 'required|exists:letter_categories,id',
+            'organization_id' => ['required', new AccessibleOrganization($request->user())],
             'letter_number' => 'required|string|max:100',
             'subject' => 'required|string|max:255',
             'sender' => $direction === 'incoming' ? 'required|string|max:255' : 'nullable|string|max:255',
@@ -78,7 +82,7 @@ class LetterController extends Controller
         if ($request->expectsJson()) {
             return response()->json([
                 'message' => "{$label} berhasil dibuat.",
-                'data' => new LetterResource($letter->load('category')),
+                'data' => new LetterResource($letter->load(['category', 'organization'])),
             ], 201);
         }
 
@@ -87,11 +91,13 @@ class LetterController extends Controller
             ->with('success', "{$label} berhasil dibuat.");
     }
 
-    public function apiShow(string $direction, string $letter)
+    public function apiShow(Request $request, string $direction, string $letter)
     {
         $direction = $this->resolveDirection($direction);
 
-        $letter = LetterModel::with('category')
+        $letter = LetterModel::query()
+            ->with(['category', 'organization'])
+            ->visibleToUser($request->user())
             ->direction($direction)
             ->findOrFail($letter);
 
@@ -105,10 +111,14 @@ class LetterController extends Controller
     {
         $direction = $this->resolveDirection($direction);
 
-        $letter = LetterModel::direction($direction)->findOrFail($letter);
+        $letter = LetterModel::query()
+            ->visibleToUser($request->user())
+            ->direction($direction)
+            ->findOrFail($letter);
 
         $data = $request->validate([
             'category_id' => 'sometimes|exists:letter_categories,id',
+            'organization_id' => ['sometimes', new AccessibleOrganization($request->user())],
             'letter_number' => 'sometimes|string|max:100',
             'subject' => 'sometimes|string|max:255',
             'sender' => 'nullable|string|max:255',
@@ -127,7 +137,7 @@ class LetterController extends Controller
         if ($request->expectsJson()) {
             return response()->json([
                 'message' => "{$label} berhasil diperbarui.",
-                'data' => new LetterResource($letter->fresh()->load('category')),
+                'data' => new LetterResource($letter->fresh()->load(['category', 'organization'])),
             ], 200);
         }
 
@@ -140,7 +150,10 @@ class LetterController extends Controller
     {
         $direction = $this->resolveDirection($direction);
 
-        $letter = LetterModel::direction($direction)->findOrFail($letter);
+        $letter = LetterModel::query()
+            ->visibleToUser($request->user())
+            ->direction($direction)
+            ->findOrFail($letter);
         $letter->delete();
 
         $label = $this->directionLabel($direction);
@@ -167,7 +180,8 @@ class LetterController extends Controller
         $direction = $this->resolveDirection($direction);
 
         $query = LetterModel::query()
-            ->with('category')
+            ->with(['category', 'organization'])
+            ->visibleToUser($request->user())
             ->direction($direction);
 
         if ($request->filled('search')) {
@@ -184,34 +198,43 @@ class LetterController extends Controller
         return $this->renderPage('index', compact('letters', 'categories', 'direction'));
     }
 
-    public function create(string $direction)
+    public function create(Request $request, string $direction)
     {
         $direction = $this->resolveDirection($direction);
         $categories = LetterCategoryModel::active()->orderBy('name')->get();
+        $organizations = OrganizationModel::active()
+            ->visibleTo($request->user())
+            ->orderBy('name')
+            ->get();
 
-        return $this->renderPage('create', compact('categories', 'direction'));
+        return $this->renderPage('create', compact('categories', 'organizations', 'direction'));
     }
 
     public function show(Request $request, string $direction, string $letter)
     {
         if ($request->expectsJson()) {
-            return $this->apiShow($direction, $letter);
+            return $this->apiShow($request, $direction, $letter);
         }
 
         $direction = $this->resolveDirection($direction);
 
-        $letter = LetterModel::with('category')
+        $letter = LetterModel::query()
+            ->with(['category', 'organization'])
+            ->visibleToUser($request->user())
             ->direction($direction)
             ->findOrFail($letter);
 
         return $this->renderPage('show', compact('letter', 'direction'));
     }
 
-    public function edit(string $direction, string $letter)
+    public function edit(Request $request, string $direction, string $letter)
     {
         $direction = $this->resolveDirection($direction);
 
-        $letter = LetterModel::direction($direction)->findOrFail($letter);
+        $letter = LetterModel::query()
+            ->visibleToUser($request->user())
+            ->direction($direction)
+            ->findOrFail($letter);
 
         $categories = LetterCategoryModel::query()
             ->where(function ($query) use ($letter) {
@@ -221,6 +244,11 @@ class LetterController extends Controller
             ->orderBy('name')
             ->get();
 
-        return $this->renderPage('edit', compact('letter', 'categories', 'direction'));
+        $organizations = OrganizationModel::active()
+            ->visibleTo($request->user())
+            ->orderBy('name')
+            ->get();
+
+        return $this->renderPage('edit', compact('letter', 'categories', 'organizations', 'direction'));
     }
 }

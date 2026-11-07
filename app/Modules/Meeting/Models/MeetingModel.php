@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Organization\Models\OrganizationModel;
+use Modules\Shared\Concerns\BelongsToVisibleOrganization;
 
 class MeetingModel extends Model
 {
-    use HasFactory, SoftDeletes;
+    use BelongsToVisibleOrganization, HasFactory, SoftDeletes;
 
     protected static function newFactory()
     {

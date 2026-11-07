@@ -2,23 +2,25 @@
 
 namespace Modules\Activity\Models;
 
+use Database\Factories\ActivityFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Database\Factories\ActivityFactory;
-use Modules\Organization\Models\OrganizationModel;
 use Modules\Finance\Models\FinanceModel;
+use Modules\Organization\Models\OrganizationModel;
+use Modules\Shared\Concerns\BelongsToVisibleOrganization;
 
 class ActivityModel extends Model
 {
-    use HasFactory, SoftDeletes;
+    use BelongsToVisibleOrganization, HasFactory, SoftDeletes;
 
     protected static function newFactory()
     {
         return new ActivityFactory;
     }
+
     protected $table = 'activities';
 
     protected $fillable = [
@@ -46,6 +48,7 @@ class ActivityModel extends Model
     ];
 
     const TYPES = ['program', 'kegiatan', 'pelatihan', 'sosial'];
+
     const STATUSES = ['planning', 'ongoing', 'completed', 'cancelled'];
 
     /**

@@ -52,6 +52,7 @@
                     <th>Tanggal Surat</th>
                     <th>Perihal</th>
                     <th>Kategori</th>
+                    <th>Organisasi</th>
                     <th>{{ $isIncoming ? 'Pengirim' : 'Tujuan' }}</th>
                     @if($isIncoming)
                       <th>Diterima</th>
@@ -71,6 +72,7 @@
                         @endif
                       </td>
                       <td><span class="badge bg-light text-primary border">{{ $letter->category->name ?? '-' }}</span></td>
+                      <td class="text-muted small">{{ $letter->organization->name ?? '-' }}</td>
                       <td class="text-muted small">{{ $isIncoming ? ($letter->sender ?? '-') : ($letter->recipient ?? '-') }}</td>
                       @if($isIncoming)
                         <td class="text-muted small">{{ $letter->received_date?->format('d M Y') ?? '-' }}</td>

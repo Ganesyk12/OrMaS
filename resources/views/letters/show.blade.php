@@ -28,6 +28,7 @@
             <tr><th>Nomor Surat</th><td>{{ $letter->letter_number }}</td></tr>
             <tr><th>Perihal</th><td>{{ $letter->subject }}</td></tr>
             <tr><th>Kategori</th><td>{{ $letter->category->name ?? '-' }}</td></tr>
+            <tr><th>Organisasi</th><td>{{ $letter->organization->name ?? '-' }}</td></tr>
             <tr><th>{{ $isIncoming ? 'Pengirim' : 'Tujuan' }}</th><td>{{ $isIncoming ? ($letter->sender ?? '-') : ($letter->recipient ?? '-') }}</td></tr>
             <tr><th>Tanggal Surat</th><td>{{ $letter->letter_date?->format('d M Y') ?? '-' }}</td></tr>
             @if($isIncoming)
