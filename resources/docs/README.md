@@ -91,9 +91,14 @@ DB_SCHEMA=ORMS
 
 `DB_SCHEMA` dipakai sebagai `search_path` PostgreSQL. Schema custom dibuat otomatis saat migrasi jika belum ada. Gunakan `DB_SCHEMA="ORMS,public"` jika perlu fallback ke schema `public`.
 
-### Akun Admin Default (dari seeder)
+### Akun Default (dari seeder)
 
-- Email: `admin@karangtaruna.id`
+Admin:
+- Email: `admin@karlas.id`
+- Password: `password`
+
+Superadmin (akses penuh ke semua modul):
+- Email: `superadmin@karlas.id`
 - Password: `password`
 
 ## Route (API REST JSON)

@@ -161,6 +161,14 @@ $isPengaturanActive = request()->routeIs('users.*') || request()->routeIs('user-
           </ul>
         </li>
         @endif
+
+        @if($currentUser?->is_superadmin)
+        <li class="pc-item {{ request()->is('docs*') ? 'pc-active' : '' }}">
+          <a href="{{ route('docs.index') }}" class="pc-link">
+            <span class="pc-micon"><i class="ti ti-book"></i></span><span class="pc-mtext">Documentation</span>
+          </a>
+        </li>
+        @endif
       </ul>
     </div>
   </div>

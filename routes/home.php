@@ -8,3 +8,9 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard.index');
+
+Route::get('/docs', function () {
+    abort_unless(auth()->user()?->isSuperAdmin(), 403);
+
+    return response()->file(resource_path('docs/index.html'));
+})->middleware('auth')->name('docs.index');

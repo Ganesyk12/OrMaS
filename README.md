@@ -1,203 +1,89 @@
-# Cameleon — Organize Management System (Karang Taruna)
+# Cameleon — Organize Management System
 
-Sistem administrasi **Karang Taruna** (organisasi kemasyarakatan pemuda) berbasis **Modular Monolith** dengan Laravel 12 + SQLite.
+Cameleon adalah sistem administrasi untuk membantu pengurus **Karang Taruna** mengelola organisasi, anggota, kegiatan, rapat, keuangan, dan surat menyurat dalam satu tempat.
 
-## Arsitektur: Modular Monolith
+Aplikasi ini dirancang agar pengurus dapat bekerja lebih rapi, cepat, dan terpusat, dengan pembatasan akses sesuai jabatan dan organisasi masing-masing.
 
-Semua kode berada dalam satu repositori (satu composer project), tapi diorganisir per **modul / bounded context** di bawah `app/Modules/`. Setiap modul mandiri memiliki model, migration, seeder, controller, resource, dan route-nya sendiri. Nantinya setiap modul dapat diekstrak menjadi layanan terpisah tanpa menulis ulang logika inti.
+## Gambaran Aplikasi
 
-```
-app/
-├── Models/User.php                 # Model autentikasi (Laravel Authenticatable)
-├── Modules/
-│   ├── Shared/                     # Kernel bersama (exception, trait, antarmuka)
-│   │   ├── Exceptions/ModuleException.php
-│   │   ├── Traits/
-│   │   └── Interfaces/
-│   ├── Organization/               # Organisasi (RT/RW/Kelurahan/Kecamatan)
-│   │   ├── Models/OrganizationModel.php
-│   │   ├── Http/Controllers/OrganizationController.php
-│   │   ├── Http/Resources/OrganizationResource.php
-│   │   ├── Routes/web.php
-│   │   ├── Database/Migrations/
-│   │   ├── Database/Seeders/
-│   │   └── OrganizationServiceProvider.php
-│   ├── Member/                     # Anggota organisasi
-│   ├── Role/                       # Jabatan / Role kepengurusan
-│   ├── UserAccess/                 # Hak akses user per modul & izin
-│   ├── User/                       # Manajemen pengguna sistem
-│   ├── Activity/                   # Kegiatan / Program kerja
-│   ├── Meeting/                    # Rapat
-│   └── Finance/                    # Transaksi keuangan
-├── Http/Controllers/
-└── Providers/
-```
+Cameleon menyatukan berbagai kebutuhan administrasi organisasi:
 
-### Daftar Modul
+- Data organisasi dan anggota yang terstruktur.
+- Pengelolaan jabatan dan hak akses pengguna.
+- Pencatatan kegiatan dan rapat.
+- Pembukuan pemasukan dan pengeluaran.
+- Pengarsipan surat masuk dan surat keluar.
+- Ringkasan aktivitas dan keuangan pada dashboard.
 
-| Modul | Tabel | Deskripsi |
-|-------|-------|-----------|
-| Organization | `organizations` | Organisasi Karang Taruna (rt, rw, kelurahan, kecamatan) |
-| Role | `roles` | Jabatan kepengurusan (Ketua, Sekretaris, Bendahara, Anggota, dst) |
-| Member | `organization_members` | Anggota organisasi (terkait user & role) |
-| UserAccess | `user_accesses` | Hak akses user per modul & izin (view/create/edit/delete) |
-| User | `users` | Pengguna sistem (autentikasi) |
-| Activity | `activities` | Kegiatan / program kerja |
-| Meeting | `meetings` | Rapat |
-| Finance | `finances` | Transaksi keuangan (pemasukan / pengeluaran) |
+## Fitur Utama
 
-## Persyaratan
+### Dashboard
 
-- PHP 8.2+
-- Composer
-- SQLite (default) atau MySQL/PostgreSQL via `.env`
+- Ringkasan jumlah anggota, surat, kegiatan, pemasukan, dan pengeluaran.
+- Daftar kegiatan terbaru.
+- Daftar transaksi keuangan terbaru.
+- Akses cepat ke menu utama aplikasi.
 
-## Instalasi
+### Organisasi
 
-```bash
-# 1. Masuk ke direktori project
-cd cameleon
+- Kelola data organisasi Karang Taruna, mulai dari tingkat RT, RW, kelurahan, hingga kecamatan.
+- Simpan informasi alamat, deskripsi, tanggal berdiri, dan status organisasi.
+- Aktifkan atau nonaktifkan organisasi sesuai kebutuhan.
 
-# 2. Install dependensi PHP
-composer install
+### Anggota dan Jabatan
 
-# 3. Salin dan konfigurasikan environment
-cp .env.example .env
-# (default sudah menggunakan SQLite di database/database.sqlite)
+- Kelola data anggota organisasi.
+- Hubungkan anggota dengan akun pengguna dan jabatan kepengurusan.
+- Kelola jabatan seperti Ketua, Admin, Sekretaris, Bendahara, dan Anggota.
+- Atur anggota aktif dan nonaktif.
 
-# 4. Generate application key
-php artisan key:generate
+### Pengguna dan Hak Akses
 
-# 5. Jalankan migrasi dan seeder
-php artisan migrate --seed
+- Kelola akun pengguna aplikasi.
+- Atur hak akses per modul: lihat, tambah, ubah, dan hapus.
+- Dukung peran Superadmin dan Admin.
+- Pembatasan organisasi otomatis: pengguna yang ditugaskan ke organisasi tertentu hanya melihat organisasi tersebut saat membuat kegiatan, surat, atau transaksi keuangan.
+- Pengguna tanpa penugasan organisasi dapat mengakses seluruh organisasi.
 
-# 6. (Opsional) Install dan build aset frontend
-npm install && npm run build
+### Kegiatan
 
-# 7. Jalankan server development
-php artisan serve
-```
+- Kelola kegiatan dan program kerja organisasi.
+- Catat judul, jenis kegiatan, jadwal mulai dan selesai, lokasi, anggaran, serta status kegiatan.
+- Pantau kegiatan yang sedang direncanakan, berlangsung, selesai, atau dibatalkan.
 
-### PostgreSQL dengan Schema Custom
+### Rapat
 
-Isi `.env` seperti berikut:
+- Jadwalkan rapat organisasi.
+- Catat waktu, lokasi, deskripsi, dan status rapat.
+- Kelola daftar rapat yang akan datang maupun yang sudah selesai.
 
-```dotenv
-DB_CONNECTION=pgsql
-DB_HOST=127.0.0.1
-DB_PORT=5432
-DB_DATABASE=nama_database
-DB_USERNAME=postgres
-DB_PASSWORD=password
-DB_SCHEMA=ORMS
-```
+### Keuangan
 
-- `DB_SCHEMA` menjadi `search_path` koneksi PostgreSQL.
-- Schema custom dibuat otomatis saat `php artisan migrate` jika belum ada.
-- Jika butuh schema `public` sebagai fallback (mis. untuk extension), gunakan `DB_SCHEMA="ORMS,public"`.
-- Untuk schema yang namanya mengandung huruf besar, nilainya akan di-quote otomatis oleh Laravel.
+- Catat pemasukan dan pengeluaran organisasi.
+- Kelola detail transaksi: kategori, nominal, dan bukti/kwitansi.
+- Hitung total transaksi secara otomatis dari seluruh detail.
+- Atur status transaksi: draft, disetujui, atau ditolak.
+- Filter dan cari transaksi berdasarkan organisasi, jenis, status, atau kategori.
 
-Akun admin default (dari seeder):
-- Email: `admin@karangtaruna.id`
-- Password: `password`
+### Surat Menyurat
 
-Akun Superadmin default (akses penuh ke semua modul):
-- Email: `superadmin@karangtaruna.id`
-- Password: `password`
+- Kelola surat masuk dan surat keluar.
+- Kelompokkan surat berdasarkan kategori.
+- Catat nomor surat, perihal, pengirim atau tujuan, tanggal surat, tanggal diterima, dan catatan.
+- Hubungkan surat dengan organisasi terkait.
 
-## Route (API REST JSON)
+### Keamanan dan Kenyamanan
 
-Semua endpoint mengembalikan JSON. Contoh:
+- Autentikasi pengguna sebelum mengakses aplikasi.
+- Hak akses per modul dan per tindakan.
+- Pembatasan data berdasarkan organisasi pengguna.
+- Konfirmasi sebelum menghapus data.
+- Pesan kesalahan dan halaman akses yang mudah dipahami.
 
-```http
-GET    /organizations          # daftar organisasi
-POST   /organizations          # buat organisasi
-GET    /organizations/{id}     # detail organisasi
-PUT    /organizations/{id}     # perbarui
-DELETE /organizations/{id}     # hapus (soft delete)
+## Manfaat
 
-GET    /roles
-POST   /roles
-GET    /roles/{id}
-PUT    /roles/{id}
-DELETE /roles/{id}
-
-GET    /members
-POST   /members
-GET    /members/{id}
-PUT    /members/{id}
-DELETE /members/{id}
-
-GET    /activities
-POST   /activities
-GET    /activities/{id}
-PUT    /activities/{id}
-DELETE /activities/{id}
-
-GET    /meetings
-POST   /meetings
-GET    /meetings/{id}
-PUT    /meetings/{id}
-DELETE /meetings/{id}
-
-GET    /finances
-POST   /finances
-GET    /finances/{id}
-PUT    /finances/{id}
-DELETE /finances/{id}
-
-GET    /users
-POST   /users
-GET    /users/{id}
-PUT    /users/{id}
-DELETE /users/{id}
-
-GET    /user-accesses
-POST   /user-accesses
-GET    /user-accesses/{id}
-PUT    /user-accesses/{id}
-DELETE /user-accesses/{id}
-```
-
-## Pengujian
-
-```bash
-# Jalankan seluruh test suite
-php artisan test
-
-# Hasilkan laporan coverage (jika Xdebug tersedia)
-php artisan test --coverage
-```
-
-Tes mencakup CRUD lengkap (index, store, show, update, destroy, soft delete) untuk setiap modul di `tests/Feature/`.
-
-## Pendaftaran Modul
-
-Semua `*ServiceProvider` didaftarkan di `bootstrap/providers.php` (Laravel 12 style). Autoload namespace `Modules\` dipetakan ke `app/Modules/` di `composer.json`.
-
-```json
-"autoload": {
-    "psr-4": {
-        "App\\": "app/",
-        "Modules\\": "app/Modules/"
-    }
-}
-```
-
-Setiap `ModuleServiceProvider` memuat route dan migration miliknya:
-
-```php
-$this->loadRoutesFrom(__DIR__.'/Routes/web.php');
-$this->loadMigrationsFrom(__DIR__.'/Database/Migrations');
-```
-
-## Catatan Implementasi
-
-- Semua tabel pakai `softDeletes()` (kecuali `users` yang dihapus permanen dalam contoh ini).
-- Model menggunakan `HasFactory` dengan factory di `database/factories/`.
-- Response API diformat melalui `JsonResource` per modul.
-- Validasi request ditulis inline di controller.
-
-## Lisensi
-
-MIT
+- Administrasi organisasi lebih tertata.
+- Data anggota, kegiatan, keuangan, dan surat tersimpan di satu tempat.
+- Hak akses lebih terkontrol sesuai tugas dan jabatan.
+- Pengurus hanya melihat data organisasi yang menjadi tanggung jawabnya.
+- Pengambilan keputusan lebih mudah karena tersedia ringkasan data pada dashboard.

@@ -3,12 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Database\Seeders\Concerns\GrantsModuleAccess;
 use Illuminate\Database\Seeder;
-use Modules\UserAccess\Models\ModuleModel;
-use Modules\UserAccess\Models\UserAccessModel;
 
 class SuperadminSeeder extends Seeder
 {
+    use GrantsModuleAccess;
+
     /**
      * Seed akun Superadmin dengan akses penuh ke semua modul.
      */
@@ -18,26 +19,17 @@ class SuperadminSeeder extends Seeder
         $this->call(ModuleSeeder::class);
 
         $superadmin = User::updateOrCreate(
-            ['email' => 'superadmin@karangtaruna.id'],
+            ['email' => 'superadmin@karlas.id'],
             [
-                'name' => 'Superadmin',
+                'name' => 'Super Admin',
                 'password' => bcrypt('password'),
                 'email_verified_at' => now(),
+                'is_superadmin' => true,
             ]
         );
 
-        foreach (ModuleModel::activeNames() as $module) {
-            UserAccessModel::updateOrCreate(
-                ['user_id' => $superadmin->id, 'module' => $module],
-                [
-                    'allow_view' => true,
-                    'allow_create' => true,
-                    'allow_edit' => true,
-                    'allow_delete' => true,
-                ]
-            );
-        }
+        $this->grantAllModuleAccess($superadmin);
 
-        $this->command?->info('Superadmin siap: superadmin@karangtaruna.id / password');
+        $this->command?->info('Superadmin siap: superadmin@karlas.id / password');
     }
 }
