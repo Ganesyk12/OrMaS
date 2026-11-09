@@ -199,6 +199,7 @@ class FinanceController extends Controller
             ->with(['organization', 'activity'])
             ->withSum('details', 'amount')
             ->withCount('details')
+            ->withMax('details', 'transaction_date')
             ->visibleToUser($request->user());
 
         if ($request->filled('organization_id')) {
@@ -233,12 +234,12 @@ class FinanceController extends Controller
                 : ['sometimes', new AccessibleOrganization($request->user())],
             'activity_id' => 'nullable|exists:activities,id',
             'type' => "{$required}|in:income,expense",
-            'transaction_date' => "{$required}|date",
             'status' => 'sometimes|in:draft,approved,rejected',
             'details' => "{$required}|array|min:1",
             'details.*.id' => 'nullable|integer',
             'details.*.category' => 'required|string|max:255',
             'details.*.amount' => 'required|numeric|min:0',
+            'details.*.transaction_date' => 'required|date',
             'details.*.receipt' => 'nullable|file|max:2048',
         ]);
     }
@@ -254,6 +255,7 @@ class FinanceController extends Controller
             $payload = [
                 'category' => $detail['category'],
                 'amount' => $detail['amount'],
+                'transaction_date' => $detail['transaction_date'],
                 'updated_by' => $email,
             ];
 

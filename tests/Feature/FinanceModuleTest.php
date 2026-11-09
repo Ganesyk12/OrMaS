@@ -3,6 +3,7 @@
 use Database\Factories\FinanceFactory;
 use Database\Factories\OrganizationFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Finance\Models\FinanceDetailModel;
 use Tests\Concerns\AuthenticatesModuleAccess;
 use Tests\TestCase;
 
@@ -35,18 +36,24 @@ class FinanceModuleTest extends TestCase
         $response = $this->postJson('/finances', [
             'organization_id' => $org->id,
             'type' => 'income',
-            'transaction_date' => '2026-11-01',
             'status' => 'draft',
             'details' => [
-                ['category' => 'Sumbangan', 'amount' => 5000000],
-                ['category' => 'Sponsor', 'amount' => 1500000],
+                ['category' => 'Sumbangan', 'amount' => 5000000, 'transaction_date' => '2026-11-01'],
+                ['category' => 'Sponsor', 'amount' => 1500000, 'transaction_date' => '2026-11-02'],
             ],
         ]);
 
         $response->assertStatus(201);
         $response->assertJsonPath('data.total', 6500000);
 
-        $this->assertDatabaseHas('finance_details', ['category' => 'Sumbangan', 'amount' => 5000000]);
+        $this->assertDatabaseHas('finance_details', [
+            'category' => 'Sumbangan',
+            'amount' => 5000000,
+        ]);
+        $this->assertSame(
+            '2026-11-01',
+            FinanceDetailModel::where('category', 'Sumbangan')->firstOrFail()->transaction_date->format('Y-m-d')
+        );
         $this->assertDatabaseHas('finances', [
             'status' => 'draft',
             'created_by' => $this->moduleAccessUser()->email,
@@ -61,7 +68,6 @@ class FinanceModuleTest extends TestCase
         $response = $this->postJson('/finances', [
             'organization_id' => $org->id,
             'type' => 'income',
-            'transaction_date' => '2026-11-01',
             'details' => [],
         ]);
 
@@ -107,8 +113,8 @@ class FinanceModuleTest extends TestCase
 
         $response = $this->putJson('/finances/'.$finance->id, [
             'details' => [
-                ['id' => $detail->id, 'category' => 'Diperbarui', 'amount' => 2000000],
-                ['category' => 'Detail Baru', 'amount' => 500000],
+                ['id' => $detail->id, 'category' => 'Diperbarui', 'amount' => 2000000, 'transaction_date' => '2026-11-03'],
+                ['category' => 'Detail Baru', 'amount' => 500000, 'transaction_date' => '2026-11-04'],
             ],
         ]);
 
@@ -147,6 +153,7 @@ class FinanceModuleTest extends TestCase
             ->assertSee('Detail Transaksi')
             ->assertSee('details[0][category]', false)
             ->assertSee('details[0][amount]', false)
+            ->assertSee('details[0][transaction_date]', false)
             ->assertSee('details[0][receipt]', false);
     }
 

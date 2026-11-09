@@ -139,9 +139,8 @@ class OrganizationAccessScopeTest extends TestCase
         $response = $this->postJson('/finances', [
             'organization_id' => $other->id,
             'type' => 'income',
-            'transaction_date' => '2026-11-01',
             'details' => [
-                ['category' => 'Sumbangan', 'amount' => 100000],
+                ['category' => 'Sumbangan', 'amount' => 100000, 'transaction_date' => '2026-11-01'],
             ],
         ]);
 

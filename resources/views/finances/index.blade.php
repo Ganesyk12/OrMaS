@@ -54,7 +54,7 @@ $breadcrumbs = [
               <tbody>
                 @foreach($finances as $fin)
                 <tr>
-                  <td class="fw-semibold text-dark">{{ $fin->transaction_date?->format('d M Y') ?? '-' }}</td>
+                  <td class="fw-semibold text-dark">{{ $fin->details_max_transaction_date ? \Illuminate\Support\Carbon::parse($fin->details_max_transaction_date)->format('d M Y') : '-' }}</td>
                   <td class="text-muted small">{{ $fin->organization->name ?? '-' }}</td>
                   <td>
                     <span class="badge bg-{{ $fin->type === 'income' ? 'success' : 'danger' }}">{{ ucfirst($fin->type) }}</span>

@@ -21,6 +21,7 @@ class FinanceDetailFactory extends Factory
             'finance_id' => FinanceModel::factory(),
             'category' => fake()->randomElement($categories),
             'amount' => fake()->randomFloat(2, 50000, 5000000),
+            'transaction_date' => fake()->dateTimeBetween('-6 months', 'today')->format('Y-m-d'),
             'receipt' => fake()->optional()->filePath(),
             'created_by' => fake()->optional()->safeEmail(),
             'updated_by' => null,

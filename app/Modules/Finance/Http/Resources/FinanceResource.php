@@ -20,7 +20,6 @@ class FinanceResource extends JsonResource
             'activity_id' => $this->activity_id,
             'type' => $this->type,
             'total' => $this->total,
-            'transaction_date' => $this->transaction_date?->format('Y-m-d'),
             'status' => $this->status,
             'organization' => $this->whenLoaded('organization', fn () => [
                 'id' => $this->organization->id,

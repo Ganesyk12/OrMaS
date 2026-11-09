@@ -27,14 +27,9 @@ class FinanceModel extends Model
         'organization_id',
         'activity_id',
         'type',
-        'transaction_date',
         'status',
         'created_by',
         'updated_by',
-    ];
-
-    protected $casts = [
-        'transaction_date' => 'date',
     ];
 
     protected $attributes = [

@@ -33,7 +33,8 @@ class DashboardController extends Controller
         $finances = FinanceModel::with('organization')
             ->withSum('details', 'amount')
             ->withCount('details')
-            ->orderByDesc('transaction_date')
+            ->withMax('details', 'transaction_date')
+            ->orderByDesc('details_max_transaction_date')
             ->orderByDesc('id')
             ->limit(5)
             ->get();

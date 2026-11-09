@@ -307,7 +307,7 @@ $breadcrumbs = [
                                 <div class="stat-content">
                                     <div class="stat-label">Kegiatan</div>
                                     <h2 class="stat-value mb-2">{{ $stats['activities'] ?? 0 }}</h2>
-                                    <span class="badge bg-light text-dark border">Terjadwal</span>
+                                    <span class="badge bg-light text-dark border">Terlaksana</span>
                                 </div>
                                 <div class="stat-icon warning">
                                     <i class="ti ti-calendar"></i>
@@ -397,7 +397,7 @@ $breadcrumbs = [
                                         <span class="fw-semibold small {{ $finance->type === 'income' ? 'text-success' : 'text-danger' }}">
                                             {{ $finance->type === 'income' ? 'Pemasukan' : 'Pengeluaran' }}
                                         </span>
-                                        <small class="text-muted">{{ $finance->transaction_date?->format('d M Y') ?? '-' }}</small>
+                                        <small class="text-muted">{{ $finance->details_max_transaction_date ? \Illuminate\Support\Carbon::parse($finance->details_max_transaction_date)->format('d M Y') : '-' }}</small>
                                     </div>
                                     <div class="fw-semibold text-dark">Rp {{ number_format($finance->total, 0, ',', '.') }}</div>
                                     <div class="text-muted smaller">

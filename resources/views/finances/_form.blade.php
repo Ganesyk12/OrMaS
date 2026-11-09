@@ -17,12 +17,13 @@
           'id' => $detail->id,
           'category' => $detail->category,
           'amount' => $detail->amount,
+          'transaction_date' => $detail->transaction_date?->format('Y-m-d'),
           'receipt' => $detail->receipt,
       ])->all();
   }
 
   if (empty($detailRows)) {
-      $detailRows = [['id' => null, 'category' => '', 'amount' => '', 'receipt' => null]];
+      $detailRows = [['id' => null, 'category' => '', 'amount' => '', 'transaction_date' => '', 'receipt' => null]];
   }
 
   $nextDetailIndex = max(array_keys($detailRows)) + 1;
@@ -59,11 +60,6 @@
     @error('type')<div class="invalid-feedback">{{ $message }}</div>@enderror
   </div>
   <div class="col-md-6">
-    <label class="form-label">Tanggal Transaksi <span class="text-danger">*</span></label>
-    <input type="date" name="transaction_date" class="form-control @error('transaction_date') is-invalid @enderror" value="{{ old('transaction_date', $finance?->transaction_date?->format('Y-m-d')) }}" required>
-    @error('transaction_date')<div class="invalid-feedback">{{ $message }}</div>@enderror
-  </div>
-  <div class="col-md-6">
     <label class="form-label">Status <span class="text-danger">*</span></label>
     <select name="status" class="form-select @error('status') is-invalid @enderror" required>
       @foreach(['draft' => 'Draft', 'approved' => 'Disetujui', 'rejected' => 'Ditolak'] as $value => $label)
@@ -97,12 +93,20 @@
           <input type="hidden" name="details[{{ $i }}][id]" value="{{ $row['id'] ?? '' }}">
 
           <div class="row g-3">
-            <div class="col-md-4">
+            <div class="col-md-3">
               <label class="form-label">Kategori <span class="text-danger">*</span></label>
               <input type="text" name="details[{{ $i }}][category]"
                      class="form-control @error('details.'.$i.'.category') is-invalid @enderror"
                      value="{{ $row['category'] ?? '' }}" required>
               @error('details.'.$i.'.category')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+
+            <div class="col-md-2">
+              <label class="form-label">Tanggal <span class="text-danger">*</span></label>
+              <input type="date" name="details[{{ $i }}][transaction_date]"
+                     class="form-control @error('details.'.$i.'.transaction_date') is-invalid @enderror"
+                     value="{{ $row['transaction_date'] ?? '' }}" required>
+              @error('details.'.$i.'.transaction_date')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
 
             <div class="col-md-3">
@@ -117,7 +121,7 @@
               </div>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-2">
               <label class="form-label">Bukti / Kwitansi</label>
               <input type="file" name="details[{{ $i }}][receipt]"
                      class="form-control @error('details.'.$i.'.receipt') is-invalid @enderror">
@@ -153,9 +157,14 @@
     <input type="hidden" name="details[__INDEX__][id]" value="">
 
     <div class="row g-3">
-      <div class="col-md-4">
+      <div class="col-md-3">
         <label class="form-label">Kategori <span class="text-danger">*</span></label>
         <input type="text" name="details[__INDEX__][category]" class="form-control" required>
+      </div>
+
+      <div class="col-md-2">
+        <label class="form-label">Tanggal <span class="text-danger">*</span></label>
+        <input type="date" name="details[__INDEX__][transaction_date]" class="form-control" required>
       </div>
 
       <div class="col-md-3">
@@ -167,7 +176,7 @@
         </div>
       </div>
 
-      <div class="col-md-3">
+      <div class="col-md-2">
         <label class="form-label">Bukti / Kwitansi</label>
         <input type="file" name="details[__INDEX__][receipt]" class="form-control">
       </div>

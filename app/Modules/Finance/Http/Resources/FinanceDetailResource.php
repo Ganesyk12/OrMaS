@@ -19,6 +19,7 @@ class FinanceDetailResource extends JsonResource
             'finance_id' => $this->finance_id,
             'category' => $this->category,
             'amount' => (float) $this->amount,
+            'transaction_date' => $this->transaction_date?->format('Y-m-d'),
             'receipt' => $this->receipt,
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,

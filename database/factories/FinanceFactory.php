@@ -22,7 +22,6 @@ class FinanceFactory extends Factory
         return [
             'organization_id' => OrganizationModel::factory()->create()->id,
             'type' => fake()->randomElement($types),
-            'transaction_date' => fake()->dateTimeBetween('-6 months', 'today')->format('Y-m-d'),
             'status' => fake()->randomElement($statuses),
             'created_by' => fake()->optional()->safeEmail(),
             'updated_by' => null,

@@ -23,6 +23,7 @@ class FinanceDetailModel extends Model
         'finance_id',
         'category',
         'amount',
+        'transaction_date',
         'receipt',
         'created_by',
         'updated_by',
@@ -30,6 +31,7 @@ class FinanceDetailModel extends Model
 
     protected $casts = [
         'amount' => 'decimal:2',
+        'transaction_date' => 'date',
     ];
 
     /**

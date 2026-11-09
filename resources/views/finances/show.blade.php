@@ -34,10 +34,6 @@ $breadcrumbs = [
               <td>{{ $finance->type === 'income' ? 'Pemasukan' : 'Pengeluaran' }}</td>
             </tr>
             <tr>
-              <th>Tanggal</th>
-              <td>{{ $finance->transaction_date?->format('d M Y') ?? '-' }}</td>
-            </tr>
-            <tr>
               <th>Status</th>
               <td>{{ ucfirst($finance->status) }}</td>
             </tr>
@@ -62,6 +58,7 @@ $breadcrumbs = [
               <thead class="table-light">
                 <tr>
                   <th style="width: 50px;">No</th>
+                  <th>Tanggal</th>
                   <th>Kategori</th>
                   <th>Bukti / Kwitansi</th>
                   <th>Dibuat oleh</th>
@@ -72,6 +69,7 @@ $breadcrumbs = [
                 @forelse($finance->details as $detail)
                 <tr>
                   <td class="text-muted small">{{ $loop->iteration }}</td>
+                  <td class="text-muted small">{{ $detail->transaction_date?->format('d M Y') ?? '-' }}</td>
                   <td class="fw-semibold text-dark">{{ $detail->category }}</td>
                   <td class="small">
                     @if($detail->receipt)
@@ -87,14 +85,14 @@ $breadcrumbs = [
                 </tr>
                 @empty
                 <tr>
-                  <td colspan="5" class="text-center text-muted py-4">Belum ada detail transaksi.</td>
+                  <td colspan="6" class="text-center text-muted py-4">Belum ada detail transaksi.</td>
                 </tr>
                 @endforelse
               </tbody>
               @if($finance->details->isNotEmpty())
               <tfoot class="table-light">
                 <tr>
-                  <th colspan="3" class="text-end">Total</th>
+                  <th colspan="4" class="text-end">Total</th>
                   <th colspan="2" class="text-end">Rp {{ number_format($finance->total, 0, ',', '.') }}</th>
                 </tr>
               </tfoot>
