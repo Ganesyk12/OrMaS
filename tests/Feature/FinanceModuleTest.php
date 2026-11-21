@@ -158,6 +158,20 @@ class FinanceModuleTest extends TestCase
     }
 
     /** @test */
+    public function finance_edit_page_renders_existing_details(): void
+    {
+        $finance = FinanceFactory::new()->hasDetails(2)->create();
+        $detail = $finance->details()->first();
+
+        $this->get('/finances/'.$finance->id.'/edit')
+            ->assertOk()
+            ->assertSee('Detail Transaksi')
+            ->assertSee('details[0][transaction_date]', false)
+            ->assertSee($detail->category)
+            ->assertSee("getElementById('add-detail-row')", false);
+    }
+
+    /** @test */
     public function finance_show_page_renders_details_and_total(): void
     {
         $finance = FinanceFactory::new()->hasDetails(2)->create();

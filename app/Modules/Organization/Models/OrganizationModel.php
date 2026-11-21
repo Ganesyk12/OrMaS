@@ -85,10 +85,14 @@ class OrganizationModel extends Model
     /**
      * Scope: batasi organisasi sesuai penugasan user.
      *
-     * User tanpa penugasan tetap dapat melihat seluruh organisasi.
+     * Superadmin dan user tanpa penugasan tetap dapat melihat seluruh organisasi.
      */
     public function scopeVisibleTo($query, ?User $user)
     {
+        if ($user?->isSuperAdmin()) {
+            return $query;
+        }
+
         $organizationIds = $user?->assignedOrganizationIds() ?? [];
 
         if ($organizationIds === []) {

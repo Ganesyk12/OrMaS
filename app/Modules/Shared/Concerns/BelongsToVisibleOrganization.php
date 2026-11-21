@@ -10,10 +10,14 @@ trait BelongsToVisibleOrganization
     /**
      * Scope: batasi data sesuai organisasi yang ditugaskan ke user.
      *
-     * User tanpa penugasan tetap dapat melihat seluruh data.
+     * Superadmin dan user tanpa penugasan tetap dapat melihat seluruh data.
      */
     public function scopeVisibleToUser(Builder $query, ?User $user): Builder
     {
+        if ($user?->isSuperAdmin()) {
+            return $query;
+        }
+
         $organizationIds = $user?->assignedOrganizationIds() ?? [];
 
         if ($organizationIds === []) {

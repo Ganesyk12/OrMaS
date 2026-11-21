@@ -10,7 +10,7 @@ use Modules\Organization\Models\OrganizationModel;
 /**
  * Pastikan organisasi yang dipilih aktif dan boleh diakses user.
  *
- * User tanpa penugasan organisasi boleh memilih organisasi mana pun.
+ * Superadmin dan user tanpa penugasan organisasi boleh memilih organisasi mana pun.
  */
 class AccessibleOrganization implements ValidationRule
 {
@@ -22,10 +22,12 @@ class AccessibleOrganization implements ValidationRule
             ->whereKey($value)
             ->active();
 
-        $organizationIds = $this->user?->assignedOrganizationIds() ?? [];
+        if (! $this->user?->isSuperAdmin()) {
+            $organizationIds = $this->user?->assignedOrganizationIds() ?? [];
 
-        if ($organizationIds !== []) {
-            $query->whereIn('organizations.id', $organizationIds);
+            if ($organizationIds !== []) {
+                $query->whereIn('organizations.id', $organizationIds);
+            }
         }
 
         if (! $query->exists()) {

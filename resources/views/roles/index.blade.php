@@ -1,11 +1,11 @@
 @extends('layouts.base')
 
-@section('title', 'Peran')
+@section('title', 'Role')
 @php
-    $pageTitle = 'Peran';
+    $pageTitle = 'Role';
     $breadcrumbs = [
         'Dashboard' => route('dashboard.index'),
-        'Peran' => route('roles.index'),
+        'Role' => route('roles.index'),
     ];
 @endphp
 
@@ -16,17 +16,17 @@
       <div class="card h-100">
         <div class="card-header border-1 d-flex justify-content-between align-items-center">
           <div>
-            <h1 class="h4 mb-1 text-dark">Peran</h1>
+            <h1 class="h4 mb-1 text-dark">Role</h1>
             <p class="text-muted mb-0">Kelola hak akses per modul</p>
           </div>
           <a href="{{ route('roles.create') }}" class="btn btn-primary">
-            <i class="ti ti-plus me-1"></i> Tambah Peran
+            <i class="ti ti-plus me-1"></i> Tambah Role
           </a>
         </div>
         <div class="card-body p-0">
           <div class="card-header border-0 d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
-              <span class="card-title-professional me-2">Daftar Peran</span>
+              <span class="card-title-professional me-2">Daftar Role</span>
             </div>
             <form method="GET" action="{{ route('roles.index') }}" class="d-flex">
               <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari peran..." value="{{ request('search') }}">
@@ -74,7 +74,7 @@
             <div class="text-center text-muted py-5">
               <i class="ti ti-information fs-4 mb-2 d-block opacity-50"></i>
               <div class="fw-semibold text-dark small">Belum ada peran</div>
-              <a href="{{ route('roles.create') }}" class="btn btn-primary mt-2">Tambah Peran</a>
+              <a href="{{ route('roles.create') }}" class="btn btn-primary mt-2">Tambah Role</a>
             </div>
           @endif
         </div>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Database\Factories\ActivityFactory;
 use Database\Factories\FinanceFactory;
 use Database\Factories\LetterFactory;
@@ -8,6 +9,8 @@ use Database\Factories\OrganizationMemberFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\LetterCategory\Models\LetterCategoryModel;
 use Modules\Organization\Models\OrganizationModel;
+use Modules\UserAccess\Models\ModuleModel;
+use Modules\UserAccess\Models\UserAccessModel;
 use Tests\Concerns\AuthenticatesModuleAccess;
 use Tests\TestCase;
 
@@ -242,5 +245,68 @@ class OrganizationAccessScopeTest extends TestCase
         $response->assertOk();
         $response->assertJsonCount(1, 'data');
         $response->assertJsonPath('data.0.organization_id', $assigned->id);
+    }
+
+    /** @test */
+    public function assigned_user_only_sees_their_organization_on_organization_index(): void
+    {
+        $assigned = OrganizationFactory::new()->create(['name' => 'Organisasi Saya']);
+        $other = OrganizationFactory::new()->create(['name' => 'Organisasi Lain']);
+
+        $this->assignUserTo($assigned);
+
+        $response = $this->get('/organizations');
+
+        $response->assertOk();
+        $response->assertSee($assigned->name);
+        $response->assertDontSee($other->name);
+    }
+
+    /** @test */
+    public function assigned_user_cannot_view_another_organization(): void
+    {
+        $assigned = OrganizationFactory::new()->create();
+        $other = OrganizationFactory::new()->create();
+
+        $this->assignUserTo($assigned);
+
+        $this->getJson('/organizations/'.$other->id)->assertNotFound();
+    }
+
+    /** @test */
+    public function superadmin_sees_all_organizations_even_when_assigned_to_one(): void
+    {
+        $first = OrganizationFactory::new()->create(['name' => 'Organisasi Pertama']);
+        $second = OrganizationFactory::new()->create(['name' => 'Organisasi Kedua']);
+
+        $superadmin = User::factory()->create(['is_superadmin' => true]);
+        $this->grantAllModuleAccess($superadmin);
+
+        OrganizationMemberFactory::new()->create([
+            'user_id' => $superadmin->id,
+            'organization_id' => $first->id,
+            'is_active' => true,
+        ]);
+
+        $this->actingAs($superadmin);
+
+        $this->get('/organizations')
+            ->assertOk()
+            ->assertSee($first->name)
+            ->assertSee($second->name);
+    }
+
+    private function grantAllModuleAccess(User $user): void
+    {
+        foreach (ModuleModel::activeNames() as $module) {
+            UserAccessModel::create([
+                'user_id' => $user->id,
+                'module' => $module,
+                'allow_view' => true,
+                'allow_create' => true,
+                'allow_edit' => true,
+                'allow_delete' => true,
+            ]);
+        }
     }
 }

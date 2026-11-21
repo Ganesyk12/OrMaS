@@ -76,12 +76,9 @@
         <h6 class="mb-0">Detail Transaksi</h6>
         <div class="text-muted small">Total transaksi dihitung dari akumulasi seluruh detail di bawah.</div>
       </div>
-      <button type="button" class="btn btn-outline-primary btn-sm" id="add-detail-row">
-        <i class="ti ti-plus me-1"></i> Tambah Detail
-      </button>
     </div>
 
-    <div id="detail-rows">
+    <div id="detail-rows" data-next-index="{{ $nextDetailIndex }}">
       @foreach($detailRows as $i => $row)
         @php
           $rowReceipt = $row['receipt'] ?? null;
@@ -149,6 +146,10 @@
     <div class="d-flex justify-content-end mt-2">
       <div class="fw-semibold">Total: <span id="detail-total" class="text-dark">Rp 0</span></div>
     </div>
+
+    <button type="button" class="btn btn-outline-primary w-100 mt-3" id="add-detail-row">
+      <i class="ti ti-plus me-1"></i> Tambah Detail
+    </button>
   </div>
 </div>
 
@@ -200,7 +201,7 @@
 
     if (!rowsContainer || !addButton || !template) return;
 
-    var nextIndex = {{ $nextDetailIndex }};
+    var nextIndex = parseInt(rowsContainer.dataset.nextIndex, 10) || 0;
 
     // Format angka dengan pemisah ribuan titik, desimal koma.
     function formatRupiah(value) {
@@ -271,8 +272,10 @@
     addButton.addEventListener('click', function () {
       var wrapper = document.createElement('div');
       wrapper.innerHTML = template.innerHTML.replace(/__INDEX__/g, nextIndex++).trim();
-      rowsContainer.appendChild(wrapper.firstElementChild);
+      var newRow = wrapper.firstElementChild;
+      rowsContainer.appendChild(newRow);
       updateTotal();
+      newRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
 
     rowsContainer.addEventListener('click', function (event) {

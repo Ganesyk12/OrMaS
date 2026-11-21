@@ -1,7 +1,7 @@
 @extends('layouts.base')
 @section('title', 'Dashboard')
 @php
-$pageTitle = 'Dashboard Pages';
+$pageTitle = 'Dashboard';
 $breadcrumbs = [
 'Dashboard' => route('dashboard.index'),
 ];
