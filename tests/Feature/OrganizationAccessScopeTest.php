@@ -248,6 +248,41 @@ class OrganizationAccessScopeTest extends TestCase
     }
 
     /** @test */
+    public function dashboard_only_shows_data_from_the_assigned_organization(): void
+    {
+        $assigned = OrganizationFactory::new()->create(['name' => 'Organisasi Saya']);
+        $other = OrganizationFactory::new()->create(['name' => 'Organisasi Lain']);
+
+        ActivityFactory::new()->create([
+            'organization_id' => $assigned->id,
+            'title' => 'Kegiatan Organisasi Saya',
+        ]);
+        ActivityFactory::new()->create([
+            'organization_id' => $other->id,
+            'title' => 'Kegiatan Organisasi Lain',
+        ]);
+
+        FinanceFactory::new()->hasDetails(1)->create([
+            'organization_id' => $assigned->id,
+            'type' => 'income',
+            'status' => 'approved',
+        ]);
+        FinanceFactory::new()->hasDetails(1)->create([
+            'organization_id' => $other->id,
+            'type' => 'income',
+            'status' => 'approved',
+        ]);
+
+        $this->assignUserTo($assigned);
+
+        $response = $this->get('/dashboard');
+
+        $response->assertOk();
+        $response->assertSee('Kegiatan Organisasi Saya');
+        $response->assertDontSee('Kegiatan Organisasi Lain');
+    }
+
+    /** @test */
     public function assigned_user_only_sees_their_organization_on_organization_index(): void
     {
         $assigned = OrganizationFactory::new()->create(['name' => 'Organisasi Saya']);

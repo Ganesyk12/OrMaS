@@ -344,7 +344,7 @@ $breadcrumbs = [
                                 <span class="card-title-professional me-2">Aksi Cepat</span>
                             </div>
                         </div>
-                        <div class="card-body p-0">
+                        <div class="card-body p-3">
                             <a href="{{ route('organizations.index') }}" class="quick-action-item d-flex align-items-center mb-2">
                                 <div class="quick-action-icon primary"><i class="ti ti-building"></i></div>
                                 <div>
